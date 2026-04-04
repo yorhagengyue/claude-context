@@ -44,7 +44,7 @@ check_repo() {
   fi
 }
 
-check_repo ~/Projects/claude-context
+check_repo ~/Desktop/claude-context
 check_repo ~/Projects/MoyuanIdea
 
 # ----- 3. Claude Harness 配置 -----

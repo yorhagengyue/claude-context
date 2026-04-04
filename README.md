@@ -8,10 +8,10 @@ This repo is the single source of truth for Claude's cross-session memory, proje
 
 ```bash
 # 1. Clone
-git clone git@github.com:yorhagengyue/claude-context.git ~/Projects/claude-context
+git clone git@github.com:yorhagengyue/claude-context.git ~/Desktop/claude-context
 
 # 2. 切到你的机器 branch（或创建新的）
-cd ~/Projects/claude-context
+cd ~/Desktop/claude-context
 git checkout <machine-name>  # mac-mini / macbook / windows
 
 # 3. 运行机器初始化脚本
@@ -56,10 +56,10 @@ claude-context/
 
 ```bash
 # 写入记忆后
-cd ~/Projects/claude-context && git add -A && git commit -m "<type>: <简述>" && git push
+cd ~/Desktop/claude-context && git add -A && git commit -m "<type>: <简述>" && git push
 
 # 换机器前
-cd ~/Projects/claude-context && git pull
+cd ~/Desktop/claude-context && git pull
 ```
 
 ## Adding a New Project

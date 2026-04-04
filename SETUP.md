@@ -217,7 +217,7 @@ Claude Harness 初始化完成：
 1. 告知用户写了什么、写到了哪里
 2. 提醒用户同步：
    ```bash
-   cd ~/Projects/claude-context && git add -A && git commit -m "<type>: <简述>" && git push
+   cd ~/Desktop/claude-context && git add -A && git commit -m "<type>: <简述>" && git push
    ```
 3. commit message 的 `<type>` 使用：`memory`、`skill`、`mcp`、`machine`、`project`、`setup`
 
@@ -373,11 +373,11 @@ mkdir -p machines/<machine-name>/
 
 ```bash
 # 写入后同步
-cd ~/Projects/claude-context && git add -A && git commit -m "<type>: <简述>" && git push
+cd ~/Desktop/claude-context && git add -A && git commit -m "<type>: <简述>" && git push
 
 # 换机器前拉取
-cd ~/Projects/claude-context && git pull
+cd ~/Desktop/claude-context && git pull
 
 # 查看记忆历史
-cd ~/Projects/claude-context && git log --oneline shared/CLAUDE.md
+cd ~/Desktop/claude-context && git log --oneline shared/CLAUDE.md
 ```

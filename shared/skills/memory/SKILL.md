@@ -95,18 +95,18 @@ When the memory section exceeds ~30 entries or the user asks to clean up:
 CLAUDE.md and all sub-MDs live in a Git repo: `yorhagengyue/claude-context` (private). Multiple machines (Mac Mini, MacBook, Windows planned) clone this repo on separate branches.
 
 **File locations**:
-- Git repo: `~/Projects/claude-context/`
-- Source: `~/Projects/claude-context/shared/CLAUDE.md`
-- Desktop symlinks: `~/Desktop/CLAUDE.md` → `~/Projects/claude-context/shared/CLAUDE.md`
+- Git repo: `~/Desktop/claude-context/`
+- Source: `~/Desktop/claude-context/shared/CLAUDE.md`
+- Desktop symlinks: `~/Desktop/CLAUDE.md` → `~/Desktop/claude-context/shared/CLAUDE.md`
 
 **After writing memory**, remind the user to sync:
 ```bash
-cd ~/Projects/claude-context && git add -A && git commit -m "memory: <brief description>" && git push
+cd ~/Desktop/claude-context && git add -A && git commit -m "memory: <brief description>" && git push
 ```
 
 **At session start on a different machine**, pull first:
 ```bash
-cd ~/Projects/claude-context && git pull
+cd ~/Desktop/claude-context && git pull
 ```
 
 If there's a merge conflict (both machines wrote to §8), resolve by keeping both entries sorted by date descending.

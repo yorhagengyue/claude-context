@@ -80,7 +80,7 @@ claude-context/
 
 **写入后的强制动作：**
 1. 告知用户写了什么、写到了哪里
-2. 提醒用户同步：`cd ~/Projects/claude-context && git add -A && git commit -m "<type>: <简述>" && git push`
+2. 提醒用户同步：`cd ~/Desktop/claude-context && git add -A && git commit -m "<type>: <简述>" && git push`
 3. commit type：`memory` / `skill` / `mcp` / `machine` / `project` / `setup`
 
 **绝对禁止：**
