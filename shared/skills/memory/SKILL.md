@@ -92,7 +92,7 @@ When the memory section exceeds ~30 entries or the user asks to clean up:
 
 ## Cross-Machine Sync
 
-CLAUDE.md and all sub-MDs live in a Git repo: `yorhagengyue/claude-context` (private). Multiple machines (Mac Mini, MacBook, Windows planned) clone this repo on separate branches.
+CLAUDE.md and all sub-MDs live in a Git repo: `yorhagengyue/claude-context` (private). All machines work directly on `main` branch.
 
 **File locations**:
 - Git repo: `~/Desktop/claude-context/`
@@ -101,7 +101,7 @@ CLAUDE.md and all sub-MDs live in a Git repo: `yorhagengyue/claude-context` (pri
 
 **After writing memory**, remind the user to sync:
 ```bash
-cd ~/Desktop/claude-context && git add -A && git commit -m "memory: <brief description>" && git push
+cd ~/Desktop/claude-context && git pull && git add -A && git commit -m "memory: <brief description>" && git push
 ```
 
 **At session start on a different machine**, pull first:
@@ -109,7 +109,7 @@ cd ~/Desktop/claude-context && git add -A && git commit -m "memory: <brief descr
 cd ~/Desktop/claude-context && git pull
 ```
 
-If there's a merge conflict (both machines wrote to §8), resolve by keeping both entries sorted by date descending.
+If pull produces a merge conflict on §8, resolve by keeping both entries sorted by date descending.
 
 ## Debugging
 

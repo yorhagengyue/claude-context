@@ -41,22 +41,13 @@ claude-context/
 └── archive/               ← 记忆归档
 ```
 
-## Branch Convention
+## Sync
 
-| Branch | 用途 | 谁写 |
-|--------|------|------|
-| `main` | 共识基线 | 只通过 merge 更新 |
-| `mac-mini` | Mac Mini 工作分支 | Mac Mini 上的 Claude |
-| `macbook` | MacBook 工作分支 | MacBook 上的 Claude |
-| `windows` | Windows 工作分支 | 预留 |
-
-每台机器在自己的 branch 上工作，定期 merge 到 main 做追溯。
-
-## Daily Sync
+所有机器直接在 `main` branch 上工作，不使用 per-machine branch。
 
 ```bash
-# 写入记忆后
-cd ~/Desktop/claude-context && git add -A && git commit -m "<type>: <简述>" && git push
+# 写入记忆后（push 前先 pull）
+cd ~/Desktop/claude-context && git pull && git add -A && git commit -m "<type>: <简述>" && git push
 
 # 换机器前
 cd ~/Desktop/claude-context && git pull

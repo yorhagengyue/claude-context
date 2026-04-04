@@ -217,7 +217,7 @@ Claude Harness 初始化完成：
 1. 告知用户写了什么、写到了哪里
 2. 提醒用户同步：
    ```bash
-   cd ~/Desktop/claude-context && git add -A && git commit -m "<type>: <简述>" && git push
+   cd ~/Desktop/claude-context && git pull && git add -A && git commit -m "<type>: <简述>" && git push
    ```
 3. commit message 的 `<type>` 使用：`memory`、`skill`、`mcp`、`machine`、`project`、`setup`
 
@@ -247,32 +247,23 @@ Claude Harness 初始化完成：
 
 ---
 
-## 第五章：Branch 约定
+## 第五章：同步约定
 
-### 5.1 分支结构
+所有机器直接在 `main` branch 上工作。不使用 per-machine branch。
 
-| Branch | 用途 | 谁写 |
-|--------|------|------|
-| `main` | 共识基线 | 只通过 merge 更新，不直接 push |
-| `mac-mini` | Mac Mini 工作分支 | Mac Mini 上的 Claude |
-| `macbook` | MacBook 工作分支 | MacBook 上的 Claude |
-| `windows` | Windows 工作分支（预留） | Windows 上的 Claude |
+### 5.1 工作流
 
-### 5.2 工作流
+1. 同一时间只在一台机器上工作（不存在并发写入）
+2. 推送前先 pull：`git pull && git add -A && git commit -m "<type>: <简述>" && git push`
+3. 换机器前在新机器上 pull：`git pull`
 
-1. 每台机器在自己的 branch 上工作
-2. 可以修改 `shared/` 和 `machines/<自己>/` 下的文件
-3. 不得修改 `machines/<别人>/` 下的文件
-4. 定期 merge 到 `main` 做追溯和同步
-5. merge 后各机器继续在自己的 branch 工作
+### 5.2 如果 pull 产生冲突
 
-### 5.3 冲突处理
+通常发生在忘了先 pull 就开始改文件时：
 
-当 merge 产生冲突（通常在 CLAUDE.md §8）：
-
-- 保留双方的记忆条目
-- 按日期倒序排列
-- 不得因为冲突而删除任何一方的记忆
+- CLAUDE.md §8 冲突：保留双方记忆条目，按日期倒序排列
+- 其他文件冲突：以最新修改为准
+- 不得因为冲突而删除任何记忆
 
 ---
 
@@ -372,8 +363,8 @@ mkdir -p machines/<machine-name>/
 ### 常用同步命令
 
 ```bash
-# 写入后同步
-cd ~/Desktop/claude-context && git add -A && git commit -m "<type>: <简述>" && git push
+# 写入后同步（push 前先 pull）
+cd ~/Desktop/claude-context && git pull && git add -A && git commit -m "<type>: <简述>" && git push
 
 # 换机器前拉取
 cd ~/Desktop/claude-context && git pull

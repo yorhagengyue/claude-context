@@ -80,7 +80,7 @@ claude-context/
 
 **写入后的强制动作：**
 1. 告知用户写了什么、写到了哪里
-2. 提醒用户同步：`cd ~/Desktop/claude-context && git add -A && git commit -m "<type>: <简述>" && git push`
+2. 提醒用户同步：`cd ~/Desktop/claude-context && git pull && git add -A && git commit -m "<type>: <简述>" && git push`
 3. commit type：`memory` / `skill` / `mcp` / `machine` / `project` / `setup`
 
 **绝对禁止：**
@@ -88,16 +88,15 @@ claude-context/
 - 机器路径硬编码到 shared/ 下的文件
 - 未经用户确认删除或修改已有记忆条目
 
-### 0.4 Branch 约定
+### 0.4 同步约定
 
-| Branch | 用途 |
-|--------|------|
-| `main` | 共识基线，只通过 merge 更新 |
-| `mac-mini` | Mac Mini 工作分支 |
-| `macbook` | MacBook 工作分支 |
-| `windows` | 预留 |
+所有机器直接在 `main` branch 上工作。推送前先 pull：
 
-每台机器在自己的 branch 上工作，可改 `shared/` 和 `machines/<自己>/`，不得改 `machines/<别人>/`。
+```bash
+cd ~/Desktop/claude-context && git pull && git add -A && git commit -m "<type>: <简述>" && git push
+```
+
+不使用 per-machine branch。同一时间只在一台机器上工作，不存在并发写入问题。
 
 ### 0.5 已注册的 Skills
 
