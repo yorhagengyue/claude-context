@@ -61,10 +61,10 @@ claude-context/
 4. 如果需要凭据 → 读取 `shared/credentials.md`
 5. 如果需要新增机器/项目/skill 的操作步骤 → 读取 `SETUP.md`
 
-**客户端覆盖**：本文件通过 symlink 被所有 Claude 客户端自动加载：
-- **Claude Code CLI** — 从 CWD 读取 `CLAUDE.md`（Desktop symlink 或项目目录 symlink）
-- **Cowork** — 同上，读工作区根目录的 `CLAUDE.md`
-- **Cowork 设置同步** — `shared/cowork/settings.json` 和 `settings.local.json` 通过 symlink 同步到 `~/.claude/` 和 `~/Desktop/.claude/`，确保插件、权限跨机器一致
+**客户端覆盖**：
+- **Claude Code CLI** — 自动注入 CWD 的 `CLAUDE.md` 到 system prompt。通过 symlink 指向本文件，**全自动生效**。
+- **Cowork** — **不会自动注入**。需要手动触发：新会话第一句话说"读取 ~/Desktop/CLAUDE.md"。详见 §7.1 已知限制。
+- **设置同步** — `shared/cowork/settings.json` 和 `settings.local.json` 通过 symlink 同步到 `~/.claude/` 和 `~/Desktop/.claude/`，确保插件、权限跨机器一致。
 
 **完整操作手册**在 `SETUP.md`，包含：bootstrap 流程、branch 约定、新增操作规范、文件清单。遇到本文件未覆盖的操作问题时，去那里找。
 
@@ -195,13 +195,23 @@ Claude 的角色更接近一个 CTO 顾问——不写代码，但负责审查�
 
 ## 7. Claude 生态配置
 
-- **客户端**：Claude Code CLI + Cowork（两者均通过 CLAUDE.md symlink 自动加载 harness 规则）
+- **客户端**：Claude Code CLI + Cowork
 - **Cowork 设置**：`shared/cowork/settings.json`（全局）+ `settings.local.json`（项目权限），通过 setup.sh symlink 到 `~/.claude/` 和 `~/Desktop/.claude/`
 - **Chrome 插件**：已连接
 - **MCP**：未连第三方
 - **Skills**：默认 + memory skill（heartbeat 记忆持久化）
 - **Scheduled**：memory-heartbeat（周日 22:00，写 proposal 不直接改文件）
 - **权限**：浏览器只读（Chrome 插件绕过）、终端 click only（Bash 替代）
+
+### 7.1 已知限制
+
+**Cowork 不会自动注入 CLAUDE.md 到上下文。**
+- Claude Code CLI 会在启动时自动将工作目录的 CLAUDE.md 注入 system prompt。Cowork 不会。
+- Cowork 右侧面板会显示 "Instructions · CLAUDE.md"，但内容不会自动进入对话上下文。
+- Desktop 上存在多个 CLAUDE.md（如 `AI/CLAUDE.md`），Cowork 主动搜索时可能读到错误的文件。
+- **临时解决方案**：Cowork 新会话第一句话说 **"读取 ~/Desktop/CLAUDE.md 的内容作为你的上下文指引"**。
+- **根本原因**：Cowork 平台尚未实现 CLAUDE.md 自动注入机制，这不是仓库结构问题。
+- **跟踪状态**：等待 Cowork 平台更新。如果未来 Cowork 支持自动注入，删除本条并更新 §0.2。
 
 ## 8. 记忆追加区
 
