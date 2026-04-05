@@ -107,6 +107,7 @@ Claude 在会话开始时自动读取 `shared/CLAUDE.md`（通过 Desktop symlin
 | Skill | 文件 | 用途 |
 |-------|------|------|
 | memory | `shared/skills/memory.skill` | 会话结束时自动持久化记忆到 CLAUDE.md §8 |
+| douyin-transcribe | `shared/skills/douyin-transcribe/` | 抖音链接或本地视频转录为文本（faster-whisper 本地推理） |
 
 ### Step 5: 加载 MCP 配置
 
