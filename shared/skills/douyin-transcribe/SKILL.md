@@ -8,16 +8,29 @@
 
 **Step 1：转录**
 
+> **前提**：`python3` 必须已在 PATH 中（由 `setup.sh` 通过 pyenv 保证）。
+
 ```bash
 # macOS/Linux
-cd "$(git -C "$(dirname "$0")" rev-parse --show-toplevel 2>/dev/null || echo ~/Desktop/claude-context)/shared/skills/douyin-transcribe"
-source .venv/bin/activate
+SKILL_DIR="$(cd "$(git rev-parse --show-toplevel 2>/dev/null || echo ~/Desktop/claude-context)/shared/skills/douyin-transcribe" && pwd)"
+cd "$SKILL_DIR"
 
-# Windows (PowerShell)
+# 自动建 venv + 安装依赖（首次约需 1 分钟）
+if [ ! -d .venv ]; then
+    echo "首次运行：创建 venv 并安装依赖..."
+    python3 -m venv .venv
+    source .venv/bin/activate
+    pip install -r requirements.txt
+else
+    source .venv/bin/activate
+fi
+
+# Windows (PowerShell) — 手动执行等价步骤：
 # cd "$env:USERPROFILE\Desktop\claude-context\shared\skills\douyin-transcribe"
-# .venv\Scripts\Activate.ps1
+# if (-not (Test-Path .venv)) { python -m venv .venv; .venv\Scripts\Activate.ps1; pip install -r requirements.txt } else { .venv\Scripts\Activate.ps1 }
 
 python scripts/transcribe_douyin.py "<链接>" -o transcript_tmp.txt
+# 注意：首次运行会自动下载 Whisper small 模型（约 500MB），请耐心等待
 ```
 
 **Step 2：读取转录文本**
@@ -80,21 +93,13 @@ python scripts/transcribe_douyin.py "https://v.douyin.com/xxxxxxx/" --device cud
 | `--cookies-from-browser` | 无 | 浏览器 cookies，如 `edge` 或 `chrome` |
 | `-o` / `--output` | 自动命名 | 输出 txt 路径 |
 
-## 安装
+## 依赖（无需手动安装）
 
-```bash
-cd shared/skills/douyin-transcribe
-python -m venv .venv
+首次调用时 Step 1 会自动创建 venv 并安装依赖，无需手动操作。
 
-# Windows
-.venv\Scripts\activate
-# macOS/Linux
-source .venv/bin/activate
+前提：`python3` 已在 PATH（由 `machines/*/setup.sh` 通过 pyenv 保证）。
 
-pip install -r requirements.txt
-```
-
-## 依赖
+## 依赖包
 
 - `faster-whisper==1.1.1` — 本地 Whisper 推理
 - `yt-dlp>=2025.1.0` — 视频下载/流解析
