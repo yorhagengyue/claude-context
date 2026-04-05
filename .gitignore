@@ -12,6 +12,8 @@ Thumbs.db
 # Local temp
 *.tmp
 *.bak
+shared/skills/*/transcript_tmp.txt
+shared/skills/*/.venv/
 
 # Node (if any scripts need it)
 node_modules/
