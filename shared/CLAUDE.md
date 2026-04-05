@@ -103,6 +103,7 @@ cd ~/Desktop/claude-context && git pull && git add -A && git commit -m "<type>: 
 | Skill | 路径 | 用途 |
 |-------|------|------|
 | memory | `shared/skills/memory.skill` | 会话结束时自动持久化记忆到 §8 |
+| douyin-transcribe | `shared/skills/douyin-transcribe/` | 抖音链接或本地视频转录为文本（faster-whisper 本地推理） |
 
 ### 0.6 已注册的 MCP
 

@@ -9,8 +9,14 @@
 **Step 1：转录**
 
 ```bash
-cd "C:/Users/gengy/Desktop/claude-context/shared/skills/douyin-transcribe"
-.venv\Scripts\activate
+# macOS/Linux
+cd "$(git -C "$(dirname "$0")" rev-parse --show-toplevel 2>/dev/null || echo ~/Desktop/claude-context)/shared/skills/douyin-transcribe"
+source .venv/bin/activate
+
+# Windows (PowerShell)
+# cd "$env:USERPROFILE\Desktop\claude-context\shared\skills\douyin-transcribe"
+# .venv\Scripts\Activate.ps1
+
 python scripts/transcribe_douyin.py "<链接>" -o transcript_tmp.txt
 ```
 
