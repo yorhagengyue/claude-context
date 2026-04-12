@@ -32,6 +32,28 @@ check_tool node
 check_tool python3
 check_tool codex
 
+# Obsidian 检查
+if [ -d "/Applications/Obsidian.app" ]; then
+  echo "  ✓ Obsidian: 已安装"
+else
+  echo "  ✗ Obsidian: 未安装"
+  echo "    → 安装: brew install --cask obsidian"
+  echo "    ⚠️  Obsidian 是外置大脑的核心，必须安装。"
+  read -p "    是否现在安装 Obsidian？(y/n) " install_obsidian
+  if [ "$install_obsidian" = "y" ]; then
+    brew install --cask obsidian
+    echo "  ✓ Obsidian: 安装完成"
+  fi
+fi
+
+# Hermes 检查
+if [ -d "$HOME/.hermes" ]; then
+  echo "  ✓ Hermes Agent: ~/.hermes/ 存在"
+else
+  echo "  ✗ Hermes Agent: 未找到 ~/.hermes/"
+  echo "    → Hermes 是主力 agent 系统，请参考 Hermes 文档安装"
+fi
+
 # ----- 2. 项目仓库检查 -----
 echo ""
 echo "[2/4] 检查项目仓库..."
@@ -49,7 +71,7 @@ check_repo ~/Projects/MoyuanIdea
 
 # ----- 3. Claude Harness 配置 -----
 echo ""
-echo "[3/5] 配置 Claude Harness..."
+echo "[3/7] 配置 Claude Harness..."
 
 # 软链接 CLAUDE.md 到 Desktop
 ln -sf "$REPO_DIR/shared/CLAUDE.md" ~/Desktop/CLAUDE.md
@@ -69,7 +91,7 @@ done
 
 # ----- 4. Cowork 设置 -----
 echo ""
-echo "[4/5] 配置 Cowork..."
+echo "[4/7] 配置 Cowork..."
 
 # 全局设置
 if [ -f "$REPO_DIR/shared/cowork/settings.json" ]; then
@@ -97,13 +119,53 @@ fi
 
 # ----- 5. Skills 检查 -----
 echo ""
-echo "[5/5] 检查 Skills..."
+echo "[5/7] 检查 Skills..."
 
 for skill_file in "$REPO_DIR"/shared/skills/*.skill; do
   if [ -f "$skill_file" ]; then
     echo "  发现: $(basename "$skill_file") → 请双击安装: $skill_file"
   fi
 done
+
+# ----- 6. Obsidian Vault 检查 -----
+echo ""
+echo "[6/7] 检查 Obsidian Vault..."
+
+VAULT_PATH="$HOME/Documents/Obsidian Vault"
+if [ -d "$VAULT_PATH" ] && [ -f "$VAULT_PATH/HOME.md" ]; then
+  echo "  ✓ Vault 已存在: $VAULT_PATH"
+  echo "  ✓ HOME.md 存在"
+  # 检查核心目录
+  for dir in "00 - Inbox" "01 - Projects" "02 - Areas" "05 - Journal" "06 - Auto"; do
+    if [ -d "$VAULT_PATH/$dir" ]; then
+      echo "  ✓ $dir/"
+    else
+      echo "  ✗ $dir/ 缺失 — 请从其他机器同步 Vault"
+    fi
+  done
+elif [ -d "$VAULT_PATH" ]; then
+  echo "  ⚠️  Vault 目录存在但缺少 HOME.md"
+  echo "     这可能是空 Vault。请从其他机器同步或通过 Hermes 重建。"
+else
+  echo "  ✗ Vault 不存在: $VAULT_PATH"
+  echo "    → 请先打开 Obsidian，创建 Vault 在 ~/Documents/Obsidian Vault"
+  echo "    → 然后从其他机器同步内容，或通过 Hermes 初始化"
+fi
+
+# ----- 7. Hermes Obsidian 集成检查 -----
+echo ""
+echo "[7/7] 检查 Hermes-Obsidian 集成..."
+
+if [ -f "$HOME/.hermes/.env" ]; then
+  if grep -q "OBSIDIAN_VAULT_PATH" "$HOME/.hermes/.env"; then
+    echo "  ✓ OBSIDIAN_VAULT_PATH 已配置在 ~/.hermes/.env"
+  else
+    echo "  ✗ OBSIDIAN_VAULT_PATH 未配置"
+    echo "    → 添加到 ~/.hermes/.env: OBSIDIAN_VAULT_PATH=$VAULT_PATH"
+  fi
+else
+  echo "  ⚠️  ~/.hermes/.env 不存在（Hermes 可能未安装）"
+fi
 
 echo ""
 echo "========================================="

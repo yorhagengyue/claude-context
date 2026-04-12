@@ -2,7 +2,7 @@
 
 > **用途**：每次新会话开始时，Claude 自动读取本文件。这是整个 harness 系统的入口。
 > **维护**：§0 和 §1-7 由用户维护，§8 由 memory skill 自动追加。
-> **最后更新**：2026-04-05
+> **最后更新**：2026-04-13
 
 ---
 
@@ -60,6 +60,7 @@ claude-context/
 3. 如果涉及机器特有配置 → 读取 `machines/<name>/local.md`
 4. 如果需要凭据 → 读取 `shared/credentials.md`
 5. 如果需要新增机器/项目/skill 的操作步骤 → 读取 `SETUP.md`
+6. 如果需要详细笔记、时间线、项目记录、知识沉淀 → 读取 Obsidian Vault（路径见 §0.7）
 
 **客户端覆盖**：
 - **Claude Code CLI** — 自动注入 CWD 的 `CLAUDE.md` 到 system prompt。通过 symlink 指向本文件，**全自动生效**。
@@ -77,6 +78,7 @@ claude-context/
 | 机器特有的配置 | `machines/<name>/local.md` |
 | 新 Skill | `shared/skills/` + 更新 SETUP.md 注册表 |
 | 新 MCP | `shared/mcp/` + 更新 SETUP.md 注册表 |
+| 重内容（详细笔记、完整记录、知识沉淀） | Obsidian Vault（见 §0.7） |
 
 **写入后的强制动作：**
 1. 告知用户写了什么、写到了哪里
@@ -109,6 +111,33 @@ cd ~/Desktop/claude-context && git pull && git add -A && git commit -m "<type>: 
 
 （暂无）
 
+### 0.7 外置大脑（Obsidian Vault）
+
+**路径**：`~/Documents/Obsidian Vault/`（各机器 setup.sh 负责检查 Obsidian 是否已安装）
+
+Obsidian Vault 是三层记忆体系的底层——存放重内容。关系：
+
+| 层级 | 存储位置 | 内容类型 |
+|------|----------|----------|
+| CLAUDE.md §8 / sub-MD | claude-context 仓库 | 轻量指针、决策摘要、纠正 |
+| Hermes memory | ~/.hermes/ | 轻量指针、偏好 |
+| **Obsidian Vault** | ~/Documents/Obsidian Vault/ | 详细笔记、项目记录、时间线、知识沉淀 |
+
+当内容超过几句话、不适合写入 §8 或 sub-MD 时，写入 Obsidian，然后在此处留指针：`→ vault: 笔记名`
+
+**Vault 目录结构**：
+- `00 - Inbox/` — 快速捕获
+- `01 - Projects/` — 活跃项目（IFSG, SBS Transit, MoyuanIdea, NAISC Workato, Hermes）
+- `02 - Areas/` — 持续领域（Career, Finance, AI-ML, Dev Skills, Culture）
+- `03 - Resources/` — 参考资料
+- `04 - Archive/` — 已结束项目/比赛
+- `05 - Journal/` — 日志（年/月/周/日四层结构）
+- `06 - Auto/` — Hermes 自动写入（frontmatter `source: hermes`）
+
+**来源标注**（frontmatter `source` 字段）：无 / `human` = 用户写的 | `hermes` = Agent 自动 | `claude` = Claude 辅助 | `import` = 批量导入
+
+**入口**：`HOME.md`（索引）、`Timeline.md`（时间线）、`Journal MOC.md`（日志）
+
 ---
 
 ## 1. 基本信息
@@ -118,7 +147,7 @@ cd ~/Desktop/claude-context && git pull && git add -A && git commit -m "<type>: 
 - **GitHub**：https://github.com/yorhagengyue
 - **所在地**：新加坡
 - **学校**：Temasek Polytechnic（淡马锡理工），IT 专业，Y2 → Y3，即将进入实习
-- **主力开发工具**：OpenAI Codex (GPT-5.4) + YoRHa agent 框架；Claude Desktop/Cowork 正在建设中
+- **主力开发工具**：OpenAI Codex (GPT-5.4)；Hermes Agent（主力 agent 系统，替代 YoRHa/Moltbot）；Claude Code CLI（CTO 顾问角色）
 - **系统**：macOS，主力浏览器 OpenAI Atlas（Chrome 内核）
 
 ## 2. 跟我对话的方式
@@ -178,8 +207,10 @@ Claude 的角色更接近一个 CTO 顾问——不写代码，但负责审查�
 |------|------|--------|------|
 | **MoyuanIdea** | 愿景→架构 | AI-native 文化教育系统，三端，正在做技术架构决策 | → [MOYUAN.md](projects/moyuan/MOYUAN.md) |
 | **IFSG** | 进行中 | 企业级财务报表生成器，Angular+Nix+PostgreSQL，4人团队 | 仓库私有 |
+| **SBS Transit** | 进行中（最活跃） | SBS Transit 多仓库项目，Phase2+Webapp+WhisperAPI+GenAI | → vault: SBS Transit - Overview |
+| **Hermes** | 主力 agent 系统 | 替代 YoRHa/Moltbot，集成 Gmail/Calendar/GitHub/Obsidian | → vault: Hermes - Overview |
 | **Slay the Spire 2 AI** | 半成品 | PPO + 遗传超参数进化，离自主打游戏还有距离 | GitHub/slay_the_spire |
-| **YoRHa** | 搁置 | Codex agent 框架，架构完整但未带来输出质量提升 | 本地 ~/Desktop/YoRHa |
+| **YoRHa** | 搁置 | Codex agent 框架，已被 Hermes 替代 | 本地 ~/Desktop/YoRHa |
 
 ## 6. 学习轨迹
 
@@ -216,6 +247,9 @@ Claude 的角色更接近一个 CTO 顾问——不写代码，但负责审查�
 ## 8. 记忆追加区
 
 > 由 memory skill 自动追加，按时间倒序。
+
+### [2026-04-13] infra: Obsidian Vault 外置大脑建立
+三层记忆体系建立：CLAUDE.md/Hermes memory（轻量指针）→ Obsidian Vault（重内容）。Vault 路径 `~/Documents/Obsidian Vault/`，PARA 变体结构，含时间线（年/月/周/日）和项目笔记。Hermes 可自动写入 `06 - Auto/`。详见 §0.7。→ vault: HOME
 
 ### [2026-04-03] architecture: MoyuanIdea V2 第一轮架构审查完成
 对 V2 三份核心文档做了系统性架构攻击。六个攻击点中用户确认了两个真问题：(1) 文档是产品愿景不是技术架构，缺 schema/API/技术栈决策；(2) Phase 1 范围需要再切割。用户反驳了四个：零代码是有意的（先调研再动手）、三端基础设施不需要过度设计、AI 成本暂不考虑（老板说预算不是问题）、有帮手且时间灵活。下一步：从最小垂直切片（老师开课→拍作品→家长看到）开始做技术架构。
