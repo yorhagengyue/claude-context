@@ -179,19 +179,96 @@ for skill_file in "$REPO_DIR"/shared/skills/*.skill; do
   fi
 done
 
+# ----- 9. Obsidian 检查 -----
+echo ""
+echo "[9/11] 检查 Obsidian..."
+
+if [ -d "/Applications/Obsidian.app" ]; then
+  echo "  ✓ Obsidian: 已安装"
+else
+  echo "  ✗ Obsidian: 未安装"
+  echo "    → 安装: brew install --cask obsidian"
+  echo "    ⚠️  Obsidian 是外置大脑的核心，必须安装。"
+  read -p "    是否现在安装 Obsidian？(y/n) " install_obsidian
+  if [ "$install_obsidian" = "y" ]; then
+    brew install --cask obsidian
+    echo "  ✓ Obsidian: 安装完成"
+  fi
+fi
+
+# Obsidian Vault 检查
+VAULT_PATH="$HOME/Documents/Obsidian Vault"
+if [ -d "$VAULT_PATH" ] && [ -f "$VAULT_PATH/HOME.md" ]; then
+  echo "  ✓ Vault 已存在: $VAULT_PATH"
+  for dir in "00 - Inbox" "01 - Projects" "02 - Areas" "05 - Journal" "06 - Auto"; do
+    if [ -d "$VAULT_PATH/$dir" ]; then
+      echo "  ✓ $dir/"
+    else
+      echo "  ✗ $dir/ 缺失 — 请从 Mac Mini 同步 Vault 或通过 Hermes 重建"
+    fi
+  done
+elif [ -d "$VAULT_PATH" ]; then
+  echo "  ⚠️  Vault 目录存在但缺少 HOME.md — 需要从 Mac Mini 同步内容"
+else
+  echo "  ✗ Vault 不存在"
+  echo "    → 打开 Obsidian, 创建 Vault 在 ~/Documents/Obsidian Vault"
+  echo "    → 然后从 Mac Mini 同步内容 (rsync/iCloud/手动拷贝)"
+fi
+
+# ----- 10. Hermes 检查 -----
+echo ""
+echo "[10/11] 检查 Hermes Agent..."
+
+if [ -d "$HOME/.hermes" ]; then
+  echo "  ✓ Hermes Agent: ~/.hermes/ 存在"
+  # Check OBSIDIAN_VAULT_PATH
+  if [ -f "$HOME/.hermes/.env" ] && grep -q "OBSIDIAN_VAULT_PATH" "$HOME/.hermes/.env"; then
+    echo "  ✓ OBSIDIAN_VAULT_PATH 已配置"
+  else
+    echo "  ✗ OBSIDIAN_VAULT_PATH 未配置 — 添加到 ~/.hermes/.env"
+  fi
+else
+  echo "  ✗ Hermes Agent 未找到"
+  echo "    → Hermes 是主力 agent 系统，参考文档安装"
+fi
+
+# ----- 11. Google Workspace 检查 -----
+echo ""
+echo "[11/11] 检查 Google Workspace..."
+
+if [ -f "$HOME/.hermes/google_token.json" ]; then
+  echo "  ✓ Google OAuth token"
+else
+  echo "  ✗ Google OAuth token — 需要完成 OAuth 认证"
+  echo "    步骤:"
+  echo "    1. 从 GCP Console 下载 client_secret.json → ~/.hermes/google_client_secret.json"
+  echo "    2. python setup.py --client-secret ~/.hermes/google_client_secret.json"
+  echo "    3. 浏览器完成授权"
+  echo "    4. python setup.py --auth-code <CODE>"
+fi
+
+if [ -f "$HOME/.config/gws/account_timezone" ]; then
+  echo "  ✓ GWS timezone: $(cat "$HOME/.config/gws/account_timezone")"
+else
+  echo "  ✗ GWS timezone — 运行: mkdir -p ~/.config/gws && echo 'Asia/Singapore' > ~/.config/gws/account_timezone"
+fi
+
 echo ""
 echo "========================================="
 echo "  配置完成！剩余手动步骤："
 echo "========================================="
 echo ""
-echo "1. 安装 Claude Desktop（如未安装）"
-echo "   → https://claude.ai/download"
+echo "1. 确保 Obsidian 已安装并打开 Vault (~/Documents/Obsidian Vault)"
+echo "   如果 Vault 内容为空 → 从 Mac Mini 同步"
 echo ""
-echo "2. 安装 Chrome + Claude in Chrome 插件"
-echo "   → Chrome Web Store 搜索 'Claude in Chrome'"
+echo "2. 确保 Hermes Agent 已安装 (~/.hermes/)"
+echo "   OBSIDIAN_VAULT_PATH 已写入 ~/.hermes/.env"
 echo ""
-echo "3. 双击安装 shared/skills/ 下的 .skill 文件"
+echo "3. 完成 Google OAuth 认证 (如果 token 缺失)"
+echo "   详见上方 [11/11] 的步骤"
 echo ""
-echo "4. 打开 Claude，说：'读一下 SETUP.md，初始化'"
+echo "4. 双击安装 shared/skills/ 下的 .skill 文件"
+echo ""
+echo "5. 打开 Claude，说：'读一下 SETUP.md，初始化'"
 echo ""
 echo "Done."

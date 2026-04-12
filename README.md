@@ -1,70 +1,94 @@
 # claude-context
 
-Cross-machine Claude harness for Geng Yue (耿越).
+Cross-machine context harness for Geng Yue (耿越).
 
-This repo is the single source of truth for Claude's cross-session memory, project context, skills, MCP configs, and machine-specific setup. Multiple machines share this repo on separate branches.
+Single source of truth for: AI agent memory, project context, skills, machine setup, and the three-layer memory system.
 
 ## Quick Start (新机器)
 
 ```bash
 # 1. Clone
-git clone git@github.com:yorhagengyue/claude-context.git ~/Desktop/claude-context
+git clone https://github.com/yorhagengyue/claude-context.git ~/Desktop/claude-context
 
-# 2. 切到你的机器 branch（或创建新的）
+# 2. 运行你的机器初始化脚本
 cd ~/Desktop/claude-context
-git checkout <machine-name>  # mac-mini / macbook / windows
-
-# 3. 运行机器初始化脚本
 chmod +x machines/<machine-name>/setup.sh
 ./machines/<machine-name>/setup.sh
 
-# 4. 打开 Claude，说："读一下 SETUP.md，初始化"
+# 3. 按 setup.sh 输出补全缺失的配置
 ```
+
+可用机器名：`mac-mini` (主力), `macbook`, `windows` (TODO)
+
+## 三层记忆体系
+
+```
+CLAUDE.md / Hermes memory     ← 轻量指针、偏好、决策摘要
+         ↓ 指向
+Obsidian Vault                ← 重内容 (项目笔记、时间线、知识沉淀)
+  ~/Documents/Obsidian Vault/
+```
+
+| 层 | 存储 | 管理者 |
+|----|------|--------|
+| CLAUDE.md §8 + sub-MD | 本仓库 shared/ | Claude Code |
+| Hermes memory | ~/.hermes/ | Hermes Agent |
+| Obsidian Vault | ~/Documents/Obsidian Vault/ | 用户 + Hermes (自动写入) |
+
+## 新机器需要配置的完整清单
+
+| # | 组件 | 检查方式 | 恢复步骤 |
+|---|------|---------|----------|
+| 1 | brew, git, node, python3 | `which brew git node python3` | setup.sh 步骤 1-2 |
+| 2 | Claude Code CLI | `which claude` | npm install |
+| 3 | OpenAI Codex CLI | `which codex` | npm install -g @openai/codex |
+| 4 | Hermes Agent | `ls ~/.hermes/` | 参考 Hermes 文档 |
+| 5 | Obsidian | `ls /Applications/Obsidian.app` | `brew install --cask obsidian` |
+| 6 | Obsidian Vault | `ls ~/Documents/Obsidian\ Vault/HOME.md` | 从其他机器同步或 Hermes 初始化 |
+| 7 | OBSIDIAN_VAULT_PATH | `grep OBSIDIAN ~/.hermes/.env` | 添加到 ~/.hermes/.env |
+| 8 | Google OAuth token | `ls ~/.hermes/google_token.json` | setup.py --client-secret → --auth-code |
+| 9 | Google client secret | `ls ~/.hermes/google_client_secret.json` | 从 GCP Console 下载 |
+| 10 | GWS timezone | `cat ~/.config/gws/account_timezone` | `echo 'Asia/Singapore' > ~/.config/gws/account_timezone` |
+| 11 | Tailscale | `tailscale status` | `brew install tailscale` |
+| 12 | Claude harness symlinks | `ls ~/Desktop/CLAUDE.md` | setup.sh 步骤 3 |
 
 ## Repo Structure
 
 ```
 claude-context/
-├── SETUP.md               ← 宪法（Claude 必读，规则 > 一切）
-├── README.md              ← 本文件（给人看）
-├── .gitignore
-├── shared/                ← 所有机器共用
-│   ├── CLAUDE.md          ← 主上下文 hub（用户 profile + 记忆）
-│   ├── credentials.md     ← 可公开存储的凭据
-│   ├── skills/            ← 自建 skills
+├── shared/
+│   ├── CLAUDE.md          ← 宪法 + 用户上下文 + 记忆 §8
+│   ├── HERMES.md          ← Hermes Agent 记忆导出
+│   ├── credentials.md     ← 凭据
+│   ├── cowork/            ← Claude Code 设置
+│   ├── skills/            ← 自建 skills (memory, douyin-transcribe)
 │   ├── mcp/               ← MCP 配置
-│   └── projects/          ← 项目速报（每个项目一个子目录）
-├── machines/              ← 机器特有
-│   ├── mac-mini/
-│   ├── macbook/
-│   └── windows/           ← 占位
+│   └── projects/moyuan/   ← 项目速报
+├── machines/
+│   ├── mac-mini/          ← 主力 (setup.sh + local.md 完整)
+│   ├── macbook/           ← setup.sh + local.md
+│   └── windows/           ← TODO
 └── archive/               ← 记忆归档
 ```
 
 ## Sync
 
-所有机器直接在 `main` branch 上工作，不使用 per-machine branch。
+所有机器在 `main` branch 工作。
 
 ```bash
-# 写入记忆后（push 前先 pull）
+# 写入后 (push 前先 pull)
 cd ~/Desktop/claude-context && git pull && git add -A && git commit -m "<type>: <简述>" && git push
 
 # 换机器前
 cd ~/Desktop/claude-context && git pull
 ```
 
-## Adding a New Project
+## Key Files
 
-1. `mkdir shared/projects/<name>/`
-2. `cp shared/projects/TEMPLATE.md shared/projects/<name>/<NAME>.md`
-3. Edit the new file
-4. Add a row to `shared/CLAUDE.md` §5
-5. Commit + push
-
-## Design Principles
-
-- **Lean context**: CLAUDE.md stores conclusions and pointers, not analysis
-- **Debuggable**: Every memory entry has a date and tag; git log has full history
-- **Iterable**: Files can be added, format can evolve, no need to start over
-- **Human-readable**: All files are markdown
-- **No magic**: All behavior is documented in SETUP.md and SKILL.md
+| 文件 | 给谁看 | 说明 |
+|------|--------|------|
+| shared/CLAUDE.md | Claude | 宪法 §0 + 用户 profile §1-7 + 记忆 §8 |
+| shared/HERMES.md | 用户/Claude | Hermes 记忆快照，和 CLAUDE.md 是两套体系 |
+| machines/*/local.md | Claude | 机器特有配置 (含 Google/Hermes/Obsidian 路径) |
+| machines/*/setup.sh | 用户 | 新机器初始化脚本 (8步检查) |
+| SETUP.md | Claude | 操作手册 (新增项目/skill/机器的步骤) |

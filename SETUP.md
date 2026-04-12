@@ -4,7 +4,7 @@
 > 宪法规则在 `shared/CLAUDE.md` §0（Claude 每次会话自动读取）。
 > 本文件用于：新机器初始化、新增项目/skill/MCP/机器的详细步骤、文件清单。
 > Claude 在日常会话中不需要读本文件，只在执行新增操作时按需读取。
-> **最后更新**：2026-04-05
+> **最后更新**：2026-04-13
 
 ---
 
@@ -121,7 +121,24 @@ Claude 在会话开始时自动读取 `shared/CLAUDE.md`（通过 Desktop symlin
 
 （暂无）
 
-### Step 5.5: 配置 Cowork 设置
+### Step 5.5: 加载 Hermes Agent 上下文
+
+读取 `shared/HERMES.md`，获取 Hermes Agent 的记忆导出。注意：
+- Hermes 和 Claude 是**两套独立的记忆系统**
+- HERMES.md 是 Hermes 侧的快照，供用户审阅和 Claude 参考
+- Claude 不直接管理 Hermes memory（Hermes 通过自己的 config.yaml 注入）
+
+### Step 5.6: 加载 Obsidian Vault 上下文
+
+检查 Obsidian Vault 是否可用：
+
+1. 确认 `~/Documents/Obsidian Vault/HOME.md` 存在
+2. 如果存在，Vault 可作为详细笔记源使用
+3. 如果不存在，提示用户安装 Obsidian 并同步 Vault
+
+Vault 是三层记忆体系的底层（见 CLAUDE.md §0.7），当需要详细内容时读取。
+
+### Step 5.7: 配置 Cowork 设置
 
 `shared/cowork/` 目录存放跨机器同步的 Claude Code / Cowork 设置。setup.sh 会自动处理 symlink，但手动配置时：
 
@@ -157,11 +174,15 @@ ln -sf <REPO_DIR>/shared/CLAUDE.md ~/Projects/<project>/CLAUDE.md
 Claude Harness 初始化完成：
 - 机器：<name>
 - CLAUDE.md: ✓ (§8 共 N 条记忆，最新: [日期] [tag])
+- HERMES.md: ✓/✗
 - 项目：<列出所有项目及状态>
 - Skills: <已安装/未安装>
 - MCP: <已连接/未连接>
 - 凭据: ✓/✗
 - 机器特有上下文: ✓/✗
+- Obsidian Vault: ✓/✗ (HOME.md 存在?)
+- Hermes Agent: ✓/✗ (~/.hermes/ 存在?)
+- Google OAuth: ✓/✗ (google_token.json 存在?)
 ```
 
 ---
@@ -327,6 +348,7 @@ mkdir -p machines/<machine-name>/
 |------|------|--------|----------|
 | `SETUP.md` | 操作手册（新增/初始化步骤） | 用户 + Claude（需确认） | 新增资源、规则变更时 |
 | `shared/CLAUDE.md` | 用户 profile + 记忆 | Claude（memory skill） | 每次有值得记住的事 |
+| `shared/HERMES.md` | Hermes Agent 记忆导出 | Hermes / 用户 | Hermes 记忆变更时 |
 | `shared/credentials.md` | 账号密码 | 用户 | 新增/变更凭据时 |
 | `shared/cowork/settings.json` | 全局设置（plugins, thinking） | 用户 | 插件/设置变更时 |
 | `shared/cowork/settings.local.json` | 项目级权限 | 用户 | 权限变更时 |
@@ -335,9 +357,9 @@ mkdir -p machines/<machine-name>/
 | `shared/projects/*/` | 项目速报 | Claude（memory skill） | 项目状态变更时 |
 | `shared/projects/TEMPLATE.md` | 新项目模板 | 用户 | 模板需要更新时 |
 | `machines/*/setup.sh` | 机器初始化脚本 | 用户 | 环境依赖变更时 |
-| `machines/*/local.md` | 机器特有上下文 | Claude | 机器配置变更时 |
+| `machines/*/local.md` | 机器特有上下文（含 Google/Hermes/Obsidian 配置） | Claude | 机器配置变更时 |
 | `archive/` | 记忆归档 | Claude（consolidation 时） | §8 超过 30 条时 |
-| `README.md` | 仓库说明 | 用户 | 结构变更时 |
+| `README.md` | 仓库说明（给人看） | 用户 | 结构变更时 |
 | `.gitignore` | 排除规则 | 用户 | 需要排除新文件类型时 |
 
 ---
