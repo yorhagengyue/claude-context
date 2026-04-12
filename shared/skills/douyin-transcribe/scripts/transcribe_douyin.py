@@ -2,7 +2,7 @@ import argparse
 import datetime as dt
 import re
 from pathlib import Path
-from typing import List, Tuple
+from typing import List, Optional, Tuple
 from urllib.parse import urlparse
 
 import requests
@@ -57,7 +57,7 @@ def sanitize_filename(value: str) -> str:
 
 
 def resolve_input_source(
-    raw_input: str, cookies_from_browser: str | None
+    raw_input: str, cookies_from_browser: Optional[str]
 ) -> Tuple[str, str, bool]:
     if not is_http_url(raw_input):
         input_path = Path(raw_input).expanduser().resolve()
@@ -116,7 +116,7 @@ def resolve_input_source(
     return stream_url, title, True
 
 
-def try_resolve_douyin_playwm(raw_url: str) -> str | None:
+def try_resolve_douyin_playwm(raw_url: str) -> Optional[str]:
     parsed = urlparse(raw_url)
     host = (parsed.netloc or "").lower()
     if not any(k in host for k in ["douyin.com", "iesdouyin.com"]):
@@ -162,7 +162,7 @@ def try_resolve_douyin_playwm(raw_url: str) -> str | None:
     return None
 
 
-def resolve_redirect_media_url(url: str) -> str | None:
+def resolve_redirect_media_url(url: str) -> Optional[str]:
     headers = {
         "User-Agent": "Mozilla/5.0",
         "Referer": "https://www.iesdouyin.com/",

@@ -154,7 +154,7 @@ fi
 
 # ----- 7. Hermes Obsidian 集成检查 -----
 echo ""
-echo "[7/7] 检查 Hermes-Obsidian 集成..."
+echo "[7/8] 检查 Hermes-Obsidian 集成..."
 
 if [ -f "$HOME/.hermes/.env" ]; then
   if grep -q "OBSIDIAN_VAULT_PATH" "$HOME/.hermes/.env"; then
@@ -165,6 +165,37 @@ if [ -f "$HOME/.hermes/.env" ]; then
   fi
 else
   echo "  ⚠️  ~/.hermes/.env 不存在（Hermes 可能未安装）"
+fi
+
+# ----- 8. Google Workspace / 凭据检查 -----
+echo ""
+echo "[8/8] 检查 Google Workspace 集成..."
+
+# Google OAuth token
+if [ -f "$HOME/.hermes/google_token.json" ]; then
+  echo "  ✓ Google OAuth token: ~/.hermes/google_token.json"
+else
+  echo "  ✗ Google OAuth token 不存在"
+  echo "    → 需要通过 Hermes Google Workspace skill 完成 OAuth 认证"
+  echo "    → 步骤: 准备 GCP OAuth client_secret.json → 运行 setup.py --client-secret → --auth-code"
+fi
+
+# Google client secret
+if [ -f "$HOME/.hermes/google_client_secret.json" ]; then
+  echo "  ✓ Google OAuth client secret: ~/.hermes/google_client_secret.json"
+else
+  echo "  ✗ Google OAuth client secret 不存在"
+  echo "    → 从 https://console.cloud.google.com/apis/credentials 下载"
+  echo "    → 保存为 ~/.hermes/google_client_secret.json"
+fi
+
+# gws CLI timezone
+if [ -f "$HOME/.config/gws/account_timezone" ]; then
+  TZ_VAL=$(cat "$HOME/.config/gws/account_timezone")
+  echo "  ✓ GWS timezone: $TZ_VAL"
+else
+  echo "  ✗ GWS timezone 未配置"
+  echo "    → 运行: mkdir -p ~/.config/gws && echo 'Asia/Singapore' > ~/.config/gws/account_timezone"
 fi
 
 echo ""
