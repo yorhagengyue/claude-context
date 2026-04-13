@@ -101,6 +101,7 @@ ffmpeg, gh, googleworkspace-cli, node, openssl, postgresql@16, ripgrep, tailscal
 | Job ID | 名称 | 时间 | 说明 |
 |--------|------|------|------|
 | 9bb0519ba199 | AI Daily Report | 每天 08:00 | 采集→LLM分析→Obsidian 06-Auto/AI Digest/ |
+| 3ad3c3a675c9 | Daily Journal Review | 每天 05:00 | 读前一天日记+GitHub→AI栏追加日终回顾 |
 
 ## Tailscale 网络
 
