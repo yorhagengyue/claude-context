@@ -131,7 +131,7 @@ Obsidian Vault 是三层记忆体系的底层——存放重内容。关系：
 - `02 - Areas/` — 持续领域（Career, Finance, AI-ML, Dev Skills, Culture）
 - `03 - Resources/` — 参考资料
 - `04 - Archive/` — 已结束项目/比赛
-- `05 - Journal/` — 日志（年/月/周/日四层结构）
+- `05 - Journal/` — 日志（年/月/周/日四层嵌套：`YYYY/MM/W??/YYYY-MM-DD.md`）
 - `06 - Auto/` — Hermes 自动写入（frontmatter `source: hermes`）
 
 **来源标注**（frontmatter `source` 字段）：无 / `human` = 用户写的 | `hermes` = Agent 自动 | `claude` = Claude 辅助 | `import` = 批量导入
