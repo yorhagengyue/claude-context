@@ -143,6 +143,10 @@ python ~/.hermes/skills/productivity/google-workspace/scripts/setup.py --check
 
 ## 日记系统
 
+日记路径：`05 - Journal/YYYY/MM/W<ISO周号>/YYYY-MM-DD.md`
+周号计算：`python3 -c "from datetime import date; print(f'W{date.today().isocalendar()[1]:02d}')"`
+例：2026-04-14 → `05 - Journal/2026/04/W16/2026-04-14.md`
+
 日记模板 5 栏：Health (睡眠/饮水/饮食/运动/体重) / Mood (情绪+能量 1-10) / Log / AI / Misc
 
 - frontmatter 必须有 `mood` 和 `energy` 数字字段 (Dataview Mood Dashboard 依赖)
