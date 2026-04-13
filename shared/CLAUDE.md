@@ -248,6 +248,17 @@ Claude 的角色更接近一个 CTO 顾问——不写代码，但负责审查�
 
 > 由 memory skill 自动追加，按时间倒序。
 
+### [2026-04-13] infra: Hermes 工具链建设
+本次会话建立了 Hermes 的完整工具链：
+- **AI Daily Digest**: 每日 08:00 自动采集 HN/RSS/ArXiv/GitHub trending → LLM 生成个性化 AI 日报 → 存入 `06 - Auto/AI Digest/`。Cron job ID: 9bb0519ba199
+- **抖音转录**: `~/.hermes/scripts/transcribe.py` + `douyin-venv/`，faster-whisper 本地推理，带时间戳 + Speaker 标注 → 事实核查 → AI 分析 → 存入 `06 - Auto/Transcripts/`
+- **日记模板**: 5 栏 (Health/Mood/Log/AI/Misc)，Mood 栏 1-10 打分追踪情绪曲线，AI 栏每条带时间戳
+- **Obsidian CLI**: `/usr/local/bin/obsidian`，Hermes 可通过 CLI 操作 Vault (读写/搜索/属性/任务/插件管理)
+→ vault: HOME
+
+### [2026-04-13] correction: 第一手来源原则
+验证信息时不能只靠本地测试。每次遇到可验证声明，先想：这个信息的源头在哪？直接去那里查。本地跑不通可能是版本/权限/地区限制，不等于不存在。已写入 douyin-transcribe skill 和 AI Digest cron prompt。
+
 ### [2026-04-13] infra: Obsidian Vault 外置大脑建立
 三层记忆体系建立：CLAUDE.md/Hermes memory（轻量指针）→ Obsidian Vault（重内容）。Vault 路径 `~/Documents/Obsidian Vault/`，PARA 变体结构，含时间线（年/月/周/日）和项目笔记。Hermes 可自动写入 `06 - Auto/`。详见 §0.7。→ vault: HOME
 

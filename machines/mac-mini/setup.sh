@@ -167,9 +167,9 @@ else
   echo "  ⚠️  ~/.hermes/.env 不存在（Hermes 可能未安装）"
 fi
 
-# ----- 8. Google Workspace / 凭据检查 -----
+# ----- 8. Google Workspace 检查 -----
 echo ""
-echo "[8/8] 检查 Google Workspace 集成..."
+echo "[8/9] 检查 Google Workspace..."
 
 # Google OAuth token
 if [ -f "$HOME/.hermes/google_token.json" ]; then
@@ -196,6 +196,41 @@ if [ -f "$HOME/.config/gws/account_timezone" ]; then
 else
   echo "  ✗ GWS timezone 未配置"
   echo "    → 运行: mkdir -p ~/.config/gws && echo 'Asia/Singapore' > ~/.config/gws/account_timezone"
+fi
+
+# ----- 9. Hermes Scripts / Cron 检查 -----
+echo ""
+echo "[9/9] 检查 Hermes Scripts 和 Cron..."
+
+# AI Daily Digest
+if [ -f "$HOME/.hermes/scripts/ai-daily-collect.py" ]; then
+  echo "  ✓ AI Daily Digest 采集脚本"
+else
+  echo "  ✗ AI Daily Digest 采集脚本缺失"
+  echo "    → 需要从 Hermes 重建或从备份恢复"
+fi
+
+# Douyin transcribe
+if [ -d "$HOME/.hermes/scripts/douyin-venv" ]; then
+  echo "  ✓ 抖音转录 venv"
+else
+  echo "  ✗ 抖音转录 venv 缺失"
+  echo "    → 重建: python3 -m venv ~/.hermes/scripts/douyin-venv"
+  echo "    → 安装: pip install faster-whisper yt-dlp requests"
+fi
+
+if [ -f "$HOME/.hermes/scripts/transcribe.py" ]; then
+  echo "  ✓ 转录脚本"
+else
+  echo "  ✗ 转录脚本缺失"
+fi
+
+# Obsidian CLI
+if [ -x "/usr/local/bin/obsidian" ]; then
+  echo "  ✓ Obsidian CLI"
+else
+  echo "  ✗ Obsidian CLI 未安装"
+  echo "    → 需要从 Obsidian 设置中启用 CLI"
 fi
 
 echo ""

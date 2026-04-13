@@ -86,8 +86,21 @@ ffmpeg, gh, googleworkspace-cli, node, openssl, postgresql@16, ripgrep, tailscal
 |------|------|
 | ~/.hermes/.env OBSIDIAN_VAULT_PATH | ✅ |
 | Obsidian Vault | ~/Documents/Obsidian Vault/ |
+| Obsidian CLI | /usr/local/bin/obsidian (Mach-O universal) |
 | WhatsApp | ~/.hermes/whatsapp/ (已配置) |
 | Cron Jobs | ~/.hermes/cron/ (已配置) |
+
+### Hermes Scripts
+| 脚本 | 路径 | 说明 |
+|------|------|------|
+| AI Daily Digest 采集 | ~/.hermes/scripts/ai-daily-collect.py | 每日 08:00 cron, HN/RSS/ArXiv/GH trending |
+| 抖音/视频转录 | ~/.hermes/scripts/transcribe.py | faster-whisper, 带时间戳+Speaker |
+| 转录 venv | ~/.hermes/scripts/douyin-venv/ | Python 3.12, faster-whisper+yt-dlp+requests |
+
+### Hermes Cron Jobs
+| Job ID | 名称 | 时间 | 说明 |
+|--------|------|------|------|
+| 9bb0519ba199 | AI Daily Report | 每天 08:00 | 采集→LLM分析→Obsidian 06-Auto/AI Digest/ |
 
 ## Tailscale 网络
 
