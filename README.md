@@ -18,7 +18,7 @@ chmod +x machines/<machine-name>/setup.sh
 # 3. 按 setup.sh 输出补全缺失的配置
 ```
 
-可用机器名：`mac-mini` (主力), `macbook`, `windows` (TODO)
+可用机器名：`mac-mini` (主力), `macbook`
 
 ## 三层记忆体系
 
@@ -44,13 +44,17 @@ Obsidian Vault                ← 重内容 (项目笔记、时间线、知识�
 | 3 | OpenAI Codex CLI | `which codex` | npm install -g @openai/codex |
 | 4 | Hermes Agent | `ls ~/.hermes/` | 参考 Hermes 文档 |
 | 5 | Obsidian | `ls /Applications/Obsidian.app` | `brew install --cask obsidian` |
-| 6 | Obsidian Vault | `ls ~/Documents/Obsidian\ Vault/HOME.md` | 从其他机器同步或 Hermes 初始化 |
-| 7 | OBSIDIAN_VAULT_PATH | `grep OBSIDIAN ~/.hermes/.env` | 添加到 ~/.hermes/.env |
-| 8 | Google OAuth token | `ls ~/.hermes/google_token.json` | setup.py --client-secret → --auth-code |
-| 9 | Google client secret | `ls ~/.hermes/google_client_secret.json` | 从 GCP Console 下载 |
-| 10 | GWS timezone | `cat ~/.config/gws/account_timezone` | `echo 'Asia/Singapore' > ~/.config/gws/account_timezone` |
-| 11 | Tailscale | `tailscale status` | `brew install tailscale` |
-| 12 | Claude harness symlinks | `ls ~/Desktop/CLAUDE.md` | setup.sh 步骤 3 |
+| 6 | Obsidian CLI | `which obsidian` | Obsidian Settings → CLI |
+| 7 | Obsidian Vault | `ls ~/Documents/Obsidian\ Vault/HOME.md` | 从 Mac Mini 同步 |
+| 8 | Obsidian 社区插件 | `obsidian plugins:enabled` | periodic-notes, calendar, dataview, templater-obsidian |
+| 9 | OBSIDIAN_VAULT_PATH | `grep OBSIDIAN ~/.hermes/.env` | 添加到 ~/.hermes/.env |
+| 10 | Google OAuth token | `ls ~/.hermes/google_token.json` | setup.py --client-secret → --auth-code |
+| 11 | Google client secret | `ls ~/.hermes/google_client_secret.json` | 从 GCP Console 下载 |
+| 12 | GWS timezone | `cat ~/.config/gws/account_timezone` | `echo 'Asia/Singapore' > ...` |
+| 13 | Tailscale | `tailscale status` | `brew install tailscale` |
+| 14 | AI Daily Digest 脚本 | `ls ~/.hermes/scripts/ai-daily-collect.py` | 从 Mac Mini 复制 |
+| 15 | 转录脚本 + venv | `ls ~/.hermes/scripts/transcribe.py` | 从 Mac Mini 复制脚本，本地重建 venv |
+| 16 | Claude harness symlinks | `ls ~/Desktop/CLAUDE.md` | setup.sh |
 
 ## Repo Structure
 
@@ -67,7 +71,7 @@ claude-context/
 ├── machines/
 │   ├── mac-mini/          ← 主力 (setup.sh + local.md 完整)
 │   ├── macbook/           ← setup.sh + local.md
-│   └── windows/           ← TODO
+│   └── windows/           ← 不使用
 └── archive/               ← 记忆归档
 ```
 
