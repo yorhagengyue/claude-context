@@ -1,8 +1,11 @@
 # MacBook — 机器特有上下文
 
-> **机器名**：macbook
+> **机器名**：macbook (hostname: Geng-YuedeMacBook-Air)
+> **用户名**：yorha (不是 gengyue)
+> **Tailscale IP**：100.108.243.32
+> **SSH**：`ssh yorha@100.108.243.32` (已配置 Mac Mini 免密登录)
 > **用途**：便携开发机
-> **最后更新**：2026-04-13
+> **最后更新**：2026-04-14
 
 ---
 
