@@ -120,7 +120,18 @@ pip install faster-whisper==1.1.1 yt-dlp requests
 
 ## Hermes Cron Jobs
 
-Cron Jobs 是 Hermes 实例级别的，**不需要跨机器同步**。如果 MacBook 也需要每日 AI Digest，在 Hermes 中重新创建即可。Mac Mini 的 cron job ID: `9bb0519ba199`。
+MacBook 上 Hermes Cron 只有自己的设备日志，不重复 Mac Mini 的任务。
+| Job ID | 名称 | 时间 | 说明 |
+|--------|------|------|------|
+| mb_worklog_001 | MacBook Air Work Log | 每天 06:00 | 💻 查 Codex/Claude Code/Hermes 三个工具的会话记录 + GitHub → 追加日记 AI 栏 |
+
+采集脚本：`~/.hermes/scripts/macbook-daily-collect.py`
+查询三个来源：
+- Codex: `~/.codex/state_5.sqlite` threads 表
+- Claude Code: `~/.claude/projects/<path>/*.jsonl` 文件修改时间
+- Hermes: `~/.hermes/state.db` sessions 表
+
+Mac Mini 的 cron (Daily Journal Review / AI Daily Report / Mac Mini Work Log) 不在 MacBook 上运行。
 
 ## Google OAuth 恢复步骤
 
