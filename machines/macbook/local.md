@@ -133,6 +133,27 @@ MacBook 上 Hermes Cron 只有自己的设备日志，不重复 Mac Mini 的任�
 
 Mac Mini 的 cron (Daily Journal Review / AI Daily Report / Mac Mini Work Log) 不在 MacBook 上运行。
 
+## Hermes Skills 同步
+
+**自建/修改的 skills 必须手动同步到 MacBook。** Hermes skills 不会自动跨机器同步。
+
+同步命令（从 Mac Mini 推到 MacBook）：
+```bash
+# 同步单个 skill
+cat ~/.hermes/skills/<path>/SKILL.md | ssh yorha@100.108.243.32 'mkdir -p ~/.hermes/skills/<path> && cat > ~/.hermes/skills/<path>/SKILL.md'
+
+# 比对差异
+diff <(ssh yorha@100.108.243.32 'find ~/.hermes/skills -name SKILL.md -exec md5 -r {} \;' | sort) <(find ~/.hermes/skills -name SKILL.md -exec md5 -r {} \; | sort)
+```
+
+已同步的自建 skills（Mac Mini 为 source of truth）：
+- `media/douyin-transcribe/` — 抖音转录+AI分析
+- `note-taking/obsidian/` — Obsidian 集成（我们定制版）
+- `note-taking/cross-device-journal-system/` — 跨设备日记
+- `devops/digital-footprint-audit/` — 数字足迹审计
+- `devops/local-data-footprint-audit/` — 本地数据足迹
+- `productivity/google-workspace/` — Google 集成（定制版）
+
 ## Google OAuth 恢复步骤
 
 和 Mac Mini 共用同一个 GCP project (ID: 733441049399)，但 token 是机器绑定的：
