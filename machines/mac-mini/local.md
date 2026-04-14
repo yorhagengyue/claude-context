@@ -98,6 +98,7 @@ ffmpeg, gh, googleworkspace-cli, node, openssl, postgresql@16, ripgrep, tailscal
 | 转录 venv | ~/.hermes/scripts/douyin-venv/ | Python 3.12, faster-whisper+yt-dlp+requests |
 
 ### Hermes Cron Jobs
+Cron Jobs 是 Hermes 实例级别的，不跨机器同步。新机器需要时在本地重新创建。
 | Job ID | 名称 | 时间 | 说明 |
 |--------|------|------|------|
 | 9bb0519ba199 | AI Daily Report | 每天 08:00 | 采集→LLM分析→Obsidian 06-Auto/AI Digest/ |

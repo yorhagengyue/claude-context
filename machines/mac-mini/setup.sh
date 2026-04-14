@@ -207,7 +207,7 @@ if [ -f "$HOME/.hermes/scripts/ai-daily-collect.py" ]; then
   echo "  ✓ AI Daily Digest 采集脚本"
 else
   echo "  ✗ AI Daily Digest 采集脚本缺失"
-  echo "    → 需要从 Hermes 重建或从备份恢复"
+  echo "    → 从其他机器复制: scp <源机器>:~/.hermes/scripts/ai-daily-collect.py ~/.hermes/scripts/"
 fi
 
 # Douyin transcribe

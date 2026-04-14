@@ -72,10 +72,14 @@
 - 三层记忆：CLAUDE.md/Hermes memory（轻量指针）→ Obsidian（详细笔记）
 - 自动写入到 06 - Auto/，frontmatter 带 source: hermes
 - OBSIDIAN_VAULT_PATH 已配置在 .env
-- 日记路径：`05 - Journal/YYYY/MM/W<ISO周号>/YYYY-MM-DD.md`
-- 日记 5 栏：Health / Mood / Log / AI / Misc
-- Mood 栏 1-10 打分追踪情绪曲线，AI 栏每条带时间戳 [HH:MM]
 - Obsidian 社区插件：Periodic Notes, Calendar, Dataview, Templater
+
+### 日记系统
+- 路径：`05 - Journal/YYYY/MM/W<ISO周号>/YYYY-MM-DD.md`
+- 5 栏：Health / Mood / Log / AI / Misc
+- Mood 栏 1-10 打分追踪情绪曲线（用户是抑郁症患者）
+- AI 栏每条带时间戳 [HH:MM]
+- frontmatter 必须有 mood 和 energy 数字字段（Dataview 依赖）
 
 ### 偏好
 - Gmail 分析时关注竞赛/重要里程碑，不要 billing 摘要
