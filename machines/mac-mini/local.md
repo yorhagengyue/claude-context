@@ -102,7 +102,16 @@ Cron Jobs 是 Hermes 实例级别的，不跨机器同步。新机器需要时�
 | Job ID | 名称 | 时间 | 说明 |
 |--------|------|------|------|
 | 9bb0519ba199 | AI Daily Report | 每天 08:00 | 采集→LLM分析→Obsidian 06-Auto/AI Digest/ |
-| 3ad3c3a675c9 | Daily Journal Review | 每天 05:00 | 读前一天日记+GitHub→AI栏追加日终回顾 |
+| 3ad3c3a675c9 | Daily Journal Review | 每天 05:00 | 读前一天日记→回应用户记录→创建今天日记 |
+| 06d0452064bb | Mac Mini Work Log | 每天 06:00 | 查 GitHub/Auto 文件/Cron 执行→追加 🖥️ Mac Mini 工作日志 |
+
+**日记 AI 栏时间线**：
+```
+05:00  日终回顾 — 读用户写的内容，像朋友一样回应（不涉及设备工作）
+06:00  🖥️ Mac Mini 工作日志 — 只记事实：commit、生成文件、cron 执行
+06:00  💻 MacBook Air 工作日志 — 同上（MacBook 上需要单独创建此 cron）
+08:00  AI Daily Report — 生成后在 AI 栏追加一条"已生成，N 个话题"
+```
 
 ## Tailscale 网络
 
