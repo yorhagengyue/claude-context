@@ -24,14 +24,15 @@
 
 从夜里到你醒的时间窗（假设你 7-8 点起），你会收到：
 
-- 02:08 SGT — HR=165（我手动触发测试）
+- 02:08 SGT — HR=165（我手动触发第一次测试）✅ **WA 确认收到**
+- 02:19 SGT — HR=171（push 后 pipeline 健康确认）✅ **WA 确认收到**
 - 03:10 SGT — HR=152 "stress spike"
 - 04:10 SGT — HR=177 "mid-sleep startle"
 - 05:10 SGT — HR=148 "REM dream spike"
 - 06:10 SGT — HR=168 "early-morning rise"
 - 07:10 SGT — HR=183 "wake-up anomaly"
 
-**6 条测试消息**，每条都是 `Ripple live alert: heart rate spike detected N bpm. Are you OK?`
+**7 条测试消息**（2 条已确认 + 5 条 loop 发送中），每条都是 `Ripple live alert: heart rate spike detected N bpm. Are you OK?`
 
 如果你早醒了来得及看全程，实时看它们一条条进来。如果一条都没收到 → Twilio sandbox 可能鉴权过期了（看 Twilio tab），或 Mac 关机了（看 `ps aux | grep ripple_overnight`）。
 
