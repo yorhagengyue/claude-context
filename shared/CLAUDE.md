@@ -205,6 +205,7 @@ Claude 的角色更接近一个 CTO 顾问——不写代码，但负责审查�
 
 | 项目 | 状态 | 一句话 | 详情 |
 |------|------|--------|------|
+| **Ripple (NAISC Workato)** | 技术完成，剩录 demo + 发邮件 | Workato orchestrated real-time wellness agent，WhatsApp 两向 chat | → [NAISC.md](projects/naisc-workato/NAISC.md) |
 | **MoyuanIdea** | 愿景→架构 | AI-native 文化教育系统，三端，正在做技术架构决策 | → [MOYUAN.md](projects/moyuan/MOYUAN.md) |
 | **IFSG** | 进行中 | 企业级财务报表生成器，Angular+Nix+PostgreSQL，4人团队 | 仓库私有 |
 | **SBS Transit** | 进行中（最活跃） | SBS Transit 多仓库项目，Phase2+Webapp+WhisperAPI+GenAI | → vault: SBS Transit - Overview |
@@ -247,6 +248,15 @@ Claude 的角色更接近一个 CTO 顾问——不写代码，但负责审查�
 ## 8. 记忆追加区
 
 > 由 memory skill 自动追加，按时间倒序。
+
+### [2026-04-19] project: Ripple (NAISC Workato) 两向 chat 上线，端到端 live pipeline 验证
+完成了从 watch 检测 → 触发 → WhatsApp 提醒 → 用户回复 → bot ack 的完整 round-trip。8 个 Workato recipe 上线（bulk ingest / live spike / 24h watchdog / 4 个 MCP tool / 两向 chat bot）。真实 WhatsApp round-trip：用户发 "gaming" → 3 秒内收到 bot 回复，Twilio log 20:32:02 in → 20:32:05 out。
+关键踩坑写进 sub-MD 知识沉淀：Twilio incoming 是 form-encoded（非 JSON）/ Reply To 必须用 pill / IF branch 语义坑 / Ruby formula 在 Workato 沙箱限制 / cloned recipe schema 缓存。
+状态：技术实现完成；4/20 录 demo，4/23 发 submission email。
+→ [NAISC.md](projects/naisc-workato/NAISC.md) / → vault: Workato NAISC/Implementation Log.md
+
+### [2026-04-19] correction: Watchdog 不等于 live pipeline
+用户纠正："我没看到 手表检测然后触发问题 然后通知 whatsapp 整个流程"。Watchdog 是 24h 轮询 seed data，不是实时链路。evidence-of-working ≠ pipeline-works-end-to-end，下次构建 agent 产品要先画 trigger-to-action 的完整路径再分步实现，避免出现"demo 没有从用户视角打通"的情况。
 
 ### [2026-04-13] infra: Hermes 工具链建设
 本次会话建立了 Hermes 的完整工具链：
