@@ -260,6 +260,13 @@ Claude 的角色更接近一个 CTO 顾问——不写代码，但负责审查�
 ### [2026-04-20] correction: Workato CodeMirror 不是标准 CM，JS setValue 不持久
 CodeMirror 在 Workato 里是一层 preview，click 激活才生成真 CM 实例。调 `cm.setValue()` / `replaceSelection()` 能改显示，但 Angular 表单绑定不认，blur 后值回退。JS 驱动 Workato 表单唯一稳定路径：focus 一下让真 CM 出现 → user paste (Cmd+V) → Tab 离开触发提交。想做全自动粘贴需研究 ClipboardEvent + DataTransfer 路径（未验证）。
 
+### [2026-04-20] correction + verified: Workato CM 全自动写入真相（深度实验）
+02:25 用户让全自动化 Plan B。跑了 30 min 实验。
+**能做的**：`document.execCommand('insertText', false, text)` 对**已激活的**真 CM 写入成功且持久（URL 字段 Save + reload 后还在）。dropdown/按钮/view 切换 JS 全部能驱动。
+**不能做的**：**Body CM preview 状态下 click/focus/mousedown/pointerdown synthetic event 全都唤不醒真 CM**（等 5s 不起作用）。Save 后再次打开 step panel 也不响应。推测是 Workato Angular 对 `isTrusted` 加了 gate。
+**副作用**：半途 Save 了残缺 step 2 → Recipe 8 不能 Start → 用 **Workato Versions 标签页 → 点版本号（如"3 2026-04-19 09:26"）→ 右上"恢复此版本" → 弹窗点"是"** 回滚。这招以后遇到坏掉的 recipe 必须记得用。
+**教训**：Workato 表单自动化只能做到"JS 半自动 + user 手粘 CM"，不能真全程 JS。下次想全自动，先真用户交互一次建好模板 recipe，然后做 clone/import 路线（走 Workato REST API），别在 UI 死磕。
+
 ### [2026-04-19] project: Ripple (NAISC Workato) 两向 chat 上线，端到端 live pipeline 验证
 完成了从 watch 检测 → 触发 → WhatsApp 提醒 → 用户回复 → bot ack 的完整 round-trip。8 个 Workato recipe 上线（bulk ingest / live spike / 24h watchdog / 4 个 MCP tool / 两向 chat bot）。真实 WhatsApp round-trip：用户发 "gaming" → 3 秒内收到 bot 回复，Twilio log 20:32:02 in → 20:32:05 out。
 关键踩坑写进 sub-MD 知识沉淀：Twilio incoming 是 form-encoded（非 JSON）/ Reply To 必须用 pill / IF branch 语义坑 / Ruby formula 在 Workato 沙箱限制 / cloned recipe schema 缓存。

@@ -1,7 +1,36 @@
 # 🌅 Morning Report — 2026-04-20
 
-**生成**：02:17 SGT  
-**状态**：死磕夜完成 95%，剩你起床 10 min 粘 + 录 demo + 发 email
+**生成**：02:17 SGT（02:55 增补 Plan B 自动化尝试结果）  
+**状态**：死磕夜完成 95% 文档 + echo baseline 稳定；**Plan B 真 AI 对话 自动化失败，morning 需要你 10-15 min 手粘**
+
+---
+
+## ⚠️ 诚实补充：Plan B 自动化死磕了但卡住
+
+你 02:25 让我"尽力把这条做通"。我从 02:25 到 02:55 深度尝试，踩了一堆坑。真相：
+
+**成功的**：
+- `document.execCommand('insertText', false, text)` 能往 Workato CM 写入值（URL 字段验证通过 — Save + 重载后仍在）
+- 点 dropdown、点按钮、Method/Content-Type 都能 JS 自动化
+
+**失败的**：
+- **Body CM 激活不了**：配置面板里的 Request body CM 是 preview 状态，click/focus/mousedown/pointerdown 全部触发了但不转成真 CM 实例（等 5s 也没变）
+- **Step 2 config 面板 Save 后再打开不响应**：重载后点 step 2，panel 打不开
+- **推测原因**：Workato Angular 对 synthetic events 加了 `isTrusted` 检查，只认真实用户交互。`cm.setValue` 不触发 Angular 绑定；`execCommand` 对已有真 CM 的 URL 字段有效，对 preview 状态的 Body 字段无效
+
+**副作用 + 修复**：
+- 尝试过程中我 Save 了一个残缺的 step 2 → Recipe 8 不能 Start
+- 找到 Workato **Versions 标签页 → 版本 3 (09:26 PDT) → 恢复此版本 → 是** → Recipe 8 回到 echo baseline ✅
+- **现在 Recipe 8 已重新 Start，在 Active 状态**
+
+---
+
+## 🎯 最终状态（等你起床）
+
+- ✅ Recipe 7 alert pipeline 正常，overnight 5 条 WA alert 继续发送
+- ✅ Recipe 8 echo baseline 正常（如果你回复 WA，会收到 "Got it, I heard..." echo）
+- ❌ Recipe 8 **仍是 echo，不是 Kimi LLM**——Plan B 需要你 10-15 min 手粘完成
+- ✅ 所有文档 + Kimi prompt + 粘贴手册已准备齐全
 
 ---
 
