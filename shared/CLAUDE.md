@@ -249,6 +249,17 @@ Claude 的角色更接近一个 CTO 顾问——不写代码，但负责审查�
 
 > 由 memory skill 自动追加，按时间倒序。
 
+### [2026-04-20] project: NAISC overnight session — Plan B 尝试 + 回退 + HAE 诊断 + 夜间 WA 循环
+用户 01:30 把任务升级为"死磕到醒"。四条线：(1) Plan B Kimi chat 升级尝试，Workato CodeMirror JS 写入不走 Angular 绑定，blur 回退，回退 Recipe 8 到 echo baseline（稳）；(2) HAE 诊断：URL 对、Recipe 1 Active、curl 200 OK，但 healthlog 24h 0 行——iOS 后台调度把 HAE 掐了，4/18 起一次没成功触发；(3) Kimi prompt v2 调 12 case 全对（gaming/workout/medical/idk/startle/stress/caffeine/other/sarcasm），锁定；(4) 后台 bash loop PID 33026 从 03:10 起每 60 min 发 1 条 WA alert，共 5 条到 07:10，用户起床能看到约 6 条消息。
+交付：morning_handoff/ 5 份可粘贴文档（Plan B 粘贴手册 / Demo V2 / Email / Prompt / Results）。
+→ [NAISC.md](projects/naisc-workato/NAISC.md) / [morning_handoff/](projects/naisc-workato/morning_handoff/)
+
+### [2026-04-20] correction: "每 5 min auto sync" 不等于 iOS 真的每 5 min 跑
+用户之前笃信 HAE 设置 "每分钟/每 5 分钟" 就会定时推。真相：HealthyApps 官方文档明确 iOS 锁屏禁访 HealthKit + 后台调度 iOS 决定而非 app 配置决定。UI 让你设是让你表达期望，实际跑多少取决于 iOS 心情。实测 Recipe 1 最近 30 天只有 24 job（~0.8/day），4/18 后零触发。凡是涉及 "iOS app 自动推" 的诉求，要先承认"延迟几分钟 + 手机解锁 + 充电中"这三个前置，不是真实时。
+
+### [2026-04-20] correction: Workato CodeMirror 不是标准 CM，JS setValue 不持久
+CodeMirror 在 Workato 里是一层 preview，click 激活才生成真 CM 实例。调 `cm.setValue()` / `replaceSelection()` 能改显示，但 Angular 表单绑定不认，blur 后值回退。JS 驱动 Workato 表单唯一稳定路径：focus 一下让真 CM 出现 → user paste (Cmd+V) → Tab 离开触发提交。想做全自动粘贴需研究 ClipboardEvent + DataTransfer 路径（未验证）。
+
 ### [2026-04-19] project: Ripple (NAISC Workato) 两向 chat 上线，端到端 live pipeline 验证
 完成了从 watch 检测 → 触发 → WhatsApp 提醒 → 用户回复 → bot ack 的完整 round-trip。8 个 Workato recipe 上线（bulk ingest / live spike / 24h watchdog / 4 个 MCP tool / 两向 chat bot）。真实 WhatsApp round-trip：用户发 "gaming" → 3 秒内收到 bot 回复，Twilio log 20:32:02 in → 20:32:05 out。
 关键踩坑写进 sub-MD 知识沉淀：Twilio incoming 是 form-encoded（非 JSON）/ Reply To 必须用 pill / IF branch 语义坑 / Ruby formula 在 Workato 沙箱限制 / cloned recipe schema 缓存。
