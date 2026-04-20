@@ -125,3 +125,50 @@
 - `KIMI_PROMPT_V2.txt` — Kimi system prompt v2（锁定版）
 - `KIMI_PROMPT_RESULTS.md` — 12 case 测试结果（100% 通过）
 - `overnight_wa_loop.sh` — 夜间 WA alert 循环脚本副本
+
+---
+
+## 2026-04-20 晨间：Recipe 1 → Twilio 链路接通 ✅
+
+### 做完了
+
+真正的端到端：Apple Watch → HAE → Recipe 1 (Trigger+Upsert+Twilio) → WhatsApp。
+
+### 关键踩坑（新）
+
+11. **Workato HTTP connection 的 base URL 锁死**：Supabase Ripple connection 配的 base URL `supabase.co/rest/v1`。HTTP step 想 POST 到别的域（比如 Workato 自己的 webhook）会被拒绝："only request with base URL ... is allowed"。**解法**：用 Twilio connection 的 Custom action 直接 POST（base URL=api.twilio.com，本来就是要 POST Twilio 的）
+12. **Workato formula validator 比 editor 严格**：编辑器里 `data.payload.X.where(Name: 'y').first.Data.pluck('Avg').sort.last` 显示"OK"，但 Save 时严格 validator 拒绝"公式存在错误"。原因：trigger schema 没 sample 到带 heart_rate 的 payload，validator 找不到字段定义。**解法**：要么刷新 trigger sample（需要 UI click），要么用静态值 / 索引访问 `.last.Data.first.Avg`
+13. **Workato Versions 回退是救命稻草**：搞坏 recipe 后，Versions 标签 → 选版本 → "恢复此版本" → "是" 能回滚到干净状态。今晚用了 2 次
+14. **Twilio Custom action 手动设置流程**：Manual setup → 填 Action name / Method=POST / Path=`/2010-04-01/Accounts/<SID>/Messages.json` / Request type=urlencoded / Response type=json → 在 "JSON sample" 粘 `{"From":"...","To":"...","Body":"..."}` → 点"使用 JSON" → "下一个" → "生成模式" → 出现 From/To/Body 字段 → 填
+
+### Recipe 1 当前结构
+
+| Step | Action | 用途 |
+|---|---|---|
+| 1 | Trigger: Ripple-health-data via HTTP webhook | HAE 推送入口 |
+| 2 | Upsert healthlog to Supabase via HTTP | 历史数据入库 |
+| 3 | Twilio Custom action: Send live HR alert | 直接发 WA（hardcoded body 文案） |
+
+### Demo 故事完整版
+
+```
+Apple Watch HR 飙升
+    ↓ HAE 每 3-5 min 推送
+Recipe 1 webhook 触发
+    ├─ Step 2: 写 Supabase healthlog（历史 + baseline）
+    └─ Step 3: Twilio 直接发 WhatsApp alert
+                    ↓
+              你的 iPhone 弹通知
+                    ↓ 你回复
+        Recipe 8 ripple_chat_bot 处理回复
+                    ↓
+        Twilio echo（Plan B 未升级：echo；升级后 = Kimi AI 真对话）
+```
+
+### TODO (可选加强)
+
+- [ ] Recipe 1 step 3 加 IF 阈值过滤避免 spam（HR > 110 才发）
+- [ ] Body 动态插 HR 值 formula（需 refresh trigger schema）
+- [ ] Plan B Kimi chat 升级（Recipe 8，用户 15 min 手粘）
+
+---
