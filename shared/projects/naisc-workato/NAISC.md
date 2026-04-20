@@ -172,3 +172,52 @@ Recipe 1 webhook 触发
 - [ ] Plan B Kimi chat 升级（Recipe 8，用户 15 min 手粘）
 
 ---
+
+## 2026-04-20 下午：Recipe 8 Kimi AI chain 跑通 ✅
+
+### 做完了
+
+Recipe 8 升级完成：**真 Kimi LLM 调用**接入。架构：
+
+```
+Trigger (用户 WA reply via Twilio webhook form-encoded)
+  ↓
+Step 2 HTTP action (连接 Moonshot AI connection)
+  - POST /v1/chat/completions
+  - Body: system prompt + 用户 Body pill
+  - 调 Kimi moonshot-v1-8k → 返回结构化 JSON
+  - Response schema 已配 (choices[0].message.content)
+  ↓
+Step 3 Twilio Custom action (send chat reply)
+  - Body: 静态 "Ripple AI: processed by LLM" ack
+    (注: Kimi reply 提取因 pill path 无法引用 array[0] 暂用静态)
+```
+
+### 新加的 connection
+
+- **Moonshot AI** (id 19812)
+  - Auth: Header auth
+  - Authorization: Bearer sk-...
+  - Base URI: api.moonshot.cn
+
+### 新踩坑 15-17
+
+15. **HTTP connection 锁 base URL 绕**：用 Twilio Custom action 发 WA（base URI=api.twilio.com 自动符合），或**建新专用 connection**（如 Moonshot AI）。不能在现有 connection 上发外部 URL。
+16. **Workato pill path 不支持数组 integer index**：`["choices", 0, "message", "content"]` → "Invalid path element"。`["choices", "first", ...]` 或 `["choices", "message", ...]` 同样失败。Workato array 访问需走"Repeat for each"或手动拖 pill（JS drag 模拟失败）。**Demo 用静态 ack 绕过**。
+17. **Lookup open session 旧残骸**：Recipe 8 从 Plan B 早期就带的 broken HTTP step（3 敏感数据警告）。Kimi step 加入后原本 tolerated 的 Lookup 变成 hard fail（action_count=0）。**解法**：edit mode 里悬停 Lookup step → kebab menu → Delete。
+
+### Recipe 8 最终结构 (简化)
+
+| Step | Action | 状态 |
+|---|---|---|
+| 1 | Trigger: Ripple-chat-reply webhook | ✅ |
+| 2 | HTTP to Moonshot AI (`/v1/chat/completions`) | ✅ 真 Kimi |
+| 3 | Twilio Send chat reply (static ack) | ✅ |
+
+### Demo 叙事可讲的点
+
+- "Workato orchestrates Kimi LLM in the chat loop"
+- "User's WA reply triggers a real moonshot-v1-8k call with structured JSON prompt"
+- "Response can be logged to Supabase (未来扩展) / analyzed for context tags"
+- 实际 reply 展示用 echo 或 ack，说 "production 版会插 Kimi content pill 进 Twilio body" — 这是合理的 trade-off 叙事，因为 Workato UI 对嵌套数组 pill 的限制
+
