@@ -20,13 +20,34 @@ Step 2: Send chat reply in Twilio (Custom)  ← 现有 echo
 
 ---
 
+## Step 0.5 — 先创建 Moonshot AI connection（**2026-04-20 新增**）
+
+**⚠️ 关键变化**：之前手册说用 Supabase Ripple connection，但它锁了 base URL=`supabase.co`，不能发 Kimi (`api.moonshot.cn`)。必须建专用 connection。
+
+1. Workato 左上角 **Ripple 项目** → **连接 (Connections)** 标签
+2. 右上 **+ 创建** → 选 **连接 (Connection)**
+3. 搜 **HTTP** → 点 HTTP 图标
+4. 填：
+   - **连接名 (Name)**: `Moonshot AI`
+   - **认证类型 (Auth type)**: **Header auth** (或 API key in header)
+   - **Header name**: `Authorization`
+   - **Header value**: `Bearer sk-TEoZjBEV8fnaKWvMXk7BAzofH0qcQR24Q0hmLCUuMkApApdE`
+   - **Base URI**: `https://api.moonshot.cn`
+5. 点 **Connect / 测试** → 应绿
+6. 点 **Save**
+
+现在多了个可用 connection。
+
+---
+
 ## Step 1 — 在 Trigger 和 Twilio 中间加 Kimi HTTP step
 
-1. 鼠标悬停 Trigger 和 Twilio 之间的 **箭头** → 出现 `+` 按钮 → 点
-2. 选 **Action in app** → 搜 **HTTP** → 选 **HTTP**
-3. Connection 选 **Supabase Ripple**（或任意 HTTP connection，Workato 不会用它的 auth）
-4. Action 选 **Send request via HTTP**
-5. 右侧面板打开后，看到 "Start guided setup" / "setup manually" → **点 "setup manually"**
+1. 回到 Recipe 8 edit 页面
+2. 鼠标悬停 Trigger 和 Twilio 之间的 **箭头** → 出现 `+` 按钮 → 点
+3. 选 **Action in app** → 搜 **HTTP** → 选 **HTTP**
+4. Connection 选 **Moonshot AI**（上一步新建的，**不要**选 Supabase Ripple）
+5. Action 选 **Send request via HTTP**
+6. 右侧面板打开后，看到 "Start guided setup" / "setup manually" → **点 "setup manually"**
 
 ## Step 2 — 填 Kimi HTTP 字段（用这 6 段 copy-paste）
 
@@ -39,9 +60,14 @@ Kimi chat completion
 下拉选 **POST**
 
 ### 2.3 Request URL（点字段 → Cmd+A → 粘 → Tab）
+
+由于 Moonshot AI connection 的 Base URI 已经是 `https://api.moonshot.cn`，Request URL 只需填**相对路径**：
+
 ```
-https://api.moonshot.cn/v1/chat/completions
+/v1/chat/completions
 ```
+
+（如果你建 connection 时没设 Base URI，就填全地址 `https://api.moonshot.cn/v1/chat/completions`）
 
 ### 2.4 Request content type
 下拉选 **Raw JSON request body**
@@ -60,13 +86,11 @@ https://api.moonshot.cn/v1/chat/completions
 }
 ```
 
-### 2.6 Request headers（点 **+ Add header** → 填两栏 → Tab）
+### 2.6 Request headers — **跳过**
 
-| name | value |
-|---|---|
-| `Authorization` | `Bearer sk-TEoZjBEV8fnaKWvMXk7BAzofH0qcQR24Q0hmLCUuMkApApdE` |
+Moonshot AI connection 已经在 Header Auth 里自动加了 `Authorization: Bearer sk-...`。**不用再手填 header**。
 
-（Content-Type 不用加，Workato 自动加）
+（如果测试时 401，说明 connection 的 Auth 没配对，回 Step 0.5 重做）
 
 ### 2.7 Response content type
 下拉选 **JSON response body**
