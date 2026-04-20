@@ -2,7 +2,7 @@
 
 > **用途**：每次新会话开始时，Claude 自动读取本文件。这是整个 harness 系统的入口。
 > **维护**：§0 和 §1-7 由用户维护，§8 由 memory skill 自动追加。
-> **最后更新**：2026-04-13
+> **最后更新**：2026-04-17
 
 ---
 
@@ -208,6 +208,7 @@ Claude 的角色更接近一个 CTO 顾问——不写代码，但负责审查�
 | **Ripple (NAISC Workato)** | 技术完成，剩录 demo + 发邮件 | Workato orchestrated real-time wellness agent，WhatsApp 两向 chat | → [NAISC.md](projects/naisc-workato/NAISC.md) |
 | **MoyuanIdea** | 愿景→架构 | AI-native 文化教育系统，三端，正在做技术架构决策 | → [MOYUAN.md](projects/moyuan/MOYUAN.md) |
 | **IFSG** | 进行中 | 企业级财务报表生成器，Angular+Nix+PostgreSQL，4人团队 | 仓库私有 |
+| **TemplateApp** | 架构完成→待 brief | 独立于 IFSG 的通用模板/CSV/RAG 审阅 app，React+Node+docker-compose，单人开发 | → [TEMPLATEAPP.md](projects/templateapp/TEMPLATEAPP.md) |
 | **SBS Transit** | 进行中（最活跃） | SBS Transit 多仓库项目，Phase2+Webapp+WhisperAPI+GenAI | → vault: SBS Transit - Overview |
 | **Hermes** | 主力 agent 系统 | 替代 YoRHa/Moltbot，集成 Gmail/Calendar/GitHub/Obsidian | → vault: Hermes - Overview |
 | **Slay the Spire 2 AI** | 半成品 | PPO + 遗传超参数进化，离自主打游戏还有距离 | GitHub/slay_the_spire |
@@ -275,6 +276,31 @@ CodeMirror 在 Workato 里是一层 preview，click 激活才生成真 CM 实例
 
 ### [2026-04-19] correction: Watchdog 不等于 live pipeline
 用户纠正："我没看到 手表检测然后触发问题 然后通知 whatsapp 整个流程"。Watchdog 是 24h 轮询 seed data，不是实时链路。evidence-of-working ≠ pipeline-works-end-to-end，下次构建 agent 产品要先画 trigger-to-action 的完整路径再分步实现，避免出现"demo 没有从用户视角打通"的情况。
+
+### [2026-04-17] spike: TemplateApp ONLYOFFICE CE 限制 spike 验证
+同日下午跑了一个实战 spike 验证 IFSG 团队 4/15 报的 CE plugin 限制。起 `onlyoffice/documentserver:latest` 本地栈 + 自建最小插件 + docxtpl 合成测试，跑完 11 个按钮 + 6 个合成 case。
+
+**H1/H2/H3 全 pass**。关键发现：
+- `PasteText` + `{{tag}}` 在 CE iframe 100% 可用，所有特殊字符字面保真
+- docxtpl 对 run-splitting 极端鲁棒（每字符 per-run 也能 render）
+- **`callCommand` + `Api.*` NOT 被 sandbox 锁**——IFSG 报的 `mFa` 崩溃只在 `executeMethod("AddContentControl", ...)` 的 iframe-direct 路径。通过 `callCommand + Api.CreateBlockLvlSdt` 插 SDT 在 CE 是通的。**不需要 Developer Edition 授权**
+- `GetSelectedText` focus-loss 确认，全面弃用，走 `callCommand + GetRangeBySelect()` 替代
+- CE 默认 `allowPrivateIPAddress: false` 阻塞 docker 网络（私网 IP），部署要 patch `default.json`（不要 `:ro` mount，init chown 会 fail）
+
+Plan M4 从"照搬 IFSG ~1000 行插件"改为"重写 ~150 行 PasteText + {{tag}} 方案"，Phase 2 保留 SDT 升级路径。Sub-MD 和 plan 文件都更新了。Spike 环境已 teardown。
+
+### [2026-04-17] architecture: TemplateApp Phase 1/2 架构规划完成
+Linda 2026-04-17 非正式 brief：建独立于 IFSG 的通用 template/CSV/RAG 审阅 app。经 8 轮对话 + 代码扫描锁定全部架构决策，Plan agent 输出完整 W1-W12 实施路径，等 2026-04-20 Linda 正式 brief 后开工。
+
+**核心决策**：React + Node/Express/Sequelize/PostgreSQL + docker-compose（非 Nix+Arion）+ 独立 JWT（Identities 表支持多 provider）+ 所有业务表 owner_id（无 sub-firm）+ ONLYOFFICE 完整照搬 IFSG（换 plugin GUID）+ word-addin Phase 2 再做 + CSV 追加式版本化 + RAG v1 只做规则（知识走 skill 预留）+ Review JSON 主 markdown 副（Ollama + 修复重试）。
+
+**代码复用判断**：IFSG 的 `template.controller.js`（900 行 ONLYOFFICE 集成）、`onlyoffice-plugin/` 目录、`auto-complete.controller.js`、`word-text-generation/` 全套是"宝矿"，直接搬；`report-generation/src/lib/table/*`（财报业务）全弃；`sub-firm`/`journal`/`cashflow` 等 IFSG 领域模型全不要。
+
+**完整 plan**：`~/.claude/plans/shimmying-dreaming-naur.md`（包含 M1-M9 里程碑、数据模型、docker-compose 拓扑、风险、必读文件 12 个、验证清单、Linda brief 提问清单 5 条）
+→ sub-MD: [TEMPLATEAPP.md](projects/templateapp/TEMPLATEAPP.md)
+
+### [2026-04-17] preference: Claude 作为架构顾问的协作模式验证
+本次 TemplateApp 规划完整走了 §3 里 Claude 的定位：**不生成代码方案，只做架构对抗 + 追问被省略的决策 + 按严重程度排序指出问题**。用户的节奏是"你问我答"，每轮 3-4 个决策，直到架构完全闭合再让我动手扫代码。用户明确反对"我给你一个方案你挑着改"这种模式，他要的是"我先想清楚每个决策，你帮我列出决策空间和 trade-off"。下次类似规划任务沿用此模式：先问决策、再扫代码、再 Plan agent、再写 plan 文件，不跳步。
 
 ### [2026-04-13] infra: Hermes 工具链建设
 本次会话建立了 Hermes 的完整工具链：
