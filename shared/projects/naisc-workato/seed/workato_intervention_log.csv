@@ -1,0 +1,3 @@
+user_id,risk_level,triggered_at,reason,channel,status,metrics_flagged,ai_summary,cooldown_until
+user_001,1,2026-04-14T10:00:00+0800,Step count declined 12% below baseline for 3 consecutive days,email,sent,step_count,Mild activity reduction detected. User may be experiencing decreased motivation.,2026-04-15T10:00:00+0800
+user_001,2,2026-04-17T09:00:00+0800,"Multiple signals: HRV down 15%, sleep efficiency down 11%, steps down 18%",slack,sent,"hrv_sdnn,sleep_efficiency,step_count",Sustained multi-metric decline over 5 days suggests emerging depressive episode. Recommend reaching out to support network.,2026-04-18T09:00:00+0800

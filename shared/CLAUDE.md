@@ -250,6 +250,41 @@ Claude 的角色更接近一个 CTO 顾问——不写代码，但负责审查�
 
 > 由 memory skill 自动追加，按时间倒序。
 
+### [2026-05-04] insight: MCP 是 model-LLM 的天然解耦层
+LLM **永远不"读"模型**，LLM 读模型的 structured output。模型对 LLM 来说就是 function call —— 可以是 1 KB 的 logistic regression、70B 参数 fine-tuned LLM、甚至一段 if/else。LLM 看到的只是 `tool_name + input_schema + output_schema`。这意味着 ML 路线对 MCP-based 系统是**零迁移成本**：今天用 z-score baseline，半年后训了 model 把 implementation 换掉，agent 端 / pitch 故事不用改一行。所以"上不上 ML"不是工程问题，是商业 / 阶段问题。这个认知对未来任何 agent + ML 项目都适用。
+
+### [2026-05-04] insight: 给 ML tool 的 output schema 决定 LLM 用得多好
+给 LLM 的输出 = 给一个聪明实习生的报告。坏：`{"score": 0.73}`（信息丢失）；好：score + scale + vs_personal_baseline + key_drivers + confidence_interval + model_version 全写明。这层做好，就算 model 只是 logistic regression，效果都好过返回纯 number 的神经网络。**未来任何 MCP tool 暴露统计 / ML 结果时都按这个标准**。
+
+### [2026-05-04] insight: Ripple 实时性的真相是 prediction freshness 而非 tool latency
+Tool call latency 20-300ms 不是瓶颈。真问题是**prediction freshness**——预测基于多新的数据，取决于上游数据流 + retrain 频率。MCP 不引入延迟。"实时让 LLM 读懂"在 MCP 范式下根本不存在。**未来再讨论 agent 系统的"实时性"时，先把这两个维度分开**。
+
+### [2026-05-04] verified: Lanyard 是接 Discord presence 实时数据的最快路径
+公开服务 https://discord.gg/UrXF2cfJ7F（旧的 discord.gg/lanyard 已失效）—— 用户加群一次，自动监控。Gateway WebSocket + REST 都有。实测从游戏开始到事件到达 5-15 秒（Discord 客户端轮询本地进程的固有延迟）。免去自建 bot 的 Developer Portal 配置 / GUILD_PRESENCES intent / token 管理的所有烦恼。Trade-off：依赖第三方 uptime；**但对 hackathon / MVP 阶段是首选**。长期可换成自建 bot，listener 接口不动。
+
+### [2026-05-04] verified: Discord API 实时-only，无历史
+Discord 服务端不存 presence 历史。给 user_id 只返回"此刻在干嘛"。要历史只有自建 listener 持续监听 + 写自己的库。Lanyard 也不存历史，只是实时转发。**任何"过去 N 天 user 在哪些 app 上花了多少时间"的需求都必须从今天开始积累**。Steam / Spotify / Last.fm 有自己历史 API（粒度不同），其它平台基本没。
+
+### [2026-05-04] correction: hackathon vs 融资是不同的话题
+我（Claude）一开始把 5/22 NAISC 决赛准备 framing 成像 VC pitch ——讨论 moat / 抄袭风险 / FDA liability / actuarial-grade evidence。用户 pushback 明确：这是 hackathon 不是融资。这些话题是 5/22 之后才有意义的。**对类似 student / hackathon 项目，要先校准对方的"游戏定义"再下架构判断**。给的是不是对方需要的，决定整段对话有不有价值。
+
+### [2026-05-04] preference: 用户对 spike 的态度
+用户明确反对 "spike 一下试试" 类的小规模代码探索。理由：能直接问的就直接问（mentor / 文档 / Claude 直接判断）。spike 浪费时间且常常验证不到关键问题。这条对未来任何架构讨论适用 —— **当我想说"我们 spike 一下" 之前，先问"这个未知能不能直接问出来"**。
+
+### [2026-05-04] project: NAISC Discord context source 集成 v1
+5/3-5/4 一晚跑通：Lanyard WebSocket → Node listener (`scripts/discord-listener/listener.mjs`) → Supabase (3 张表 + 1 view) → 3 个 Vercel API endpoint (`/api/discord/{current,today,sessions}`)。真实数据已捕获（Apex / ELDEN RING / Slay the Spire II）。是 Forward Plan §2a "状态思考" 方向第一块拼图，原计划 5/8 mentor 后做，实际提前完成。**还差 prod deploy + launchd plist + Workato MCP tool 注册**，等 5/8 mentor 答案。
+→ [Discord Integration · v1](projects/naisc-workato/discord-integration-v1.md)
+
+### [2026-05-04] project: NAISC ML 策略想清楚 — 5/22 之前不训 model
+决定：用 Pattern D (RAG/MCP) 而非 ABC（online/batch/fine-tune）。理由：(1) 数据不够（1 人 × 几个月 ≠ 训练集）；(2) prompt + RAG/MCP 已经能 95% 解决；(3) 训了过拟合，pitch Q&A 一问破。**Ripple 现阶段最强 pitch line**: "We don't train models today — but every Workato recipe is structured data capture by design. The MCP surface is the distribution layer for whatever models we train later. The first 10,000 users we sign up *is the model*." 真正上 ML 的最早合理时间点是 6-9 个月后，第一个该上 ML 的任务可能是"批量打 mood / context tag 给历史 anomaly"——但这取决于 5/22 之后是否继续做 Ripple。
+→ [ML Strategy · Thinking Notes v1](projects/naisc-workato/ml-strategy-v1.md)
+
+### [2026-05-04] correction: NAISC team 真实第三人是 Chen Yufei
+Sarah Loke 4/24 finalist 邮件里 Team YoRHa 官方名单：**Geng Yue · Liu Zicheng · Chen Yufei**。但 trailer / 网站 / submission email 都写的 "Tommy Chen" 当第三个人 —— 那是把耿越的英文名（CLAUDE.md §1）当成另一个队员了。用户已知，是否回去改公开物（trailer/网站/email）尚未决定。**未来再涉及 Ripple 公开署名 / 介绍时按官方名单**。
+
+### [2026-05-04] infra: Discord listener 当前在 Mac Mini 后台运行
+PID 48771（启动于 2026-05-03 nohup detached）。监听 2 个 Discord ID，写 Supabase。**Mac 重启会丢**——launchd plist 待做。位置：`~/Desktop/Toffeemoon Design System/scripts/discord-listener/listener.mjs`。日志：同目录 `data/listener.log`。
+
 ### [2026-04-20] project: NAISC overnight session — Plan B 尝试 + 回退 + HAE 诊断 + 夜间 WA 循环
 用户 01:30 把任务升级为"死磕到醒"。四条线：(1) Plan B Kimi chat 升级尝试，Workato CodeMirror JS 写入不走 Angular 绑定，blur 回退，回退 Recipe 8 到 echo baseline（稳）；(2) HAE 诊断：URL 对、Recipe 1 Active、curl 200 OK，但 healthlog 24h 0 行——iOS 后台调度把 HAE 掐了，4/18 起一次没成功触发；(3) Kimi prompt v2 调 12 case 全对（gaming/workout/medical/idk/startle/stress/caffeine/other/sarcasm），锁定；(4) 后台 bash loop PID 33026 从 03:10 起每 60 min 发 1 条 WA alert，共 5 条到 07:10，用户起床能看到约 6 条消息。
 交付：morning_handoff/ 5 份可粘贴文档（Plan B 粘贴手册 / Demo V2 / Email / Prompt / Results）。

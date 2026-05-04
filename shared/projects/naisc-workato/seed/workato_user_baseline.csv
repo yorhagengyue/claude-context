@@ -1,0 +1,10 @@
+user_id,metric,baseline_mean,baseline_std,last_7d_mean,deviation,deviation_pct,status,updated_at
+user_001,heart_rate,71.81,1.17,77.0,5.19,7.2,watch,2026-04-18T23:00:00+0800
+user_001,resting_heart_rate,61.81,0.75,65.87,4.06,6.6,watch,2026-04-18T23:00:00+0800
+user_001,hrv_sdnn,44.86,1.75,41.21,-3.65,-8.1,watch,2026-04-18T23:00:00+0800
+user_001,step_count,8396.29,329.49,7853.71,-542.58,-6.5,watch,2026-04-18T23:00:00+0800
+user_001,sleep_hours,7.26,0.18,6.69,-0.57,-7.9,watch,2026-04-18T23:00:00+0800
+user_001,sleep_efficiency,0.88,0.02,0.81,-0.07,-8.0,watch,2026-04-18T23:00:00+0800
+user_001,active_energy,1785.36,32.72,1643.09,-142.27,-8.0,watch,2026-04-18T23:00:00+0800
+user_001,spo2,97.43,0.2,95.03,-2.4,-2.5,normal,2026-04-18T23:00:00+0800
+user_001,respiratory_rate,15.39,0.32,16.44,1.05,6.8,watch,2026-04-18T23:00:00+0800
