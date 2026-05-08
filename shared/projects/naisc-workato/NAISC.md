@@ -1,223 +1,221 @@
-# NAISC.md — Ripple / Workato NAISC 2026 项目速报
+---
+project: NAISC 2026 Workato Track · Ripple
+status: FINALIST · 5/22 pitch · 14 days remaining
+last-updated: 2026-05-08
+---
 
-> **上位文件**：[CLAUDE.md](../../CLAUDE.md) §5 项目索引
-> **详细文档**：Obsidian Vault `01 - Projects/Workato NAISC/`（Design.md / Implementation Log.md / DEMO_SCRIPT.md / MORNING_REPORT_20260419.md / Submission Email.md）
-> **morning_handoff/**：[Plan B 粘贴手册 / DEMO V2 / Submission email / Kimi prompt](./morning_handoff/)
-> **比赛截止**：2026-04-23 发 NAISC submission email
-> **Demo 录制**：2026-04-20
-> **最后更新**：2026-04-20 02:15 SGT（overnight session）
+# Ripple — NAISC 2026 Workato Track
+
+> **Upstream**: [CLAUDE.md](../../CLAUDE.md) §5 project index
+> **Heavy notes / timeline / transcripts**: Obsidian Vault `01 - Projects/Workato NAISC/`
+> **Pre-finals state** (4/19-4/24, demo recording + submission): see `archive/NAISC_pre-finals.md` + `archive/morning_handoff_2026-04-20/`
 
 ---
 
-## 当前状态
+## TL;DR (30-second read)
 
-**阶段**：技术实现完成 ✅ → 剩录 demo 视频 + 提交邮件
-**团队**：个人作品
+Ripple is **Team YoRHa**'s submission to **NAISC 2026 Workato Track**. We are **1 of 7 finalists**. Final pitch is **2026-05-22 (Fri)**, 14 days from today. The 5/8 mentorship sessions (TP7 with Colin + TP8 with the Workato/business mentor) happened today and the takeaways are distilled in `mentor-takeaways-tp7-tp8.md`. The 8-recipe Workato pipeline + 4 MCP tools + Discord context source + 53-rule evidence library are shipped. The deck and live-demo rehearsal are the open work. **5/22 ML training is locked OFF** — Pattern D (RAG/MCP) only.
 
-## 系统定义
+---
 
-**Ripple** — 基于 Workato 的 real-time wellness 监控 agent，沿"sense → think → act → converse"链路编排 Apple Watch / Supabase / Twilio / MCP。NAISC 叙事核心：Workato 作为 orchestration layer 连接异构 API，让一个普通账号在一天内搭出完整 agent 产品。
+## Current state
 
-## 技术栈
+| Item | Value |
+|---|---|
+| Stage | **Finalist · 5/22 pitch** (Sarah Loke confirmation 4/24) |
+| Team (official roster) | **Geng Yue · Liu Zicheng · Chen Yufei** |
+| Mentorship | TP7 + TP8 done **2026-05-08** — see `mentor-takeaways-tp7-tp8.md` |
+| Trailer | https://youtu.be/NbFPHHf_jz8 |
+| Website | https://ripple-wellness.vercel.app/ |
+| Workato MCP server | `https://1720.apim.mcp.trial.workato.com/` (4 tools live) |
+| Recipes | 8 active (bulk ingest / live spike / 24h watchdog / 4 MCP / two-way chat) |
+| Discord listener | Running on Mac Mini, PID 48771 (verified 2026-05-08) — see `discord-integration-v1.md` |
+| Rule library | v2: 53 rules / 11 categories / citations — see `rule-library/README.md` |
+| ML strategy | **Locked: no training before 5/22, Pattern D only** — see `ml-strategy-v1.md` |
 
-- **Orchestration**：Workato recipes（8 个 recipe，3 类 trigger：webhook / scheduled / genie MCP）
-- **存储**：Supabase PostgreSQL + PostgREST（healthlog 历史 + baseline 视图）
-- **通知**：Twilio WhatsApp sandbox（outbound Messages.json + inbound webhook 到 Workato）
-- **Agent 接口**：Workato Genie MCP（Recipe 2-5 暴露给 Claude Desktop）
-- **数据源**：Apple Watch（模拟用 curl）
+### Pending decisions (open at 5/8)
 
-## 架构（Final）
+- [ ] **`vercel deploy --prod`** of 3 new Discord API endpoints (P0 — Workato MCP can't call them until prod)
+- [ ] **launchd plist** for listener (P1 — survives Mac restart). Decision: **drop until post-5/22** per 14-day budget
+- [ ] **Tommy Chen → Chen Yufei** in trailer/site/submission email (P2 — user has not committed; mentors did not comment)
+- [ ] **Live demo vs pre-recorded fallback** for 5/22 — TP8 mentor said live wins but plan a fallback
+
+---
+
+## Read order for full context
+
+When picking up this project:
+
+1. **This file** — orientation
+2. **`mentor-takeaways-tp7-tp8.md`** — what changed at 5/8 and the action implications driving the next 14 days
+3. **`forward-plan-v1.md`** — the pre-mentor strategy doc (5/8 mentor questions section is now answered, but the architecture-options section is still the canvas for the next 14 days)
+4. **`discord-integration-v1.md`** — full record of the Discord listener (the differentiator demo asset)
+5. **`ml-strategy-v1.md`** — why no ML training before 5/22, why MCP/RAG instead, the "We don't train models today" pitch line
+6. **`rule-library/README.md`** — the 53-rule evidence asset and how it maps to the deck
+7. **`submission-email.md`** — what was sent to organizers (final v4)
+8. **`implementation-log.md`** — engineering log up through 4/19 (recipe-by-recipe build trail and known gotchas)
+9. **Obsidian only** (heavy / not mirrored): TP7 + TP8 raw transcripts, trailer/demo scripts, design docs
+
+---
+
+## Architecture (current shipped state)
 
 ```
 [Apple Watch / curl simulator]
-  ├─ bulk push → Recipe 1 v1 (webhook JSON) → Supabase healthlog
-  └─ real-time spike → Recipe 7 live_hr_alert_demo (webhook)
-                       └─ IF value>150 → Twilio → WhatsApp (3s)
+  ├─ bulk push → Recipe 1 v1 → Supabase healthlog
+  └─ live spike → Recipe 7 live_hr_alert_demo → IF >150 → Twilio → WhatsApp (~3s)
 
 [Daily 24h schedule]
   Recipe 6 Ripple Anomaly Watchdog → Supabase baseline_view → Twilio
 
 [Two-way chat]
-  User WA reply → Twilio sandbox incoming webhook
-                → Recipe 8 ripple_chat_bot (webhook, form-encoded)
-                → Twilio Messages.json (To = {From|pill})
-                → User WA (3s round-trip)
+  User WA reply → Twilio sandbox webhook (form-encoded)
+                → Recipe 8 ripple_chat_bot → Moonshot/Kimi LLM → Twilio echo
 
-[Agent MCP tools]  (Claude Desktop → Ripple MCP server)
+[Agent MCP tools]  (Claude Desktop / Cursor → Ripple MCP server)
   Recipe 2 get_current_vitals
   Recipe 3 get_baseline_deviation
   Recipe 4 get_recent_anomaly_log
   Recipe 5 send_contextual_nudge
+
+[Discord context source]  ← shipped 5/3-5/4, NOT YET prod-deployed
+  Lanyard WS → Node listener → Supabase (3 tables + 1 view)
+                            → Vercel API /api/discord/{current,today,sessions}
+                            → (waiting) Workato MCP tool get_discord_activity
 ```
 
-## Recipe 清单
+### TP8 mentor's 3-layer reframe (NEW, drives deck rebuild)
 
-| # | Name | Trigger | Purpose | Status |
-|---|------|---------|---------|--------|
-| 1 | `v1` | Webhook (JSON) | 摄入 watch 数据 → Supabase | Active |
-| 2 | `get_current_vitals` | Genie MCP | Agent 查最新 vitals | Active |
-| 3 | `get_baseline_deviation` | Genie MCP | Agent 查偏离率 | Active |
-| 4 | `get_recent_anomaly_log` | Genie MCP | Agent 查近 N 小时异常事件 | Active |
-| 5 | `send_contextual_nudge` | Genie MCP | Agent 主动推 WhatsApp | Active |
-| 6 | `Ripple Anomaly Watchdog` | Scheduled 24h | 日度 baseline 扫描 | Active |
-| 7 | `live_hr_alert_demo` | Webhook (JSON) | 实时 spike → WhatsApp | Active |
-| 8 | `ripple_chat_bot` | Webhook (FORM) | 两向 chat: 用户回复 → bot ack | Active |
+The same architecture, viewed as judges should see it:
 
-## 踩坑知识沉淀
-
-1. **Twilio sandbox incoming 是 form-urlencoded，不是 JSON**。Workato trigger schema 必须用 form sample body 生成，否则 `Body` / `From` datapill 为空。
-2. **Reply 的 `To` 字段必须用 pill**（`{From|Step 1}`），硬编码只能回给一个号码。
-3. **Sandbox 参与者限制**：WhatsApp sandbox 只路由已 `join <code>` 的号码发来的消息。demo 参与者需先加入。
-4. **Cloned recipe 的 trigger result schema 有缓存**：Clear + 工具栏 Refresh 才能同步 RETURN step。
-5. **Workato IF branch 语义**：Yes 分支 = 条件 TRUE。写 `Value < 150` 把 Twilio 放 Yes 里，HR=180 时条件 FALSE → Yes 跳过 → 永远不触发。debug 了一轮才发现。
-6. **Ruby formula 坑**：`Time.now.strftime` 在 Workato 沙箱里失败，em-dash 字符也失败 → 重要 WhatsApp Body 用 Text mode + 静态文本 + pill 拼接，别用 formula。
-7. **时区三套**：Twilio log GMT+8 / Workato Jobs PDT / curl UTC — 交叉 debug 时要换算清楚。
-
-## Verified evidence (2026-04-19)
-
-- Live alert: UTC 10:20:38 curl → WA at GMT+8 18:20:40, SID `SM28d22993d9d049a31e153d6a11cee91e`
-- Chat outbound (curl-triggered): WA 19:24:37 GMT+8, SID `SM97bf67c4793aad6635f8165b5fe0653a`
-- **Real WA round-trip** (user phone): Incoming 20:32:02 → Outgoing 20:32:05 GMT+8 (3s)
-  - User 发 `gaming` → 手机收到 `Got it, I heard: "gaming". Tagging that context for future alerts...`
-
-## 下一步
-
-- [ ] 2026-04-20 起床：按 `morning_handoff/PLAN_B_PASTE.md` 10-15 min 粘贴升级 Recipe 8 → Kimi LLM chat（可选；录 echo 版也能交）
-- [ ] 2026-04-20：按 `morning_handoff/DEMO_SCRIPT_V2.md` 7 分镜录视频（4 min）
-- [ ] 2026-04-23：按 `morning_handoff/SUBMISSION_EMAIL.md` 发 NAISC submission email
-- [ ] （可选 v2）chat bot 识别 GAMING/WORKOUT 关键词 → Supabase INSERT `context_tags` 表 → 未来 alert 根据 tag 调整阈值
-
----
-
-## Overnight session (2026-04-20 01:30-05:30 SGT)
-
-### 本夜做了什么
-
-1. **Plan B Kimi LLM chat 尝试** — 试图把 Recipe 8 echo 升级成 Kimi 真对话。Clean up 了 Recipe 8 旧 Lookup+IF+placeholders，加了 HTTP step，JS 填了 Method/content type，用户手粘 URL/body(+Body pill)/Authorization header。卡在 Response schema + Twilio body 改造（Workato CM 的 setValue 不走 Angular 绑定）。凌晨约 1:45 用户决定回退，Exit without saving → Recipe 8 恢复 echo baseline
-2. **HAE 链路深度诊断**（用户问"5 min 同步到底 work 吗"）：
-   - HAE URL `webhooks.trial.workato.com/webhooks/rest/75c7e.../ripple-health-data` ✅ 对的
-   - Recipe 1 (v1) 状态 Active ✅
-   - 测试 curl Recipe 1 返回 200 OK ✅
-   - 但 Supabase healthlog **最近 24h 0 行**，all-time 1330 行全是 `source=YoRHa` seed
-   - Recipe 1 Jobs history：30 天只有 24 个 job，last Apr 18 4:45 AM PDT（4/18 至今一次没成功触发）
-   - **结论**：HAE URL 对、Recipe 1 活、iOS 后台把 HAE 掐了，跟 UI 里设多少 interval 无关
-3. **AutoExport 开源状况**（WebSearch）：Lybron Sobers 主流 HAE 闭源。开源替代（healthpulse / yoga / health-dashboard-export）全是 2017 左右老项目或功能弱。iOS HealthKit 锁屏不可读是平台限制。**结论：fork 改造不解决问题**
-4. **Kimi prompt 调爆 12 case** → 100% 通过（见 `morning_handoff/KIMI_PROMPT_RESULTS.md`），prompt v2 锁定
-
-### Overnight background（进行中）
-
-- `PID 33026` bash loop: 5 条 WA alert 从 03:10 到 07:10 SGT 每 60 min 一条，HR 值 152/177/148/168/183。用户起床应能在 WhatsApp 看到 5-6 条测试消息（首条 02:08 SGT 手动 curl，HR=165，SID `6c11c4b9...`）
-- 预留凭据 + 诊断证据在 `morning_handoff/`
-- Recipe 8 = echo baseline（稳）
-- Supabase healthlog 监控中
-
-### 新踩坑（加进下方知识沉淀）
-
-8. **Workato text-field CodeMirror 不是标准 CM**。它是 preview 节点，click 激活才生成真 CM 实例。即便调 `cm.setValue()` 或 `replaceSelection()` 能改显示，Angular 表单绑定**不认**，blur 后值回退。可靠写入只有"focus → user paste → Tab"这条路。脚本化粘贴方案需要研究 ClipboardEvent + DataTransfer 路径（未验证）
-9. **Recipe 1 `source` 字段被 override**：我发 `source=claude_overnight_test` payload，入库后变 `workato_live_test`。说明 Recipe 1 里有 hardcoded source default，HAE 就算推成功 source 也可能不是 HAE 自己的值 → 以后监控 HAE 数据不能靠 source 字段区分，要靠 created_at 频率判断
-10. **HAE iOS 背景限制是平台级的**：HealthyApps 官方文档明确 "Apps are not allowed to access health data while iPhone is locked"。设 "每 5 min" UI 给你设，iOS 不保证跑。最佳实践是 charging + unlocked + BG app refresh on，即便如此也只是"几分钟级别延迟"，不是真实时。这个 delta 要在 demo 叙事里诚实讲，或干脆用 curl 模拟
-
-### morning_handoff/ 文件清单
-
-- `PLAN_B_PASTE.md` — Recipe 8 Kimi 升级粘贴手册（10-15 min）
-- `DEMO_SCRIPT_V2.md` — 4 min 7 分镜全链路 demo 脚本
-- `SUBMISSION_EMAIL.md` — NAISC 邮件正文草稿 + 附件清单 + 发送前 checklist
-- `KIMI_PROMPT_V2.txt` — Kimi system prompt v2（锁定版）
-- `KIMI_PROMPT_RESULTS.md` — 12 case 测试结果（100% 通过）
-- `overnight_wa_loop.sh` — 夜间 WA alert 循环脚本副本
-
----
-
-## 2026-04-20 晨间：Recipe 1 → Twilio 链路接通 ✅
-
-### 做完了
-
-真正的端到端：Apple Watch → HAE → Recipe 1 (Trigger+Upsert+Twilio) → WhatsApp。
-
-### 关键踩坑（新）
-
-11. **Workato HTTP connection 的 base URL 锁死**：Supabase Ripple connection 配的 base URL `supabase.co/rest/v1`。HTTP step 想 POST 到别的域（比如 Workato 自己的 webhook）会被拒绝："only request with base URL ... is allowed"。**解法**：用 Twilio connection 的 Custom action 直接 POST（base URL=api.twilio.com，本来就是要 POST Twilio 的）
-12. **Workato formula validator 比 editor 严格**：编辑器里 `data.payload.X.where(Name: 'y').first.Data.pluck('Avg').sort.last` 显示"OK"，但 Save 时严格 validator 拒绝"公式存在错误"。原因：trigger schema 没 sample 到带 heart_rate 的 payload，validator 找不到字段定义。**解法**：要么刷新 trigger sample（需要 UI click），要么用静态值 / 索引访问 `.last.Data.first.Avg`
-13. **Workato Versions 回退是救命稻草**：搞坏 recipe 后，Versions 标签 → 选版本 → "恢复此版本" → "是" 能回滚到干净状态。今晚用了 2 次
-14. **Twilio Custom action 手动设置流程**：Manual setup → 填 Action name / Method=POST / Path=`/2010-04-01/Accounts/<SID>/Messages.json` / Request type=urlencoded / Response type=json → 在 "JSON sample" 粘 `{"From":"...","To":"...","Body":"..."}` → 点"使用 JSON" → "下一个" → "生成模式" → 出现 From/To/Body 字段 → 填
-
-### Recipe 1 当前结构
-
-| Step | Action | 用途 |
+| Layer | What it is | Ripple components |
 |---|---|---|
-| 1 | Trigger: Ripple-health-data via HTTP webhook | HAE 推送入口 |
-| 2 | Upsert healthlog to Supabase via HTTP | 历史数据入库 |
-| 3 | Twilio Custom action: Send live HR alert | 直接发 WA（hardcoded body 文案） |
+| **1 · Ingestion** | Sensor → connector → spine | Apple Watch + HAE + Discord listener + future Garmin/Calendar |
+| **2 · Processing** | Pre-processor → rule library → ML signals → LLM | Supabase + 53-rule library v2 + Workato recipes + Moonshot LLM |
+| **3 · Communication** | Multi-channel agent surface | WhatsApp + WeChat + Telegram + family-circle + MCP for agents |
+| **Governance overlay** | Per-layer security/privacy/consent | (currently implicit — needs to be explicit in deck) |
 
-### Demo 故事完整版
-
-```
-Apple Watch HR 飙升
-    ↓ HAE 每 3-5 min 推送
-Recipe 1 webhook 触发
-    ├─ Step 2: 写 Supabase healthlog（历史 + baseline）
-    └─ Step 3: Twilio 直接发 WhatsApp alert
-                    ↓
-              你的 iPhone 弹通知
-                    ↓ 你回复
-        Recipe 8 ripple_chat_bot 处理回复
-                    ↓
-        Twilio echo（Plan B 未升级：echo；升级后 = Kimi AI 真对话）
-```
-
-### TODO (可选加强)
-
-- [ ] Recipe 1 step 3 加 IF 阈值过滤避免 spam（HR > 110 才发）
-- [ ] Body 动态插 HR 值 formula（需 refresh trigger schema）
-- [ ] Plan B Kimi chat 升级（Recipe 8，用户 15 min 手粘）
+**Pitch line (TP8 framing)**: "Ripple is not another AI agent. It's the **pre-processed data pipeline** that any agent — Hermes, Cursor, future GPT-N — can plug into. Agents are what everyone's building. The data spine is what's missing."
 
 ---
 
-## 2026-04-20 下午：Recipe 8 Kimi AI chain 跑通 ✅
+## 14-day ship list to 5/22
 
-### 做完了
+**Total budget**: ~45 hours / 14 days = ~3 h/day. Realistic if no scope creep.
 
-Recipe 8 升级完成：**真 Kimi LLM 调用**接入。架构：
+### MUST (blocking the pitch)
 
-```
-Trigger (用户 WA reply via Twilio webhook form-encoded)
-  ↓
-Step 2 HTTP action (连接 Moonshot AI connection)
-  - POST /v1/chat/completions
-  - Body: system prompt + 用户 Body pill
-  - 调 Kimi moonshot-v1-8k → 返回结构化 JSON
-  - Response schema 已配 (choices[0].message.content)
-  ↓
-Step 3 Twilio Custom action (send chat reply)
-  - Body: 静态 "Ripple AI: processed by LLM" ack
-    (注: Kimi reply 提取因 pill path 无法引用 array[0] 暂用静态)
-```
+| # | Task | Hours | Notes |
+|---|---|---|---|
+| 1 | Wire **R006** (sleep+HRV+RHR composite recovery) into Workato as new MCP tool / recipe | ~8 | Easy — signals already flowing |
+| 2 | Wire **R043** (late-night phone use → sleep degradation) joining Discord activity + sleep data | ~12 | Differentiator. Ties Discord listener to rule library. |
+| 3 | Deck rebuild: 3-layer architecture overview + ingestion connectors + processing/rule-library + communication channels + Cursor "why now" + thin business layer | ~10-12 | Per TP8 mentor advice |
+| 4 | Record **R043 + Discord live demo video** (~90s, real data) | ~8 | TP8: "live demo wins, plan fallback" |
+| 5 | **Q&A defense prep** — LLM-as-judge multi-agent diagram + RLHF flywheel + data flywheel moat answer + evidence-base citations | ~5 | Per TP7 + TP8 |
 
-### 新加的 connection
+### STRETCH
 
-- **Moonshot AI** (id 19812)
-  - Auth: Header auth
-  - Authorization: Bearer sk-...
-  - Base URI: api.moonshot.cn
+- [ ] Wire **R048** (6-signal whole-body shift) — only if wrist temperature data flows end-to-end. Verify before committing.
+- [ ] `vercel deploy --prod` of Discord API endpoints (~30 min if no surprise; could go MUST if needed for live demo)
 
-### 新踩坑 15-17
+### EXPLICITLY DROPPED (post-5/22)
 
-15. **HTTP connection 锁 base URL 绕**：用 Twilio Custom action 发 WA（base URI=api.twilio.com 自动符合），或**建新专用 connection**（如 Moonshot AI）。不能在现有 connection 上发外部 URL。
-16. **Workato pill path 不支持数组 integer index**：`["choices", 0, "message", "content"]` → "Invalid path element"。`["choices", "first", ...]` 或 `["choices", "message", ...]` 同样失败。Workato array 访问需走"Repeat for each"或手动拖 pill（JS drag 模拟失败）。**Demo 用静态 ack 绕过**。
-17. **Lookup open session 旧残骸**：Recipe 8 从 Plan B 早期就带的 broken HTTP step（3 敏感数据警告）。Kimi step 加入后原本 tolerated 的 Lookup 变成 hard fail（action_count=0）。**解法**：edit mode 里悬停 Lookup step → kebab menu → Delete。
+- [ ] launchd plist for listener
+- [ ] Calendar / Obsidian context sources (clone the Discord pattern after 5/22)
+- [ ] ML training (locked off — see `ml-strategy-v1.md`)
 
-### Recipe 8 最终结构 (简化)
+---
 
-| Step | Action | 状态 |
+## Critical caveats / corrections
+
+### Team naming
+
+- **Sarah Loke 4/24 official finalist email roster**: Geng Yue · Liu Zicheng · **Chen Yufei**
+- Trailer / website / submission email currently list **"Tommy Chen"** as the third member
+- Tommy Chen is **Geng Yue's English name** (CLAUDE.md §1), NOT a separate teammate
+- **Public-facing artifacts are currently inconsistent with the official roster.** User has not decided whether to fix before 5/22.
+
+### iOS HAE background scheduling unreliable
+
+- Recipe 1 `live_hr_alert_demo` ingest only triggered ~24 times in 30 days; zero after 4/18
+- HealthyApps docs: "Apps are not allowed to access health data while iPhone is locked"
+- iOS background scheduler decides actual run frequency, not the app's UI setting
+- Implication for 5/22 demo: **don't rely on live HAE during the pitch**. Use curl simulator with pre-canned data, or live demo with phone unlocked + charging.
+
+### Workato CodeMirror not standard CM
+
+- JS `setValue` writes to preview, but Angular form binding doesn't pick it up — values revert on blur
+- Only reliable path: focus → user paste (Cmd+V) → Tab
+- Implication: don't try to script Workato form changes; do them by hand
+
+### Workato trial account quota
+
+- Endpoint URLs include `.trial.` — month task limit unknown
+- Agent-loop architecture (if pursued) could burn ~30 tasks per trigger × 50/day = 1500/day → maybe 3 days to exhaust monthly quota
+- **Mentor question for any post-5/22 Option A pursuit**: get the actual cap and the upgrade path
+
+### Hackathon ≠ VC pitch
+
+- 5/22 is a hackathon. Don't dwell on FDA liability / actuarial-grade evidence / long-term moat / copycat risk.
+- Those are post-5/22 questions if Ripple continues.
+- Mentors confirmed: judges grade idea > tech depth, end-to-end live demo > slides, thin business layer (small evaluation weight).
+
+---
+
+## Behavioral hints for next Claude session
+
+Per CLAUDE.md §3 (architecture-advisor framing):
+
+- Don't generate code unless explicitly asked
+- Don't propose "spike a quick test" — user has explicitly opposed (CLAUDE.md §8 [2026-05-04])
+- Don't propose ML training before 5/22 (locked off)
+- Be honest, not flattering — if the deck/architecture has a real problem, say so
+- TP7's "one scenario, you fighting in time" applies to Claude too: don't try to fix everything; help the user pick the strongest demo and own it
+- The architecture is **shipped and stable**. The work in the next 14 days is **deck + demo rehearsal + Q&A prep**, not building new infrastructure.
+
+---
+
+## Open infra (running)
+
+| Service | Where | Status |
 |---|---|---|
-| 1 | Trigger: Ripple-chat-reply webhook | ✅ |
-| 2 | HTTP to Moonshot AI (`/v1/chat/completions`) | ✅ 真 Kimi |
-| 3 | Twilio Send chat reply (static ack) | ✅ |
+| Discord listener | Mac Mini, `~/Desktop/Toffeemoon Design System/scripts/discord-listener/listener.mjs` | PID 48771 (+ child 98047) — verified 2026-05-08 |
+| Listener log | `~/Desktop/Toffeemoon Design System/scripts/discord-listener/data/listener.log` | Heartbeat every 10 min |
+| Vite dev | localhost:5173 | Provides 3 Discord API endpoints (not yet prod) |
+| Workato MCP | `https://1720.apim.mcp.trial.workato.com/` | 4 tools live |
+| Supabase | hosted | Persistent state for healthlog + Discord tables |
+| Cloudflare tunnel | maybe started earlier | Status unknown — check before assuming dead |
 
-### Demo 叙事可讲的点
+**Listener restart commands**:
 
-- "Workato orchestrates Kimi LLM in the chat loop"
-- "User's WA reply triggers a real moonshot-v1-8k call with structured JSON prompt"
-- "Response can be logged to Supabase (未来扩展) / analyzed for context tags"
-- 实际 reply 展示用 echo 或 ack，说 "production 版会插 Kimi content pill 进 Twilio body" — 这是合理的 trade-off 叙事，因为 Workato UI 对嵌套数组 pill 的限制
+```bash
+pgrep -af discord-listener                       # check
+pkill -f discord-listener                        # stop
+cd "/Users/gengyue/Desktop/Toffeemoon Design System" \
+  && (nohup node scripts/discord-listener/listener.mjs > /dev/null 2>&1 &)
+tail -f "/Users/gengyue/Desktop/Toffeemoon Design System/scripts/discord-listener/data/listener.log"
+```
 
+Mac restart loses the listener (no launchd plist yet — by-design dropped from 14-day budget).
+
+---
+
+## Key dates
+
+| Date | Event |
+|---|---|
+| 2026-04-25 | Finalist email |
+| 2026-05-08 (Fri) | TP7 (Colin) + TP8 (Workato/business) mentorship — **DONE** |
+| 2026-05-09 → 2026-05-21 | 14-day build / rehearse |
+| **2026-05-22 (Fri)** | **NAISC Workato Track final pitch** |
+
+---
+
+## Related project memories in CLAUDE.md §8
+
+- `[2026-05-08] mentorship: TP7 + TP8 综合`
+- `[2026-05-08] decision: 14-day ship list locked`
+- `[2026-05-08] asset: Ripple rule library v2`
+- `[2026-05-08] project: NAISC mentor 录音转录入库` (transcripts in Obsidian)
+- `[2026-05-04]` cluster: MCP-as-decoupling, Lanyard, Discord history, hackathon-vs-funding correction, NAISC team naming, Discord listener PID
+- `[2026-04-19/20]` cluster: Plan B Kimi attempt, Workato CodeMirror reality, two-way chat shipped

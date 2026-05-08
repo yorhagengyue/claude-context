@@ -1,0 +1,562 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ripple · Architecture · NAISC 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper:        #f5f1e6;
+    --paper-2:      #ebe5d3;
+    --ink:          #1a1a1a;
+    --ink-2:        #3d3a32;
+    --ink-3:        #6c6759;
+    --ink-4:        #a39e8f;
+    --vermilion:    #c8472d;
+    --serif: 'Cormorant Garamond', Georgia, serif;
+    --sans:  'Inter', -apple-system, sans-serif;
+    --mono:  'JetBrains Mono', ui-monospace, monospace;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-weight: 400;
+    line-height: 1.5;
+    font-size: 14px;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  .page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 72px 56px 96px;
+  }
+
+  .top {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 64px;
+    align-items: end;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--ink);
+    margin-bottom: 48px;
+  }
+  .kicker {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.34em;
+    text-transform: uppercase;
+    color: var(--vermilion);
+    margin-bottom: 18px;
+  }
+  h1 {
+    font-family: var(--serif);
+    font-size: 76px;
+    font-weight: 500;
+    line-height: 0.94;
+    letter-spacing: -0.03em;
+    margin: 0 0 14px;
+  }
+  h1 em { font-style: italic; color: var(--vermilion); font-weight: 500; }
+  .lede {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 22px;
+    color: var(--ink-2);
+    line-height: 1.4;
+    max-width: 640px;
+  }
+  .meta {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    line-height: 2;
+    text-align: right;
+  }
+  .meta b { color: var(--ink); font-weight: 500; }
+
+  .diagram-wrap { margin: 32px 0 56px; }
+  .diagram-wrap svg { width: 100%; height: auto; display: block; }
+
+  .layer-notes {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--ink);
+    padding-top: 32px;
+  }
+  .layer-notes > div { padding-right: 32px; }
+  .layer-notes > div + div {
+    padding-left: 32px;
+    border-left: 1px solid var(--paper-2);
+  }
+  .layer-notes h3 {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--vermilion);
+    margin: 0 0 14px;
+    font-weight: 600;
+  }
+  .layer-notes h4 {
+    font-family: var(--serif);
+    font-size: 26px;
+    font-weight: 500;
+    line-height: 1.1;
+    letter-spacing: -0.012em;
+    margin: 0 0 14px;
+    color: var(--ink);
+  }
+  .layer-notes h4 em { font-style: italic; color: var(--vermilion); }
+  .layer-notes p {
+    font-size: 13px;
+    color: var(--ink-2);
+    line-height: 1.55;
+    margin: 0 0 10px;
+  }
+  .layer-notes p:last-child { margin-bottom: 0; }
+  .layer-notes code {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--vermilion);
+    background: transparent;
+  }
+
+  .foot {
+    margin-top: 72px;
+    padding-top: 24px;
+    border-top: 1px solid var(--ink);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 24px;
+    align-items: end;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+  .foot .l { line-height: 2; }
+  .foot .l b { color: var(--ink); font-weight: 500; }
+  .foot .r { text-align: right; line-height: 2; color: var(--ink-4); }
+  .foot .r b { color: var(--ink); font-weight: 500; }
+
+  @media print {
+    body { background: white; }
+    .page { padding: 30px; max-width: none; }
+    h1 { font-size: 56px; }
+  }
+  @media (max-width: 900px) {
+    .page { padding: 32px 20px 48px; }
+    .top { grid-template-columns: 1fr; }
+    .meta { text-align: left; }
+    h1 { font-size: 52px; }
+    .layer-notes { grid-template-columns: 1fr; }
+    .layer-notes > div + div { padding-left: 0; border-left: 0; padding-top: 24px; border-top: 1px solid var(--paper-2); margin-top: 24px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="top">
+    <div>
+      <div class="kicker">System Architecture · v2 · 2026-05-08</div>
+      <h1>Ripple<em>.</em></h1>
+      <p class="lede">One spine. Many surfaces. A pre-processed wellness data pipeline any model can plug into.</p>
+    </div>
+    <div class="meta">
+      <div><b>Track</b> · NAISC 2026 · Workato</div>
+      <div><b>Team</b> · Geng Yue · Liu Zicheng · Chen Yufei</div>
+      <div><b>Pitch</b> · 22 May 2026</div>
+    </div>
+  </header>
+
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 1080 1980" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ripple system architecture">
+
+      <defs>
+        <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#1a1a1a"/>
+        </marker>
+        <marker id="arrow-v" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#c8472d"/>
+        </marker>
+        <marker id="arrow-mute" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#6c6759"/>
+        </marker>
+      </defs>
+
+      <style>
+        .layer-tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.28em; fill: #c8472d; font-weight: 600; }
+        .layer-name { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-style: italic; fill: #1a1a1a; }
+        .plane-tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.32em; fill: #1a1a1a; font-weight: 600; }
+        .plane-sub { font-family: 'Inter', sans-serif; font-size: 10px; fill: #6c6759; }
+        .node-num { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.18em; fill: #c8472d; font-weight: 600; }
+        .node-label { font-family: 'JetBrains Mono', monospace; font-size: 12px; fill: #1a1a1a; font-weight: 500; }
+        .node-sub { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; fill: #6c6759; letter-spacing: 0.04em; }
+        .node-em { font-family: 'JetBrains Mono', monospace; font-size: 12px; fill: #c8472d; font-weight: 600; }
+        .citation { font-family: 'JetBrains Mono', monospace; font-size: 9px; fill: #c8472d; letter-spacing: 0.04em; font-style: italic; }
+        .flow-label { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.2em; fill: #6c6759; text-transform: uppercase; }
+        .gov-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; fill: #1a1a1a; }
+        .gov-em { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.28em; fill: #c8472d; font-weight: 600; }
+        .small-mono { font-family: 'JetBrains Mono', monospace; font-size: 10px; fill: #1a1a1a; }
+        .feedback-label { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.18em; fill: #c8472d; font-weight: 500; }
+      </style>
+
+      <!-- ═════════ GOVERNANCE TOP BAND ═════════ -->
+      <g>
+        <line x1="0" y1="36" x2="1080" y2="36" stroke="#1a1a1a" stroke-width="0.6"/>
+        <line x1="0" y1="74" x2="1080" y2="74" stroke="#1a1a1a" stroke-width="0.6"/>
+        <text x="20" y="60" class="gov-em">GOVERNANCE</text>
+        <text x="160" y="60" class="gov-label">consent</text>
+        <text x="240" y="60" class="gov-label">·  audit (recipe = data-use agreement)</text>
+        <text x="500" y="60" class="gov-label">·  encryption</text>
+        <text x="600" y="60" class="gov-label">·  access control</text>
+        <text x="730" y="60" class="gov-label">·  evidence URL per rule</text>
+        <text x="900" y="60" class="gov-label">·  user-deletable</text>
+        <text x="1060" y="60" class="gov-label" text-anchor="end" fill="#a39e8f">┃ wraps all 3 layers</text>
+      </g>
+
+      <!-- ═════════ LAYER 01 · INGESTION ═════════ -->
+      <g transform="translate(0,120)">
+        <text x="20" y="0" class="layer-tag">LAYER 01</text>
+        <text x="120" y="2" class="layer-name">Ingestion</text>
+        <text x="1060" y="0" class="flow-label" text-anchor="end">capturing the body's signal</text>
+
+        <g transform="translate(40,30)">
+          <rect width="200" height="64" fill="none" stroke="#1a1a1a" stroke-width="1"/>
+          <text x="14" y="22" class="node-label">Apple Watch</text>
+          <text x="14" y="40" class="node-sub">HR · HRV · RHR · sleep</text>
+          <text x="14" y="54" class="node-sub">steps · VO₂max · wrist temp</text>
+        </g>
+        <g transform="translate(280,30)">
+          <rect width="200" height="64" fill="none" stroke="#1a1a1a" stroke-width="1"/>
+          <text x="14" y="22" class="node-label">Health Auto Export</text>
+          <text x="14" y="40" class="node-sub">iOS app · HealthKit → JSON</text>
+          <text x="14" y="54" class="node-sub">over HTTPS · no SDK needed</text>
+        </g>
+        <g transform="translate(520,30)">
+          <rect width="200" height="64" fill="none" stroke="#1a1a1a" stroke-width="1"/>
+          <text x="14" y="22" class="node-label">Discord presence</text>
+          <text x="14" y="40" class="node-sub">Lanyard WSS · Node listener</text>
+          <text x="14" y="54" class="node-sub">gaming · activity · ≤ 15s</text>
+        </g>
+        <g transform="translate(760,30)">
+          <rect width="280" height="64" fill="none" stroke="#1a1a1a" stroke-width="1" stroke-dasharray="4 3"/>
+          <text x="14" y="22" class="node-label">Future connectors</text>
+          <text x="14" y="40" class="node-sub">blood pressure · smart scale</text>
+          <text x="14" y="54" class="node-sub">ECG patch · calendar · same schema</text>
+        </g>
+
+        <line x1="140" y1="94" x2="140" y2="130" stroke="#1a1a1a" stroke-width="1"/>
+        <line x1="380" y1="94" x2="380" y2="130" stroke="#1a1a1a" stroke-width="1"/>
+        <line x1="620" y1="94" x2="620" y2="130" stroke="#1a1a1a" stroke-width="1"/>
+        <line x1="900" y1="94" x2="900" y2="130" stroke="#1a1a1a" stroke-width="1"/>
+        <line x1="140" y1="130" x2="900" y2="130" stroke="#1a1a1a" stroke-width="1"/>
+        <line x1="540" y1="130" x2="540" y2="160" stroke="#c8472d" stroke-width="1.4" marker-end="url(#arrow-v)"/>
+
+        <g transform="translate(360,168)">
+          <rect width="360" height="56" fill="#1a1a1a"/>
+          <text x="20" y="22" class="node-label" fill="#f5f1e6">Workato webhook  ·  ingest recipes</text>
+          <text x="20" y="42" class="node-sub" fill="#a39e8f">9 canonical metrics per push  ·  upsert on (user, metric, ts)</text>
+          <rect x="300" y="14" width="48" height="18" fill="none" stroke="#c8472d" stroke-width="0.8"/>
+          <text x="324" y="27" class="gov-em" fill="#c8472d" text-anchor="middle">LIVE</text>
+        </g>
+      </g>
+
+      <!-- Layer 1 → Layer 2 -->
+      <g transform="translate(540,402)">
+        <line x1="0" y1="0" x2="0" y2="38" stroke="#c8472d" stroke-width="1.4" marker-end="url(#arrow-v)"/>
+        <text x="14" y="24" class="flow-label">canonical schema</text>
+      </g>
+
+      <!-- ═════════ LAYER 02 · PROCESSING (EXPANDED) ═════════ -->
+      <g transform="translate(0,460)">
+        <text x="20" y="0" class="layer-tag">LAYER 02</text>
+        <text x="120" y="2" class="layer-name">Processing</text>
+        <text x="1060" y="0" class="flow-label" text-anchor="end">two parallel planes  ·  same Workato platform</text>
+
+        <!-- Plane headers (column tags) -->
+        <g transform="translate(0,28)">
+          <text x="40" y="14" class="plane-tag">DATA  PLANE</text>
+          <text x="40" y="30" class="plane-sub">deterministic  ·  no LLM</text>
+          <text x="560" y="14" class="plane-tag">REASONING  PLANE</text>
+          <text x="560" y="30" class="plane-sub">LLM-touched  ·  governed by recipes</text>
+          <!-- Vertical hairline divider between planes -->
+          <line x1="540" y1="6" x2="540" y2="540" stroke="#a39e8f" stroke-width="0.5" stroke-dasharray="2 4"/>
+        </g>
+
+        <!-- ─── DATA PLANE (LEFT) ─── -->
+        <!-- Step 1 · Curation filter -->
+        <g transform="translate(40,68)">
+          <rect width="460" height="72" fill="none" stroke="#1a1a1a" stroke-width="1"/>
+          <text x="14" y="20" class="node-num">① CURATION FILTER</text>
+          <text x="14" y="42" class="node-label">80 / 20 — drop noise, keep signal-bearing fields</text>
+          <text x="14" y="60" class="node-sub">strip metadata · dedupe · enforce canonical schema before storage</text>
+        </g>
+        <line x1="270" y1="140" x2="270" y2="160" stroke="#1a1a1a" stroke-width="1" marker-end="url(#arrow)"/>
+
+        <!-- Step 2 · Personal baseline -->
+        <g transform="translate(40,162)">
+          <rect width="460" height="72" fill="none" stroke="#1a1a1a" stroke-width="1"/>
+          <text x="14" y="20" class="node-num">② PERSONAL BASELINE</text>
+          <text x="14" y="42" class="node-label">7-day rolling vs 30-day baseline</text>
+          <text x="14" y="60" class="node-sub">z-score · percentile · pure stats — every user becomes their own normal</text>
+        </g>
+        <line x1="270" y1="234" x2="270" y2="254" stroke="#1a1a1a" stroke-width="1" marker-end="url(#arrow)"/>
+
+        <!-- Step 3 · Storage (Supabase + context store) -->
+        <g transform="translate(40,256)">
+          <rect width="460" height="92" fill="none" stroke="#1a1a1a" stroke-width="1"/>
+          <text x="14" y="20" class="node-num">③ STORAGE</text>
+          <text x="14" y="42" class="node-label">Supabase  ·  append-only  ·  row-level security</text>
+          <text x="14" y="60" class="node-sub">healthlog  ·  discord_sessions  ·  alert_sessions  ·  baselines</text>
+          <text x="14" y="80" class="node-sub" fill="#c8472d">+ context store  ↳  user-tagged events &amp; conversations  ·  sub-agent memory</text>
+        </g>
+
+        <!-- ─── REASONING PLANE (RIGHT) ─── -->
+        <!-- Step 4 · Rule evaluator (with academic citations callout) -->
+        <g transform="translate(560,68)">
+          <rect width="460" height="92" fill="none" stroke="#1a1a1a" stroke-width="1"/>
+          <text x="14" y="20" class="node-num">④ RULE  EVALUATOR</text>
+          <text x="14" y="42" class="node-label">53-rule library v2  ·  11 categories</text>
+          <text x="14" y="60" class="node-sub">acute strain · daily recovery · training · circadian · digital wellbeing · …</text>
+          <line x1="14" y1="69" x2="446" y2="69" stroke="#c8472d" stroke-width="0.4" stroke-dasharray="2 2"/>
+          <text x="14" y="84" class="citation">grounded in:  Koch 2019 HRV  ·  Chalmers 2014 anxiety  ·  Apple Vitals  ·  NUS HSS isolation matrix</text>
+        </g>
+        <line x1="790" y1="160" x2="790" y2="180" stroke="#1a1a1a" stroke-width="1" marker-end="url(#arrow)"/>
+
+        <!-- Step 5 · Multi-source disambiguator -->
+        <g transform="translate(560,182)">
+          <rect width="460" height="72" fill="none" stroke="#1a1a1a" stroke-width="1"/>
+          <text x="14" y="20" class="node-num">⑤ MULTI-SOURCE  DISAMBIGUATOR</text>
+          <text x="14" y="42" class="node-label">resolve "running vs gaming vs panic"</text>
+          <text x="14" y="60" class="node-sub">HR + GPS pace + Discord activity + Calendar — context resolves the signal</text>
+        </g>
+        <line x1="790" y1="254" x2="790" y2="274" stroke="#1a1a1a" stroke-width="1" marker-end="url(#arrow)"/>
+
+        <!-- Step 6 · Multi-agent chain -->
+        <g transform="translate(560,276)">
+          <rect width="460" height="92" fill="none" stroke="#1a1a1a" stroke-width="1"/>
+          <text x="14" y="20" class="node-num">⑥ MULTI-AGENT  CHAIN  ·  Q&amp;A defense</text>
+          <text x="14" y="40" class="node-sub">short · low-temp · low-cost  →  layered to reduce hallucination</text>
+
+          <!-- A1 → A2 → A3 sub-flow -->
+          <g transform="translate(14,52)">
+            <rect width="130" height="32" fill="none" stroke="#6c6759" stroke-width="0.8"/>
+            <text x="65" y="20" class="small-mono" text-anchor="middle">A1 · process</text>
+            <line x1="130" y1="16" x2="158" y2="16" stroke="#6c6759" stroke-width="0.8" marker-end="url(#arrow-mute)"/>
+            <rect x="158" width="130" height="32" fill="none" stroke="#6c6759" stroke-width="0.8"/>
+            <text x="223" y="20" class="small-mono" text-anchor="middle">A2 · validate</text>
+            <line x1="288" y1="16" x2="316" y2="16" stroke="#6c6759" stroke-width="0.8" marker-end="url(#arrow-mute)"/>
+            <rect x="316" width="116" height="32" fill="none" stroke="#6c6759" stroke-width="0.8"/>
+            <text x="374" y="20" class="small-mono" text-anchor="middle">A3 · communicate</text>
+          </g>
+        </g>
+
+        <!-- Convergence: both planes → MCP server -->
+        <!-- Left line down -->
+        <line x1="270" y1="348" x2="270" y2="394" stroke="#1a1a1a" stroke-width="1"/>
+        <!-- Right line down -->
+        <line x1="790" y1="368" x2="790" y2="394" stroke="#1a1a1a" stroke-width="1"/>
+        <!-- Horizontal join -->
+        <line x1="270" y1="394" x2="790" y2="394" stroke="#1a1a1a" stroke-width="1"/>
+        <!-- Down arrow to MCP -->
+        <line x1="540" y1="394" x2="540" y2="416" stroke="#c8472d" stroke-width="1.4" marker-end="url(#arrow-v)"/>
+        <text x="552" y="410" class="flow-label">data + reasoning  →  expose</text>
+
+        <!-- MCP server hub -->
+        <g transform="translate(280,418)">
+          <rect width="520" height="62" fill="#1a1a1a"/>
+          <text x="22" y="24" class="node-label" fill="#f5f1e6">Workato MCP server</text>
+          <text x="22" y="44" class="node-sub" fill="#a39e8f">https://1720.apim.mcp.trial.workato.com/  ·  recipes-as-tools  ·  one remote URL</text>
+          <rect x="448" y="20" width="58" height="20" fill="none" stroke="#c8472d" stroke-width="0.8"/>
+          <text x="477" y="34" class="gov-em" fill="#c8472d" text-anchor="middle">4 + 𝑛</text>
+        </g>
+
+        <!-- Tool fanout -->
+        <g transform="translate(0,492)">
+          <line x1="540" y1="0" x2="540" y2="14" stroke="#1a1a1a" stroke-width="1"/>
+          <line x1="160" y1="14" x2="920" y2="14" stroke="#1a1a1a" stroke-width="1"/>
+          <line x1="160" y1="14" x2="160" y2="32" stroke="#1a1a1a" stroke-width="1" marker-end="url(#arrow)"/>
+          <line x1="412" y1="14" x2="412" y2="32" stroke="#1a1a1a" stroke-width="1" marker-end="url(#arrow)"/>
+          <line x1="668" y1="14" x2="668" y2="32" stroke="#1a1a1a" stroke-width="1" marker-end="url(#arrow)"/>
+          <line x1="920" y1="14" x2="920" y2="32" stroke="#1a1a1a" stroke-width="1" marker-end="url(#arrow)"/>
+        </g>
+        <g transform="translate(0,534)">
+          <g transform="translate(60,0)">
+            <rect width="200" height="56" fill="none" stroke="#1a1a1a" stroke-width="1"/>
+            <line x1="0" y1="0" x2="0" y2="56" stroke="#c8472d" stroke-width="2"/>
+            <text x="14" y="22" class="small-mono">get_current_vitals</text>
+            <text x="14" y="40" class="node-sub">latest sample / metric</text>
+          </g>
+          <g transform="translate(312,0)">
+            <rect width="200" height="56" fill="none" stroke="#1a1a1a" stroke-width="1"/>
+            <line x1="0" y1="0" x2="0" y2="56" stroke="#c8472d" stroke-width="2"/>
+            <text x="14" y="22" class="small-mono">get_baseline_deviation</text>
+            <text x="14" y="40" class="node-sub">z-score vs personal baseline</text>
+          </g>
+          <g transform="translate(568,0)">
+            <rect width="200" height="56" fill="none" stroke="#1a1a1a" stroke-width="1"/>
+            <line x1="0" y1="0" x2="0" y2="56" stroke="#c8472d" stroke-width="2"/>
+            <text x="14" y="22" class="small-mono">get_recent_anomaly_log</text>
+            <text x="14" y="40" class="node-sub">events beyond 1.5σ</text>
+          </g>
+          <g transform="translate(820,0)">
+            <rect width="200" height="56" fill="none" stroke="#1a1a1a" stroke-width="1"/>
+            <line x1="0" y1="0" x2="0" y2="56" stroke="#c8472d" stroke-width="2"/>
+            <text x="14" y="22" class="small-mono">send_contextual_nudge</text>
+            <text x="14" y="40" class="node-sub">route → user channel</text>
+          </g>
+        </g>
+      </g>
+
+      <!-- Layer 2 → Layer 3 -->
+      <g transform="translate(540,1106)">
+        <line x1="0" y1="0" x2="0" y2="38" stroke="#c8472d" stroke-width="1.4" marker-end="url(#arrow-v)"/>
+        <text x="14" y="24" class="flow-label">structured tool output</text>
+      </g>
+
+      <!-- ═════════ LAYER 03 · COMMUNICATION ═════════ -->
+      <g transform="translate(0,1166)">
+        <text x="20" y="0" class="layer-tag">LAYER 03</text>
+        <text x="120" y="2" class="layer-name">Communication</text>
+        <text x="1060" y="0" class="flow-label" text-anchor="end">dual surface  ·  agents consume  ·  humans receive</text>
+
+        <!-- Split fan-out -->
+        <g transform="translate(0,32)">
+          <line x1="540" y1="0" x2="540" y2="14" stroke="#1a1a1a" stroke-width="1"/>
+          <line x1="200" y1="14" x2="880" y2="14" stroke="#1a1a1a" stroke-width="1"/>
+          <line x1="200" y1="14" x2="200" y2="34" stroke="#1a1a1a" stroke-width="1" marker-end="url(#arrow)"/>
+          <line x1="880" y1="14" x2="880" y2="34" stroke="#1a1a1a" stroke-width="1" marker-end="url(#arrow)"/>
+        </g>
+
+        <!-- Left column: AI clients -->
+        <g transform="translate(40,76)">
+          <text x="0" y="0" class="layer-tag">// AI CLIENTS  ·  consume tools</text>
+          <g transform="translate(0,18)">
+            <rect width="320" height="44" fill="none" stroke="#1a1a1a" stroke-width="1"/>
+            <text x="14" y="20" class="node-label">Claude Desktop</text>
+            <text x="14" y="36" class="node-sub">MCP-native  ·  primary demo target</text>
+          </g>
+          <g transform="translate(0,72)">
+            <rect width="320" height="44" fill="none" stroke="#1a1a1a" stroke-width="1"/>
+            <text x="14" y="20" class="node-label">Codex  ·  Cursor</text>
+            <text x="14" y="36" class="node-sub">developer agents  ·  MCP plug-in</text>
+          </g>
+          <g transform="translate(0,126)">
+            <rect width="320" height="44" fill="none" stroke="#1a1a1a" stroke-width="1"/>
+            <text x="14" y="20" class="node-label">In-house LLMs</text>
+            <text x="14" y="36" class="node-sub">enterprise BYO-model  ·  privacy / compliance</text>
+          </g>
+          <g transform="translate(0,180)">
+            <rect width="320" height="44" fill="none" stroke="#1a1a1a" stroke-width="1" stroke-dasharray="4 3"/>
+            <text x="14" y="20" class="node-label">Future agents</text>
+            <text x="14" y="36" class="node-sub">whatever comes next  ·  MCP forward-compat</text>
+          </g>
+        </g>
+
+        <!-- Right column: User channels -->
+        <g transform="translate(720,76)">
+          <text x="0" y="0" class="layer-tag">// USER CHANNELS  ·  receive nudge</text>
+          <g transform="translate(0,18)">
+            <rect width="320" height="44" fill="none" stroke="#1a1a1a" stroke-width="1"/>
+            <text x="14" y="20" class="node-label">WhatsApp</text>
+            <text x="14" y="36" class="node-sub">two-way chat  ·  thumbs up/down feedback</text>
+          </g>
+          <g transform="translate(0,72)">
+            <rect width="320" height="44" fill="none" stroke="#1a1a1a" stroke-width="1"/>
+            <text x="14" y="20" class="node-label">WeChat  ·  Telegram</text>
+            <text x="14" y="36" class="node-sub">localized channels  ·  same recipe</text>
+          </g>
+          <g transform="translate(0,126)">
+            <rect width="320" height="44" fill="none" stroke="#1a1a1a" stroke-width="1"/>
+            <text x="14" y="20" class="node-label">Family Circle  <tspan class="node-em" fill="#b38947">P2</tspan></text>
+            <text x="14" y="36" class="node-sub">shared outcome view  ·  community lock-in</text>
+          </g>
+          <g transform="translate(0,180)">
+            <rect width="320" height="44" fill="none" stroke="#1a1a1a" stroke-width="1" stroke-dasharray="4 3"/>
+            <text x="14" y="20" class="node-label">Wearable haptic  <tspan class="node-em" fill="#b38947">P2</tspan></text>
+            <text x="14" y="36" class="node-sub">on-watch tap  ·  zero-friction nudge</text>
+          </g>
+        </g>
+      </g>
+
+      <!-- ═════════ RLHF FEEDBACK LOOP ═════════ -->
+      <!-- From Layer 3 right column (user channels) curving up to Layer 2 right column (rule evaluator) -->
+      <g>
+        <path d="M 1040 1280  C 1080 1280, 1080 800, 1080 540  C 1080 480, 1040 460, 1020 460"
+              fill="none"
+              stroke="#c8472d"
+              stroke-width="0.9"
+              stroke-dasharray="3 4"
+              marker-end="url(#arrow-v)"/>
+        <text x="1062" y="900" class="feedback-label" text-anchor="end">↻  RLHF</text>
+        <text x="1062" y="916" class="feedback-label" text-anchor="end">FEEDBACK</text>
+        <text x="1062" y="932" class="feedback-label" text-anchor="end">LOOP</text>
+        <text x="1062" y="956" class="flow-label" text-anchor="end" fill="#c8472d">user thumbs</text>
+        <text x="1062" y="970" class="flow-label" text-anchor="end" fill="#c8472d">→ rule lib</text>
+      </g>
+
+      <!-- ═════════ GOVERNANCE BOTTOM BAND ═════════ -->
+      <g transform="translate(0,1500)">
+        <line x1="0" y1="0" x2="1080" y2="0" stroke="#1a1a1a" stroke-width="0.6"/>
+        <line x1="0" y1="38" x2="1080" y2="38" stroke="#1a1a1a" stroke-width="0.6"/>
+        <text x="20" y="24" class="gov-em">GOVERNANCE</text>
+        <text x="160" y="24" class="gov-label">recipe = audit trail</text>
+        <text x="320" y="24" class="gov-label">·  PII never crosses MCP boundary</text>
+        <text x="600" y="24" class="gov-label">·  evidence-based confidence per rule</text>
+        <text x="900" y="24" class="gov-label">·  user can delete</text>
+      </g>
+
+    </svg>
+  </div>
+
+  <!-- 3 layer notes (concise) -->
+  <div class="layer-notes">
+    <div>
+      <h3>LAYER 01</h3>
+      <h4><em>Ingestion</em></h4>
+      <p>Source-agnostic. Every connector writes into the same canonical schema, so adding a blood-pressure cuff or smart scale is a recipe, not a redesign.</p>
+      <p>Today: Apple Watch via HAE + Discord presence via Lanyard. Tomorrow: any HTTPS-capable device.</p>
+    </div>
+    <div>
+      <h3>LAYER 02</h3>
+      <h4><em>Processing</em></h4>
+      <p>Two parallel planes on the same Workato platform. <b>Data plane</b> is deterministic (curate · baseline · store). <b>Reasoning plane</b> is LLM-touched (rules · disambiguation · multi-agent chain).</p>
+      <p>Both converge into one MCP server. <code>Pattern D · RAG.</code> No model training before pitch. Rule confidence cited to peer-reviewed evidence.</p>
+    </div>
+    <div>
+      <h3>LAYER 03</h3>
+      <h4><em>Communication</em></h4>
+      <p>Dual surface. AI clients consume tools through MCP. Humans receive nudges in their own channel — WhatsApp, WeChat, Telegram, family circle.</p>
+      <p>Thumbs up / down on every output flows back as RLHF signal into the rule evaluator — closing the data flywheel.</p>
+    </div>
+  </div>
+
+  <footer class="foot">
+    <div class="l">
+      <div><b>Sources</b> — TP7 (Ester Goh) baseline + 80/20 + RLHF + academic frameworks  ·  TP8 (Colin Pok) 3-layer + multi-agent + MCP positioning</div>
+      <div><b>Mantra</b> — Build the thing before the model is capable.</div>
+    </div>
+    <div class="r">
+      <div><b>Ripple</b> · 2026</div>
+      <div>Architecture diagram v2</div>
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>

@@ -2,7 +2,7 @@
 
 > **用途**：每次新会话开始时，Claude 自动读取本文件。这是整个 harness 系统的入口。
 > **维护**：§0 和 §1-7 由用户维护，§8 由 memory skill 自动追加。
-> **最后更新**：2026-04-17
+> **最后更新**：2026-05-08（mentor 综合 + 14-day ship list + rule library v2）
 
 ---
 
@@ -205,7 +205,7 @@ Claude 的角色更接近一个 CTO 顾问——不写代码，但负责审查�
 
 | 项目 | 状态 | 一句话 | 详情 |
 |------|------|--------|------|
-| **Ripple (NAISC Workato)** | 技术完成，剩录 demo + 发邮件 | Workato orchestrated real-time wellness agent，WhatsApp 两向 chat | → [NAISC.md](projects/naisc-workato/NAISC.md) |
+| **Ripple (NAISC Workato)** | 决赛入选 (5/22 pitch)，14 天 ship list | MCP-orchestrated wellness data pipeline · 53-rule evidence library · Discord context fusion · pre-processed data spine（非 agent） | → [NAISC.md](projects/naisc-workato/NAISC.md) |
 | **MoyuanIdea** | 愿景→架构 | AI-native 文化教育系统，三端，正在做技术架构决策 | → [MOYUAN.md](projects/moyuan/MOYUAN.md) |
 | **IFSG** | 进行中 | 企业级财务报表生成器，Angular+Nix+PostgreSQL，4人团队 | 仓库私有 |
 | **TemplateApp** | 架构完成→待 brief | 独立于 IFSG 的通用模板/CSV/RAG 审阅 app，React+Node+docker-compose，单人开发 | → [TEMPLATEAPP.md](projects/templateapp/TEMPLATEAPP.md) |
@@ -249,6 +249,26 @@ Claude 的角色更接近一个 CTO 顾问——不写代码，但负责审查�
 ## 8. 记忆追加区
 
 > 由 memory skill 自动追加，按时间倒序。
+
+### [2026-05-08] mentorship: TP7 (Colin) + TP8 (Workato/business) 双 session 综合
+两位 mentor 答疑后的 distilled action implications：(1) 最大 deck gap = 3-layer architecture diagram（ingestion / processing / communication + governance overlay，macro→micro 叙事）；(2) 评审权重：idea > tech depth；end-to-end live demo > 架构 slide；business 层薄薄一层（"small bit weight"）；(3) Q&A "AI 出错"答辩组合拳——**LLM-as-judge 多 agent 分层**（process→validate→communicate，每层 short prompt + low temp，TP8 mentor 在生产中跑过）做主答；Colin 的 RLHF 反馈飞轮做副答；(4) **Cursor 类比作为 "why now" 最强 pitch line**——build the thing before the model is capable，pipeline ready 后下一代 model 直接 plug in；(5) Ripple 重新定位：**不是 AI agent，而是 pre-processed data pipeline**——任何 agent (Hermes/Cursor/未来 GPT-N) 都可以接，"agents 大家都在做，data spine 没人做"；(6) Colin: **one scenario, you fighting in time**——专注一个 demo 场景做透（gaming + Discord + R043），别铺开；(7) Colin: 借 NUS HSS 既有学术框架（loneliness/isolation/stress measurement matrices）替代自己拍脑门定阈值——这是 credibility play；(8) data flywheel 是 moat 答案——"first 10000 users 就是 the model"。
+**未来涉及任何 hackathon/竞赛 mentor 反馈整合时按此模式**：raw transcript 留 Obsidian、distilled takeaways 进 sub-MD、跨项目可复用的洞察（如 LLM-as-judge / Cursor analogy / data flywheel framing）写 §8。
+→ [NAISC.md](projects/naisc-workato/NAISC.md) · [mentor-takeaways-tp7-tp8.md](projects/naisc-workato/mentor-takeaways-tp7-tp8.md)
+
+### [2026-05-08] decision: NAISC 14-day ship list 锁定（5/8 → 5/22）
+~45h 总预算 / 14 天 ≈ 3h/day。**MUST**: 接 R006（睡眠+HRV+RHR 复合恢复，30s demo）+ R043（深夜手机 → 次日睡眠下降，绑 Discord listener，differentiator）入 Workato；deck 重做 4-5 张新片（3-layer 架构 / ingestion 连接器 / processing+rule library / communication channels / Cursor "why now" / 薄商业层）；录 R043+Discord live demo 视频（90s 真数据）；Q&A 答辩准备（LLM-as-judge 主 + RLHF 副 + data flywheel + evidence-base citations）。**STRETCH**: R048（6-signal whole-body shift，依赖 wrist temperature 数据流通）；prod-deploy 3 个 Discord API endpoint（如果 live demo 需要会升 MUST）。**DROP（5/22 之后）**: launchd plist；Calendar/Obsidian context source 接入；ML 模型训练（locked off）。架构已 shipped & stable，14 天内**不建新基础设施**——只 deck + demo rehearsal + Q&A prep。
+→ [NAISC.md](projects/naisc-workato/NAISC.md) "14-day ship list" 段
+
+### [2026-05-08] asset: Ripple rule library v2 入库
+53 条 evidence-based detection rules / 11 类（acute strain / daily recovery / training / fitness trend / sedentary / mobility / fall / hearing / circadian / digital wellbeing / multi-signal composite），每条带 confidence + 学术/临床来源 URL。Top 10 demo-ready 已预筛。当前接线决策：**R006 必接**（信号都在）+ **R043 必接**（差异化，绑 Discord）+ **R048 拉伸**（依赖 wrist temperature）。其余 ~50 条作为 deck "evidence base" slide 的内容，不全部接线（Workato trial 任务配额扛不住）。**战略意义**：(1) 解决 Colin "借现有学术框架而非自定义阈值" 的 feedback；(2) "evidence base" 单独成 slide，地方上看着可信；(3) 处理层（layer 2 of 3-layer arch）的 backbone。文件位置：`shared/projects/naisc-workato/rule-library/`（v2.xlsx + v1.xlsx 历史版 + visualization HTML + README 索引）。源头是 WeChat 收到，现已脱离 wxchat 容器路径做了 portable copy。
+→ [rule-library/README.md](projects/naisc-workato/rule-library/README.md)
+
+### [2026-05-08] project: NAISC mentor 会议录音转录入库
+5/22 决赛前 mentor 答疑会，2 段录音（TP7 32 min + TP8 35 min = 67 min）已转录并清理 Whisper 幻觉循环（TP7: 994/1054 段保留 + 12 处 ⚠️；TP8: 1362/1477 段 + 21 处 ⚠️），写入 Obsidian `01 - Projects/Workato NAISC/transcripts/`。Whisper small 双语支持差，被强制识别为 zh 概率 1.000；中英切换段落语义有损，需对照 SRT 时间戳读。Mentor 建议初步线索（**未与用户复盘前不当决策依据**）：往 community / family circle 方向改、判定 Ripple 是 product 强 / technology 普通。
+→ [NAISC.md](projects/naisc-workato/NAISC.md) · "## [2026-05-08] Mentor 会议录音 + 转录" 段
+
+### [2026-05-08] insight: Whisper small 在静音/低音量段会强行造句
+TP7/TP8 转录共 33 处 hallucination loop（最长一段 TP8 15:20-16:08 是 45 段 "我认识" 重复）。已确认特征：feature_extractor `RuntimeWarning: divide by zero / overflow / invalid value in matmul` 出现时，对应输出段几乎都是某个短语或字符的密集重复。**未来对真实嘈杂录音转录，必须做后处理折叠**（不是单看转录就信）。已写出 `/tmp/clean_transcript.py`，靠"连续段落主导 2-char ngram >= 30%"+"单段内 2-6 字串重复 >= 3 次且占比 > 50%" 双重判据折叠 — 阈值偏保守，会漏不会错杀，可按需调紧。
 
 ### [2026-05-04] insight: MCP 是 model-LLM 的天然解耦层
 LLM **永远不"读"模型**，LLM 读模型的 structured output。模型对 LLM 来说就是 function call —— 可以是 1 KB 的 logistic regression、70B 参数 fine-tuned LLM、甚至一段 if/else。LLM 看到的只是 `tool_name + input_schema + output_schema`。这意味着 ML 路线对 MCP-based 系统是**零迁移成本**：今天用 z-score baseline，半年后训了 model 把 implementation 换掉，agent 端 / pitch 故事不用改一行。所以"上不上 ML"不是工程问题，是商业 / 阶段问题。这个认知对未来任何 agent + ML 项目都适用。
