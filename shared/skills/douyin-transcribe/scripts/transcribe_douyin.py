@@ -6,7 +6,7 @@ from typing import List, Optional, Tuple
 from urllib.parse import urlparse
 
 import requests
-from faster_whisper import WhisperModel
+import mlx_whisper
 
 
 class QuietYDLLogger:
@@ -36,11 +36,15 @@ def save_txt(path: Path, lines: List[str]) -> None:
 
 
 def save_srt(path: Path, segments) -> None:
+    """Segments may be objects (faster-whisper) or dicts (mlx-whisper)."""
     rows = []
     for idx, seg in enumerate(segments, start=1):
+        start = seg["start"] if isinstance(seg, dict) else seg.start
+        end = seg["end"] if isinstance(seg, dict) else seg.end
+        text = (seg["text"] if isinstance(seg, dict) else seg.text).strip()
         rows.append(str(idx))
-        rows.append(f"{format_timestamp(seg.start)} --> {format_timestamp(seg.end)}")
-        rows.append(seg.text.strip())
+        rows.append(f"{format_timestamp(start)} --> {format_timestamp(end)}")
+        rows.append(text)
         rows.append("")
     path.write_text("\n".join(rows).strip() + "\n", encoding="utf-8")
 
@@ -204,66 +208,95 @@ def build_output_path(args: argparse.Namespace, name_hint: str, is_url: bool) ->
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="简单中文视频转文本工具（支持本地文件/链接）")
-    parser.add_argument("input", help="输入本地视频路径或视频链接（如抖音分享链接）")
+    parser = argparse.ArgumentParser(
+        description="视频/音频转文本（mlx-whisper backend，Apple Silicon GPU 加速；支持本地文件 / 抖音等 URL）"
+    )
+    parser.add_argument("input", help="输入本地视频/音频路径或视频链接（如抖音分享链接）")
     parser.add_argument("-o", "--output", help="输出 txt 路径，默认自动命名", default=None)
     parser.add_argument(
         "--model",
-        help="Whisper 模型：tiny/base/small/medium/large-v3，默认 small",
-        default="small",
+        help="HF 模型仓库名（默认 mlx-community/whisper-small-mlx）。可选 whisper-tiny-mlx / whisper-base-mlx / whisper-medium-mlx / whisper-large-v3-mlx",
+        default="mlx-community/whisper-small-mlx",
     )
     parser.add_argument(
-        "--device",
-        help="运行设备：cpu 或 cuda，默认 cpu",
-        default="cpu",
-        choices=["cpu", "cuda"],
+        "--language",
+        help="强制指定语言（zh / en / ja 等）。默认 None = 自动检测。除非确知单一语种否则别设——TP7/TP8 历史经验：强制 zh 会让英文段被错转中文。",
+        default=None,
     )
     parser.add_argument(
-        "--compute-type",
-        help="计算类型，CPU 推荐 int8，GPU 可用 float16/int8_float16",
-        default="int8",
+        "--condition-on-previous-text",
+        help="是否用前文条件后文（True 会触发幻觉级联）。默认 False。",
+        default="False",
+        choices=["True", "False"],
+    )
+    parser.add_argument(
+        "--hallucination-silence-threshold",
+        type=float,
+        default=1.5,
+        help="静音段阈值（秒），超过则跳过避免在沉默中造句。默认 1.5。",
     )
     parser.add_argument("--srt", help="同时输出字幕 srt 文件", action="store_true")
+    parser.add_argument(
+        "--clean",
+        action="store_true",
+        help="跑完后调用 clean_transcript.py 折叠 Whisper 幻觉循环，输出 *.cleaned.md",
+    )
     parser.add_argument(
         "--cookies-from-browser",
         default=None,
         help="某些受限链接需要浏览器 cookies（可选），如 chrome 或 chrome+basictext",
     )
+    # Backwards-compat shims (silently ignored, kept so old commands don't error):
+    parser.add_argument("--device", default=None, help=argparse.SUPPRESS)
+    parser.add_argument("--compute-type", default=None, help=argparse.SUPPRESS)
     return parser.parse_args()
 
 
 def main() -> None:
+    import subprocess
+    import sys
+
     args = parse_args()
     source, name_hint, is_url = resolve_input_source(args.input, args.cookies_from_browser)
     txt_path = build_output_path(args, name_hint, is_url)
 
-    print("[1/3] 加载模型中...")
-    model = WhisperModel(args.model, device=args.device, compute_type=args.compute_type)
-
     if is_url:
-        print("[2/3] 链接转写中（不落地保存视频）...")
+        print(f"[1/3] 链接转写中（mlx-whisper · {args.model}，不落地保存视频）...")
     else:
-        print("[2/3] 本地文件转写中...")
+        print(f"[1/3] 本地文件转写中（mlx-whisper · {args.model}）...")
 
-    segments, info = model.transcribe(
+    result = mlx_whisper.transcribe(
         source,
-        language="zh",
-        vad_filter=True,
-        beam_size=5,
-        condition_on_previous_text=True,
+        path_or_hf_repo=args.model,
+        language=args.language,
+        condition_on_previous_text=(args.condition_on_previous_text == "True"),
+        hallucination_silence_threshold=args.hallucination_silence_threshold,
+        verbose=False,
     )
-    segments = list(segments)
+    segments = result.get("segments", [])
 
-    txt_lines = [seg.text.strip() for seg in segments if seg.text.strip()]
+    txt_lines = [seg["text"].strip() for seg in segments if seg["text"].strip()]
     save_txt(txt_path, txt_lines)
 
-    print(f"[3/3] 完成。文本已保存: {txt_path}")
-    print(f"检测语言: {info.language}，概率: {info.language_probability:.3f}")
+    print(f"[2/3] 完成。文本已保存: {txt_path}")
+    print(f"检测语言: {result.get('language', '?')}")
 
-    if args.srt:
+    srt_path = None
+    if args.srt or args.clean:
         srt_path = txt_path.with_suffix(".srt")
         save_srt(srt_path, segments)
         print(f"字幕已保存: {srt_path}")
+
+    if args.clean:
+        cleaner = Path(__file__).parent / "clean_transcript.py"
+        cleaned_path = txt_path.with_suffix(".cleaned.md")
+        title = txt_path.stem
+        print(f"[3/3] 折叠幻觉循环 → {cleaned_path}")
+        subprocess.check_call(
+            [sys.executable, str(cleaner), str(srt_path), str(cleaned_path), title]
+        )
+    else:
+        print("[3/3] 跳过幻觉折叠（加 --clean 启用）")
 
 
 if __name__ == "__main__":

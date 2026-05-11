@@ -154,6 +154,15 @@ The same architecture, viewed as judges should see it:
 - Agent-loop architecture (if pursued) could burn ~30 tasks per trigger × 50/day = 1500/day → maybe 3 days to exhaust monthly quota
 - **Mentor question for any post-5/22 Option A pursuit**: get the actual cap and the upgrade path
 
+### ActivityWatch Mac Mini · device name leaks PII in window titles
+
+- Mac mini hostname is currently `gengyuedeMac-mini-3.local` (literal "耿越的Mac mini" device name)
+- AW bucket key embeds hostname: `aw-watcher-window_gengyuedeMac-mini-3.local`
+- Any window title from a network-aware Windows app pointing back at the Mac (e.g. `GameViewer.exe`, remote desktop tools, AirPlay receivers) **will surface the Chinese device name in screen activity data**
+- **For 5/22 deck**: when screenshotting AW dashboard, hide the "Window Titles" panel and show only app + duration columns — title column can leak the device name
+- **For post-5/22 cross-device sync**: rename Mac to a neutral label (e.g. `mac-mini-ripple`). NOT now — the bucket key is referenced in any existing screen-events ingest code path, and the Discord listener may have implicit dependencies on the `.local` hostname
+- Logical `source_host` field in the (future) `screen_sessions` table should be a stable label (`mac-mini` / `gengyue-pc`), decoupled from the OS hostname, so renaming the Mac later doesn't break cross-device aggregation
+
 ### Hackathon ≠ VC pitch
 
 - 5/22 is a hackathon. Don't dwell on FDA liability / actuarial-grade evidence / long-term moat / copycat risk.
