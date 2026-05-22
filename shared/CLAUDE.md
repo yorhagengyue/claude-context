@@ -208,7 +208,7 @@ Claude 的角色更接近一个 CTO 顾问——不写代码，但负责审查�
 | **Ripple (NAISC Workato)** | 决赛入选 (5/22 pitch)，14 天 ship list | MCP-orchestrated wellness data pipeline · 53-rule evidence library · Discord context fusion · pre-processed data spine（非 agent） | → [NAISC.md](projects/naisc-workato/NAISC.md) |
 | **MoyuanIdea** | 愿景→架构 | AI-native 文化教育系统，三端，正在做技术架构决策 | → [MOYUAN.md](projects/moyuan/MOYUAN.md) |
 | **IFSG** | 进行中 | 企业级财务报表生成器，Angular+Nix+PostgreSQL，4人团队 | 仓库私有 |
-| **TemplateApp** | 架构完成→待 brief | 独立于 IFSG 的通用模板/CSV/RAG 审阅 app，React+Node+docker-compose，单人开发 | → [TEMPLATEAPP.md](projects/templateapp/TEMPLATEAPP.md) |
+| **TemplateApp** | 🚨 Pivot 为 agentic AI 论文项目 (5-23) | Frontend 9 屏已 scaffold；Python LangGraph agent service + Node gateway 待建；Linda 邮件要 publishable paper，含 Live Data Binding + LLM-as-Judge 创新点 | → [TEMPLATEAPP.md](projects/templateapp/TEMPLATEAPP.md) / [HANDOFF.md](projects/templateapp/HANDOFF.md) |
 | **SBS Transit** | 进行中（最活跃） | SBS Transit 多仓库项目，Phase2+Webapp+WhisperAPI+GenAI | → vault: SBS Transit - Overview |
 | **Hermes** | 主力 agent 系统 | 替代 YoRHa/Moltbot，集成 Gmail/Calendar/GitHub/Obsidian | → vault: Hermes - Overview |
 | **Slay the Spire 2 AI** | 半成品 | PPO + 遗传超参数进化，离自主打游戏还有距离 | GitHub/slay_the_spire |
@@ -249,6 +249,34 @@ Claude 的角色更接近一个 CTO 顾问——不写代码，但负责审查�
 ## 8. 记忆追加区
 
 > 由 memory skill 自动追加，按时间倒序。
+
+### [2025-05-23] 🚨 project: TemplateApp — Agentic AI Pivot（重大方向转向）
+Linda William 邮件（她 5/13-5/27 离岗中）要求把 TemplateApp 从"通用文档生成器产品"重构成 **publishable agentic AI 研究项目**：既要代码也要论文。两个论文 contribution：**Live Data Binding**（数据变 → 文档自动重生成）+ **LLM-as-Judge**（自动质量门，Fail → 反馈给 Writer 改写）。要研究 LLM-as-Judge 评估技术（criteria × technique × performance × time）并编辑她的 paper draft。
+
+**锁定决策（5/23）**：
+- LangGraph 主框架；CrewAI + LangChain 各做 prototype，论文里写**3 框架对比**
+- LLM 矩阵：Frontier (Opus/GPT-4) + Mid (Sonnet/4o) + Small (Haiku/4o-mini) + Local (Llama 3.2 3B / Qwen 2.5 3B / Phi-3-mini)。**论文写 Cost-Performance Analysis** + Pareto 前沿
+- **ONLYOFFICE 整个扔掉**（不在 agentic loop，weight 不值）。Template 改 upload-only docx
+- **Backend hybrid**：Python FastAPI agent service + Node Express gateway
+- 前端 9 屏保留，加 Agent Timeline 视图，drop localStorage 接真 API
+- 数据绑定用 lazy invalidation + manual refresh，event-driven 留 Phase 2
+- Judge 输出 JSON schema (`pass/score/criteria_breakdown/revision_hints`)
+- 长期项目，无 deadline
+
+**W1 文献综述（5-23 已完成）**：8 个 judge 技术 + 1 个 survey 全部拉真 PDF 抓 Table 数字。关键发现：(1) **AlignScore 355M RoBERTa 反超 GPT-4 on QAGS-XSum**（57.2 vs 53.7）——data consistency 维度最强匹配；(2) **G-Eval 有 LLM-self-preference bias**（自己评高分），论文要 disclose；(3) **FactScore 只测 precision 不测 recall**，不解决 Completeness；(4) **没有单一 technique 覆盖全部 5 维**，paper 推荐 combo（AlignScore + G-Eval/Prometheus 2 + deterministic format check）。结果存在 `vault/01 - Projects/TemplateApp/research/group-{a,b}-judge-techniques.md`。
+
+**跨项目可复用洞察**（同 NAISC 5-08 mentor 反馈共振）：**LLM-as-Judge 多 agent 分层**这套 NAISC 也在用——Process → Validate → Communicate，每层 short prompt + low temp。TemplateApp 这次的实证（哪个 technique 准、哪个便宜）可以直接喂给 NAISC 的 deck Q&A 答辩话术，反之 NAISC 的 production 经验也回流到 TemplateApp 选 judge prompt 模板。
+
+**新建文件**：
+- `~/.claude/plans/eager-humming-crown.md` — 新权威 plan（原 `shimmying-dreaming-naur.md` 部分作废）
+- `vault/01 - Projects/TemplateApp/HANDOFF.md` — 新会话接手用，**极度具体**（时间线/决策表/文件地图/启动步骤/Claude 角色/Linda 待答问题）
+- `vault/01 - Projects/TemplateApp/PIVOT-2025-05-23.md` — 本次 pivot 决策记录
+- claude-context 全镜像（PLAN + HANDOFF + PIVOT + 更新 TEMPLATEAPP.md）
+
+→ sub-MD: [TEMPLATEAPP.md](projects/templateapp/TEMPLATEAPP.md) · [HANDOFF.md](projects/templateapp/HANDOFF.md)
+
+### [2025-05-23] correction: subagent 默认没 WebSearch/WebFetch 权限
+跑 W1 文献综述时启了 2 个 general-purpose subagent 做并行研究，但 subagent 默认拒 WebSearch + WebFetch。用户开了 bypass 后重启 subagent 才正常。下次给 subagent 派"研究"任务时记得：(1) 父 session 的 WebSearch 工具不会自动继承给 subagent；(2) 要么提前确认 bypass，要么父 session 直接做研究不 delegate。
 
 ### [2026-05-08] mentorship: TP7 (Colin) + TP8 (Workato/business) 双 session 综合
 两位 mentor 答疑后的 distilled action implications：(1) 最大 deck gap = 3-layer architecture diagram（ingestion / processing / communication + governance overlay，macro→micro 叙事）；(2) 评审权重：idea > tech depth；end-to-end live demo > 架构 slide；business 层薄薄一层（"small bit weight"）；(3) Q&A "AI 出错"答辩组合拳——**LLM-as-judge 多 agent 分层**（process→validate→communicate，每层 short prompt + low temp，TP8 mentor 在生产中跑过）做主答；Colin 的 RLHF 反馈飞轮做副答；(4) **Cursor 类比作为 "why now" 最强 pitch line**——build the thing before the model is capable，pipeline ready 后下一代 model 直接 plug in；(5) Ripple 重新定位：**不是 AI agent，而是 pre-processed data pipeline**——任何 agent (Hermes/Cursor/未来 GPT-N) 都可以接，"agents 大家都在做，data spine 没人做"；(6) Colin: **one scenario, you fighting in time**——专注一个 demo 场景做透（gaming + Discord + R043），别铺开；(7) Colin: 借 NUS HSS 既有学术框架（loneliness/isolation/stress measurement matrices）替代自己拍脑门定阈值——这是 credibility play；(8) data flywheel 是 moat 答案——"first 10000 users 就是 the model"。
