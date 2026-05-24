@@ -2,7 +2,7 @@
 
 > **用途**：每次新会话开始时，Claude 自动读取本文件。这是整个 harness 系统的入口。
 > **维护**：§0 和 §1-7 由用户维护，§8 由 memory skill 自动追加。
-> **最后更新**：2026-05-08（mentor 综合 + 14-day ship list + rule library v2）
+> **最后更新**：2026-05-25（NAISC 终局 + §3 frame shift + §9 模式系统 + Journal v1 重构 + §8 consolidation）
 
 ---
 
@@ -131,7 +131,7 @@ Obsidian Vault 是三层记忆体系的底层——存放重内容。关系：
 - `02 - Areas/` — 持续领域（Career, Finance, AI-ML, Dev Skills, Culture）
 - `03 - Resources/` — 参考资料
 - `04 - Archive/` — 已结束项目/比赛
-- `05 - Journal/` — 日志（年/月/周/日四层嵌套：`YYYY/MM/W??/YYYY-MM-DD.md`）
+- `05 - Journal/` — **触发式/对话流机制 (v1, 2026-05-25 重构)**：对话产生 sediment 时自动写 entry，`YYYY/MM/YYYY-MM-DD-slug.md`。低门槛自动 = Claude/Hermes 判断"明显重要"时直接写，回复末尾告知。老 daily 模板全部在 `04 - Archive/Journal/`。详见 `05 - Journal/README.md`
 - `06 - Auto/` — Hermes 自动写入（frontmatter `source: hermes`）
 
 **来源标注**（frontmatter `source` 字段）：无 / `human` = 用户写的 | `hermes` = Agent 自动 | `claude` = Claude 辅助 | `import` = 批量导入
@@ -167,31 +167,36 @@ Obsidian Vault 是三层记忆体系的底层——存放重内容。关系：
 
 ## 3. 核心成长目标
 
-**结论：我的核心缺口不是产出能力，而是架构判断力。**
+**结论：当前阶段（学生 + 同龄人参照系）的 #1 短板不是技术能力，而是售卖 / 营销 / 产品包装。**
 
-根本原因：2024-11 起步至今依赖 AI 生成代码和架构，16 个月 25+ 个项目每 1-2 月换方向，全部停在"能跑"阶段，从未走到需要重构/处理耦合/偿还技术债的阶段。同时大量时间投入 AI 工具链元系统（YoRHa），而非业务架构实践。2026-03 开始有意识改变——MoyuanIdea V2 先线下调研再写规划。
-→ 详见 [§6 学习轨迹](#6-学习轨迹)
+这是 2026-05-22 NAISC 决赛后的校准。之前 §3 的旧 framing 是"架构判断力 = 核心缺口"——半年实践 + 比赛节点暴露出：在学生阶段，"在架构能力上有极大突破"物理上不可能（没有大规模生产系统在手 + 没有 10 年级别的重构经历），继续恶补边际效用很低；同时 2024-11 至今 16 个月 25+ 项目积累的技术节奏在同龄人参照系下已经是强项。真实缺口暴露在决赛 Q&A 里——"如何证明你是有市场的"这种问题答不好，4 位评委中 3 位非技术评委对偏技术的产品 buy 不进去。
+→ 详见 [§6 学习轨迹](#6-学习轨迹) · 终局记忆条目见 §8 [2026-05-25]
 
-**我需要练的具体能力：** schema 预判（什么查询会慢、什么关系会断）、API 评估（并发问题、抽象层级）、模块边界判断（耦合预判）、重构路径选择（trade-off 决策）。
+**新方向**：从"怎么做出来"转向"怎么让别人买账"。第一步是开多平台社交媒体账号。不一定个人完成，可能跟组员分工。具体策略待后续专题对话沉淀，落到 §5 项目 + §8 决策。
+
+**架构能力的当前定位**：仍是核心能力之一，但不再是默认主线。
+
+- 不再每次会话默认进入"架构对抗"模式
+- 架构相关讨论按 `architecture-review` 模式按需触发（见 §9 模式系统）
+- 已练出的判断力（schema 预判、API 评估、模块边界、重构 trade-off）通过实际项目继续磨，不另搞专项训练
 
 **Claude 在我工作流里的定位**
 
-我的主力代码生产工具是 OpenAI Codex（GPT-5.4），它负责写代码、执行任务、跑 agent 流程。Claude 不是第二个 Codex，不是代码工具。
+我的主力代码生产工具是 OpenAI Codex（GPT-5.4）。Claude 不是第二个 Codex。Claude 的能力按**模式系统**（§9）调用：
 
-Claude 的角色更接近一个 CTO 顾问——不写代码，但负责审查架构、质疑决策、维护跨会话的上下文记忆。具体职责：
+| 模式 | 用途 | 何时进入 |
+|---|---|---|
+| `chat`（默认） | 思考、复盘、对抗、决策对话；不动手 | 不指定时的默认 |
+| `code` | 真写代码 / 跑命令 / 多步实施 | 显式声明 |
+| `architecture-review` | 架构对抗审查 / 重构陪跑 / 攻击 AI 生成方案 | 显式声明（之前的默认行为，现下沉） |
+| `content` | 社交媒体写作 / 选题 / 平台调性（配合新方向） | 显式声明 |
+| `memory` | 整理记忆 / consolidate / 写 review log / 维护 sub-MD | 显式声明 |
 
-- **架构对抗审查**：我会把 AI 生成的架构方案拿过来让 Claude 攻击——找真实场景下的崩溃点、隐含假设、优雅陷阱。我来判断哪些是真问题。这个"攻击→判断→复盘"的循环是我练架构判断力的核心方式。
-- **重构陪跑**：当项目走到需要重构的阶段，给 2-3 条路径 + trade-off，让我选，选后陪跑，一个月后复盘当时的选择对不对。
-- **上下文记忆维护**：通过 CLAUDE.md（主索引）+ sub-MD（项目速报）的 hub-and-spoke 结构，确保每次新会话不从零开始。Claude 负责在会话结束时把值得记住的东西写入记忆系统。
-- **认知校准**：当 Claude 的判断有误，我会纠正。纠正后写入记忆（correction tag），避免跨会话重复犯同样的错。
+具体模式定义在 Obsidian Vault（路径见 §9）。用户切换模式：会话开头显式说"用 X 模式"；未声明时 Claude 根据消息内容识别，不确定则问一句。
 
-**Claude 要保证的**：诚实、不讨好、不替我做决定。如果我的设计有问题，直接说。可以质疑我的判断，但最终决定权在我。
+**Claude 全模式通用准则**：诚实、不讨好、不替我做决定；不夸我的东西；可以质疑、最终决定权在我；不要在我还没理清问题的时候急着给解决方案；不要把产品愿景当成技术架构来讨论——如果我给的是愿景，先指出这一点。
 
-**Claude 不能做的**：不要主动生成代码方案除非我明确要求；不要在我还没理清问题的时候急着给解决方案；不要把产品愿景当成技术架构来讨论——如果我给的是愿景，先指出这一点。
-
-**讨论架构时的行为准则**：追问被省略的决策（"用 Next.js"不够，要说为什么选以及接受什么 trade-off）；用具体场景攻击而非抽象原则；按严重程度排序，不要一次倾倒所有问题。
-
-**关于 sub-MD（项目速报）**：每个活跃项目有独立的 sub-MD 文件（如 [MOYUAN.md](projects/moyuan/MOYUAN.md)），存放该项目的详细上下文——系统定义、架构审查记录、决策历史、当前阻塞点和下一步。CLAUDE.md §5 的项目索引表只记一句话状态和指向 sub-MD 的链接。当会话涉及某个具体项目时，Claude 应该主动读取对应的 sub-MD 获取完整上下文，而不是只靠主文件的一行概要。项目相关的记忆条目写进 sub-MD 而非主文件 §8；主文件 §8 只存跨项目的决策、偏好、纠正。
+**关于 sub-MD（项目速报）**：每个活跃项目有独立的 sub-MD 文件（如 [MOYUAN.md](projects/moyuan/MOYUAN.md)），存放该项目的详细上下文——系统定义、决策历史、当前阻塞点和下一步。CLAUDE.md §5 的项目索引表只记一句话状态和指向 sub-MD 的链接。当会话涉及某个具体项目时，Claude 应该主动读取对应的 sub-MD 获取完整上下文。项目相关的记忆条目写进 sub-MD 而非主文件 §8；主文件 §8 只存跨项目的决策、偏好、纠正。
 
 ## 4. 技术能力画像
 
@@ -205,14 +210,20 @@ Claude 的角色更接近一个 CTO 顾问——不写代码，但负责审查�
 
 | 项目 | 状态 | 一句话 | 详情 |
 |------|------|--------|------|
-| **Ripple (NAISC Workato)** | 决赛入选 (5/22 pitch)，14 天 ship list | MCP-orchestrated wellness data pipeline · 53-rule evidence library · Discord context fusion · pre-processed data spine（非 agent） | → [NAISC.md](projects/naisc-workato/NAISC.md) |
 | **MoyuanIdea** | 愿景→架构 | AI-native 文化教育系统，三端，正在做技术架构决策 | → [MOYUAN.md](projects/moyuan/MOYUAN.md) |
 | **IFSG** | 进行中 | 企业级财务报表生成器，Angular+Nix+PostgreSQL，4人团队 | 仓库私有 |
-| **TemplateApp** | 🚨 Pivot 为 agentic AI 论文项目 (5-23) | Frontend 9 屏已 scaffold；Python LangGraph agent service + Node gateway 待建；Linda 邮件要 publishable paper，含 Live Data Binding + LLM-as-Judge 创新点 | → [TEMPLATEAPP.md](projects/templateapp/TEMPLATEAPP.md) / [HANDOFF.md](projects/templateapp/HANDOFF.md) |
+| **TemplateApp** | 🚨 Pivot 为 agentic AI 论文项目 (2026-05-23) | Frontend 9 屏已 scaffold；Python LangGraph agent service + Node gateway 待建；Linda 邮件要 publishable paper，含 Live Data Binding + LLM-as-Judge 创新点 | → [TEMPLATEAPP.md](projects/templateapp/TEMPLATEAPP.md) / [HANDOFF.md](projects/templateapp/HANDOFF.md) |
 | **SBS Transit** | 进行中（最活跃） | SBS Transit 多仓库项目，Phase2+Webapp+WhisperAPI+GenAI | → vault: SBS Transit - Overview |
 | **Hermes** | 主力 agent 系统 | 替代 YoRHa/Moltbot，集成 Gmail/Calendar/GitHub/Obsidian | → vault: Hermes - Overview |
+| **社交媒体 / 内容（新方向）** | 待启动 | 多平台账号 + 内容生产，配合营销/售卖能力建设；可能与组员分工 | → 专题对话后建 sub-MD |
 | **Slay the Spire 2 AI** | 半成品 | PPO + 遗传超参数进化，离自主打游戏还有距离 | GitHub/slay_the_spire |
-| **YoRHa** | 搁置 | Codex agent 框架，已被 Hermes 替代 | 本地 ~/Desktop/YoRHa |
+
+### 已归档项目
+
+| 项目 | 终局 | 归档位置 |
+|------|------|----------|
+| **Ripple (NAISC Workato)** | 2026-05-22 决赛 · **Workato Track 第三名** · pivot 后拆出可复用资产 | → [archive/naisc-workato/](../../archive/naisc-workato/) · 资产 → [shared/assets/](../assets/) |
+| **YoRHa** | 已被 Hermes 替代 | 本地 ~/Desktop/YoRHa |
 
 ## 6. 学习轨迹
 
@@ -224,7 +235,9 @@ Claude 的角色更接近一个 CTO 顾问——不写代码，但负责审查�
 - **2026-01**: 个人网站 Three.js 塔罗牌
 - **2026-02**: ML 课程、Codex agent 框架搭建
 - **2026-03**: MoyuanIdea V2、Workato 实习、YoRHa 完善
-- **模式**：每 1-2 月换方向，做到"能跑"就停。正在有意识改变。
+- **2026-04**: Hermes Agent 全面取代 Codex YoRHa；TemplateApp 架构规划；NAISC Ripple 端到端上线
+- **2026-05**: NAISC 决赛 **Workato Track 第三名**（5/22）→ frame shift：架构能力从"#1 缺口"降为"按需调用模式"，新 #1 = 售卖/营销/产品包装。Claude harness 模式系统建立（chat / code / architecture-review / content / memory）
+- **旧模式（已校准）**：之前每 1-2 月换方向、做到"能跑"就停。2026-03 起有意识改变（MoyuanIdea V2 先调研再写规划）。2026-05 校准：技术节奏在同龄人参照系下已是强项，下阶段重心挪到"怎么让别人买账"。
 
 ## 7. Claude 生态配置
 
@@ -246,11 +259,67 @@ Claude 的角色更接近一个 CTO 顾问——不写代码，但负责审查�
 - **根本原因**：Cowork 平台尚未实现 CLAUDE.md 自动注入机制，这不是仓库结构问题。
 - **跟踪状态**：等待 Cowork 平台更新。如果未来 Cowork 支持自动注入，删除本条并更新 §0.2。
 
+## 9. 模式系统
+
+Claude 的行为按**模式**切换，避免单一人格覆盖所有场景（之前默认 "CTO 顾问 + 架构对抗" 在 chat / content / memory 场景里不合适）。模式定义在 Obsidian Vault。
+
+### 9.1 模式清单（速查）
+
+| 模式 | 用途 | 何时进入 |
+|---|---|---|
+| `chat`（默认） | 思考、复盘、对抗、决策对话；**不动手** | 不指定时的默认 |
+| `code` | 真写代码 / 跑命令 / 多步实施 | 显式声明 或 "实现/写/改/跑" 等触发词 |
+| `architecture-review` | 架构对抗审查、追问被省略决策、按严重程度排序 | 显式声明 或 用户贴架构方案让评 |
+| `content` | 社交媒体写作、选题、平台调性（v0 占位，待专题对话填充） | 显式声明 或 "写一条/发/标题/脚本/选题" |
+| `memory` | 整理记忆、consolidate、写 review log、维护 sub-MD、归档 | 显式声明 或 "整理记忆/复盘/归档/consolidate" |
+
+### 9.2 切换语法
+
+- **显式优先**：会话开头 `用 X 模式` / `[X]` / `mode: X`
+- **未声明时**：Claude 按消息内容自动识别
+- **不确定时**：Claude 问 "用 X 还是 Y 模式？"，不要自己挑
+
+### 9.3 详细定义位置
+
+详细行为规则、tool 偏好、回复风格、入退条件、反例 → `~/Documents/Obsidian Vault/02 - Areas/Claude Harness/`
+
+- `INDEX.md` — 切换语法 + 自动识别表 + 通用准则
+- `chat.md` / `code.md` / `architecture-review.md` / `content.md` / `memory.md` — 每个模式独立文件
+
+**当 Claude 识别到要切某个模式时，主动 Read 对应文件**（不预加载到 system prompt，太大）。
+
+### 9.4 与 §3 / §0.7 的关系
+
+- §3 用模式表概括了 Claude 在工作流中的定位
+- §0.7 是三层记忆体系，`memory` 模式负责维护这三层
+- §9 是模式系统的入口；详细定义在 Obsidian
+
+### 9.5 维护
+
+- 新增 / 修改模式 → 改 Obsidian 文件 + 同步更新本节速查表
+- `content` 模式是 v0 占位，专题对话后细化
+- 模式系统是 2026-05-25 NAISC 后的 frame shift 产物（见 §8 同日 correction）
+
 ## 8. 记忆追加区
 
-> 由 memory skill 自动追加，按时间倒序。
+> 由 memory skill 自动追加，按时间倒序。最近一次 consolidation：2026-05-25（NAISC pivot 后，~30 条 → ~21 条）。
 
-### [2025-05-23] 🚨 project: TemplateApp — Agentic AI Pivot（重大方向转向）
+### [2026-05-25] correction: 架构判断力不再是 #1 短板（§3 frame shift）
+NAISC 5/22 决赛是触发节点。之前 §3 把"架构判断力 = 核心缺口"当宪法，半年实践下来用户重新校准：作为**学生 + 同龄人参照系**，架构能力已经是强项，不是 #1。学生阶段不存在"在架构能力上有极大突破"的物理可能（没有大规模生产系统在手 + 没有 10 年级别的重构经历），继续恶补边际效用很低。
+**调整**：架构对抗不再是 Claude 的 default 行为，下沉为 `architecture-review` 模式按需调用。§3 即将重写。Claude 的 CTO 顾问定位从"无条件 on"改为"显式/识别触发"。
+**没改的部分**：架构对抗这件事本身没问题，仍是 Claude 工具箱里的核心能力之一；改的是默认权重和叙事顺序，不是删能力。
+
+### [2026-05-25] insight: 新 #1 短板 = 售卖 / 营销 / 产品包装
+NAISC 决赛 4 评委中只有 Workato 那位（AI 出身）听懂作品；另 3 位非技术评委对偏技术的产品理解不到，"如何证明你是有市场的"这类 business 问题答得不好。这不是单点失误，是整个能力栈的真实缺口暴露：**技术节奏已经够快，下一阶段重心挪到"怎么让别人买账"**。
+**形式**：不一定个人完成，可能跟组员分工。第一步是开多平台社交媒体账号。具体策略待后续专题对话。
+**对 Claude 的影响**：新增 `content` 模式（社交媒体写作 / 选题 / 平台调性）入模式系统初版。
+
+### [2026-05-25] project: NAISC 2026 Workato Track 终局 — 第三名 + pivot
+Team YoRHa / Ripple 5/22 决赛拿到 **Workato Track 第三名**。比赛结束，pivot 决定：Ripple 本体收尾归档；**rule library (53 rules) / Discord listener / MCP 4-tool 架构 / Whisper 幻觉清洗脚本** 作为可复用资产拆出（落点待定）。claude-context 的 `shared/projects/naisc-workato/` 和 Obsidian Vault 的 `01 - Projects/Workato NAISC/` 都即将归档到各自的 `04 - Archive/`。
+**遗留决策**：Discord listener（Mac Mini PID 48771）是否继续跑积累数据，待用户决定。
+**复盘洞察**：见同一天 insight 条目（市场/包装短板）。具体 Q&A 失分细节用户暂不展开，留给"售卖"专题对话。
+
+### [2026-05-23] 🚨 project: TemplateApp — Agentic AI Pivot（重大方向转向）
 Linda William 邮件（她 5/13-5/27 离岗中）要求把 TemplateApp 从"通用文档生成器产品"重构成 **publishable agentic AI 研究项目**：既要代码也要论文。两个论文 contribution：**Live Data Binding**（数据变 → 文档自动重生成）+ **LLM-as-Judge**（自动质量门，Fail → 反馈给 Writer 改写）。要研究 LLM-as-Judge 评估技术（criteria × technique × performance × time）并编辑她的 paper draft。
 
 **锁定决策（5/23）**：
@@ -275,28 +344,17 @@ Linda William 邮件（她 5/13-5/27 离岗中）要求把 TemplateApp 从"通�
 
 → sub-MD: [TEMPLATEAPP.md](projects/templateapp/TEMPLATEAPP.md) · [HANDOFF.md](projects/templateapp/HANDOFF.md)
 
-### [2025-05-23] correction: subagent 默认没 WebSearch/WebFetch 权限
+### [2026-05-23] correction: subagent 默认没 WebSearch/WebFetch 权限
 跑 W1 文献综述时启了 2 个 general-purpose subagent 做并行研究，但 subagent 默认拒 WebSearch + WebFetch。用户开了 bypass 后重启 subagent 才正常。下次给 subagent 派"研究"任务时记得：(1) 父 session 的 WebSearch 工具不会自动继承给 subagent；(2) 要么提前确认 bypass，要么父 session 直接做研究不 delegate。
 
-### [2026-05-08] mentorship: TP7 (Colin) + TP8 (Workato/business) 双 session 综合
-两位 mentor 答疑后的 distilled action implications：(1) 最大 deck gap = 3-layer architecture diagram（ingestion / processing / communication + governance overlay，macro→micro 叙事）；(2) 评审权重：idea > tech depth；end-to-end live demo > 架构 slide；business 层薄薄一层（"small bit weight"）；(3) Q&A "AI 出错"答辩组合拳——**LLM-as-judge 多 agent 分层**（process→validate→communicate，每层 short prompt + low temp，TP8 mentor 在生产中跑过）做主答；Colin 的 RLHF 反馈飞轮做副答；(4) **Cursor 类比作为 "why now" 最强 pitch line**——build the thing before the model is capable，pipeline ready 后下一代 model 直接 plug in；(5) Ripple 重新定位：**不是 AI agent，而是 pre-processed data pipeline**——任何 agent (Hermes/Cursor/未来 GPT-N) 都可以接，"agents 大家都在做，data spine 没人做"；(6) Colin: **one scenario, you fighting in time**——专注一个 demo 场景做透（gaming + Discord + R043），别铺开；(7) Colin: 借 NUS HSS 既有学术框架（loneliness/isolation/stress measurement matrices）替代自己拍脑门定阈值——这是 credibility play；(8) data flywheel 是 moat 答案——"first 10000 users 就是 the model"。
-**未来涉及任何 hackathon/竞赛 mentor 反馈整合时按此模式**：raw transcript 留 Obsidian、distilled takeaways 进 sub-MD、跨项目可复用的洞察（如 LLM-as-judge / Cursor analogy / data flywheel framing）写 §8。
-→ [NAISC.md](projects/naisc-workato/NAISC.md) · [mentor-takeaways-tp7-tp8.md](projects/naisc-workato/mentor-takeaways-tp7-tp8.md)
+### [2026-05-08] insight: hackathon mentor 反馈整合的标准模式
+Mentor 答疑会消化后的工作流：**raw transcript 留 Obsidian** / **distilled takeaways 进 sub-MD** / **跨项目可复用的洞察（如 LLM-as-judge 多 agent 分层、Cursor "build before model is capable" 类比、data flywheel as moat、pre-processed data pipeline framing）写 §8**。NAISC TP7/TP8 全文（2 × ~35min 转录 + 8 项具体 takeaway + deck/Q&A action implications）归档在 `archive/naisc-workato/mentor-takeaways-tp7-tp8.md`；pitch 可复用框架同时也在 `shared/assets/mcp-architecture-patterns/README.md`。**下次任何 mentor 反馈整合按此模式**。
 
-### [2026-05-08] decision: NAISC 14-day ship list 锁定（5/8 → 5/22）
-~45h 总预算 / 14 天 ≈ 3h/day。**MUST**: 接 R006（睡眠+HRV+RHR 复合恢复，30s demo）+ R043（深夜手机 → 次日睡眠下降，绑 Discord listener，differentiator）入 Workato；deck 重做 4-5 张新片（3-layer 架构 / ingestion 连接器 / processing+rule library / communication channels / Cursor "why now" / 薄商业层）；录 R043+Discord live demo 视频（90s 真数据）；Q&A 答辩准备（LLM-as-judge 主 + RLHF 副 + data flywheel + evidence-base citations）。**STRETCH**: R048（6-signal whole-body shift，依赖 wrist temperature 数据流通）；prod-deploy 3 个 Discord API endpoint（如果 live demo 需要会升 MUST）。**DROP（5/22 之后）**: launchd plist；Calendar/Obsidian context source 接入；ML 模型训练（locked off）。架构已 shipped & stable，14 天内**不建新基础设施**——只 deck + demo rehearsal + Q&A prep。
-→ [NAISC.md](projects/naisc-workato/NAISC.md) "14-day ship list" 段
-
-### [2026-05-08] asset: Ripple rule library v2 入库
-53 条 evidence-based detection rules / 11 类（acute strain / daily recovery / training / fitness trend / sedentary / mobility / fall / hearing / circadian / digital wellbeing / multi-signal composite），每条带 confidence + 学术/临床来源 URL。Top 10 demo-ready 已预筛。当前接线决策：**R006 必接**（信号都在）+ **R043 必接**（差异化，绑 Discord）+ **R048 拉伸**（依赖 wrist temperature）。其余 ~50 条作为 deck "evidence base" slide 的内容，不全部接线（Workato trial 任务配额扛不住）。**战略意义**：(1) 解决 Colin "借现有学术框架而非自定义阈值" 的 feedback；(2) "evidence base" 单独成 slide，地方上看着可信；(3) 处理层（layer 2 of 3-layer arch）的 backbone。文件位置：`shared/projects/naisc-workato/rule-library/`（v2.xlsx + v1.xlsx 历史版 + visualization HTML + README 索引）。源头是 WeChat 收到，现已脱离 wxchat 容器路径做了 portable copy。
-→ [rule-library/README.md](projects/naisc-workato/rule-library/README.md)
-
-### [2026-05-08] project: NAISC mentor 会议录音转录入库
-5/22 决赛前 mentor 答疑会，2 段录音（TP7 32 min + TP8 35 min = 67 min）已转录并清理 Whisper 幻觉循环（TP7: 994/1054 段保留 + 12 处 ⚠️；TP8: 1362/1477 段 + 21 处 ⚠️），写入 Obsidian `01 - Projects/Workato NAISC/transcripts/`。Whisper small 双语支持差，被强制识别为 zh 概率 1.000；中英切换段落语义有损，需对照 SRT 时间戳读。Mentor 建议初步线索（**未与用户复盘前不当决策依据**）：往 community / family circle 方向改、判定 Ripple 是 product 强 / technology 普通。
-→ [NAISC.md](projects/naisc-workato/NAISC.md) · "## [2026-05-08] Mentor 会议录音 + 转录" 段
+### [2026-05-08] asset: wellness rule library (53 条 evidence-based 规则)
+53 条 wellness detection rules / 11 类 / 带 confidence + 学术/临床来源 URL。从 NAISC Ripple 拆出，现位于 `shared/assets/wellness-rule-library/`（v2.xlsx 主 + v1 历史版 + visualization HTML + README）。**复用场景**：任何 wellness / health monitoring 产品需要用学术框架替代拍脑门阈值时调它。**战略价值**（仍然 durable）：用 evidence base 而不是自定义阈值，credibility play。
 
 ### [2026-05-08] insight: Whisper small 在静音/低音量段会强行造句
-TP7/TP8 转录共 33 处 hallucination loop（最长一段 TP8 15:20-16:08 是 45 段 "我认识" 重复）。已确认特征：feature_extractor `RuntimeWarning: divide by zero / overflow / invalid value in matmul` 出现时，对应输出段几乎都是某个短语或字符的密集重复。**未来对真实嘈杂录音转录，必须做后处理折叠**（不是单看转录就信）。已写出 `/tmp/clean_transcript.py`，靠"连续段落主导 2-char ngram >= 30%"+"单段内 2-6 字串重复 >= 3 次且占比 > 50%" 双重判据折叠 — 阈值偏保守，会漏不会错杀，可按需调紧。
+NAISC mentor 录音转录共 33 处 hallucination loop（最长 45 段 "我认识" 重复）。已确认特征：feature_extractor `RuntimeWarning: divide by zero / overflow / invalid value in matmul` 出现时，对应输出段几乎都是某个短语或字符的密集重复。**未来对真实嘈杂录音转录，必须做后处理折叠**（不是单看转录就信）。**算法 spec**（双重判据折叠：连续段落主导 2-char ngram ≥ 30% + 单段内 2-6 字串重复 ≥ 3 次且占比 > 50%；保守，会漏不会错杀）在 `shared/assets/whisper-hallucination-cleanup/README.md`。原 `/tmp/clean_transcript.py` 已丢失（/tmp 重启清空），按 spec 重写即可；建议同时换 mlx-whisper 或 large model 减少幻觉源头。
 
 ### [2026-05-04] insight: MCP 是 model-LLM 的天然解耦层
 LLM **永远不"读"模型**，LLM 读模型的 structured output。模型对 LLM 来说就是 function call —— 可以是 1 KB 的 logistic regression、70B 参数 fine-tuned LLM、甚至一段 if/else。LLM 看到的只是 `tool_name + input_schema + output_schema`。这意味着 ML 路线对 MCP-based 系统是**零迁移成本**：今天用 z-score baseline，半年后训了 model 把 implementation 换掉，agent 端 / pitch 故事不用改一行。所以"上不上 ML"不是工程问题，是商业 / 阶段问题。这个认知对未来任何 agent + ML 项目都适用。
@@ -304,8 +362,8 @@ LLM **永远不"读"模型**，LLM 读模型的 structured output。模型对 LL
 ### [2026-05-04] insight: 给 ML tool 的 output schema 决定 LLM 用得多好
 给 LLM 的输出 = 给一个聪明实习生的报告。坏：`{"score": 0.73}`（信息丢失）；好：score + scale + vs_personal_baseline + key_drivers + confidence_interval + model_version 全写明。这层做好，就算 model 只是 logistic regression，效果都好过返回纯 number 的神经网络。**未来任何 MCP tool 暴露统计 / ML 结果时都按这个标准**。
 
-### [2026-05-04] insight: Ripple 实时性的真相是 prediction freshness 而非 tool latency
-Tool call latency 20-300ms 不是瓶颈。真问题是**prediction freshness**——预测基于多新的数据，取决于上游数据流 + retrain 频率。MCP 不引入延迟。"实时让 LLM 读懂"在 MCP 范式下根本不存在。**未来再讨论 agent 系统的"实时性"时，先把这两个维度分开**。
+### [2026-05-04] insight: agent 系统"实时性" = prediction freshness 而非 tool latency
+Tool call latency 20-300ms 不是瓶颈。真问题是 **prediction freshness** —— 预测基于多新的数据，取决于上游数据流 + retrain 频率。MCP 不引入延迟。"实时让 LLM 读懂"在 MCP 范式下根本不存在。**未来再讨论 agent 系统的"实时性"时，先把这两个维度分开**。
 
 ### [2026-05-04] verified: Lanyard 是接 Discord presence 实时数据的最快路径
 公开服务 https://discord.gg/UrXF2cfJ7F（旧的 discord.gg/lanyard 已失效）—— 用户加群一次，自动监控。Gateway WebSocket + REST 都有。实测从游戏开始到事件到达 5-15 秒（Discord 客户端轮询本地进程的固有延迟）。免去自建 bot 的 Developer Portal 配置 / GUILD_PRESENCES intent / token 管理的所有烦恼。Trade-off：依赖第三方 uptime；**但对 hackathon / MVP 阶段是首选**。长期可换成自建 bot，listener 接口不动。
@@ -319,46 +377,21 @@ Discord 服务端不存 presence 历史。给 user_id 只返回"此刻在干嘛"
 ### [2026-05-04] preference: 用户对 spike 的态度
 用户明确反对 "spike 一下试试" 类的小规模代码探索。理由：能直接问的就直接问（mentor / 文档 / Claude 直接判断）。spike 浪费时间且常常验证不到关键问题。这条对未来任何架构讨论适用 —— **当我想说"我们 spike 一下" 之前，先问"这个未知能不能直接问出来"**。
 
-### [2026-05-04] project: NAISC Discord context source 集成 v1
-5/3-5/4 一晚跑通：Lanyard WebSocket → Node listener (`scripts/discord-listener/listener.mjs`) → Supabase (3 张表 + 1 view) → 3 个 Vercel API endpoint (`/api/discord/{current,today,sessions}`)。真实数据已捕获（Apex / ELDEN RING / Slay the Spire II）。是 Forward Plan §2a "状态思考" 方向第一块拼图，原计划 5/8 mentor 后做，实际提前完成。**还差 prod deploy + launchd plist + Workato MCP tool 注册**，等 5/8 mentor 答案。
-→ [Discord Integration · v1](projects/naisc-workato/discord-integration-v1.md)
-
-### [2026-05-04] project: NAISC ML 策略想清楚 — 5/22 之前不训 model
-决定：用 Pattern D (RAG/MCP) 而非 ABC（online/batch/fine-tune）。理由：(1) 数据不够（1 人 × 几个月 ≠ 训练集）；(2) prompt + RAG/MCP 已经能 95% 解决；(3) 训了过拟合，pitch Q&A 一问破。**Ripple 现阶段最强 pitch line**: "We don't train models today — but every Workato recipe is structured data capture by design. The MCP surface is the distribution layer for whatever models we train later. The first 10,000 users we sign up *is the model*." 真正上 ML 的最早合理时间点是 6-9 个月后，第一个该上 ML 的任务可能是"批量打 mood / context tag 给历史 anomaly"——但这取决于 5/22 之后是否继续做 Ripple。
-→ [ML Strategy · Thinking Notes v1](projects/naisc-workato/ml-strategy-v1.md)
-
-### [2026-05-04] correction: NAISC team 真实第三人是 Chen Yufei
-Sarah Loke 4/24 finalist 邮件里 Team YoRHa 官方名单：**Geng Yue · Liu Zicheng · Chen Yufei**。但 trailer / 网站 / submission email 都写的 "Tommy Chen" 当第三个人 —— 那是把耿越的英文名（CLAUDE.md §1）当成另一个队员了。用户已知，是否回去改公开物（trailer/网站/email）尚未决定。**未来再涉及 Ripple 公开署名 / 介绍时按官方名单**。
-
-### [2026-05-04] infra: Discord listener 当前在 Mac Mini 后台运行
-PID 48771（启动于 2026-05-03 nohup detached）。监听 2 个 Discord ID，写 Supabase。**Mac 重启会丢**——launchd plist 待做。位置：`~/Desktop/Toffeemoon Design System/scripts/discord-listener/listener.mjs`。日志：同目录 `data/listener.log`。
-
-### [2026-04-20] project: NAISC overnight session — Plan B 尝试 + 回退 + HAE 诊断 + 夜间 WA 循环
-用户 01:30 把任务升级为"死磕到醒"。四条线：(1) Plan B Kimi chat 升级尝试，Workato CodeMirror JS 写入不走 Angular 绑定，blur 回退，回退 Recipe 8 到 echo baseline（稳）；(2) HAE 诊断：URL 对、Recipe 1 Active、curl 200 OK，但 healthlog 24h 0 行——iOS 后台调度把 HAE 掐了，4/18 起一次没成功触发；(3) Kimi prompt v2 调 12 case 全对（gaming/workout/medical/idk/startle/stress/caffeine/other/sarcasm），锁定；(4) 后台 bash loop PID 33026 从 03:10 起每 60 min 发 1 条 WA alert，共 5 条到 07:10，用户起床能看到约 6 条消息。
-交付：morning_handoff/ 5 份可粘贴文档（Plan B 粘贴手册 / Demo V2 / Email / Prompt / Results）。
-→ [NAISC.md](projects/naisc-workato/NAISC.md) / [morning_handoff/](projects/naisc-workato/morning_handoff/)
+### [2026-05-04] historical: Discord listener 已停（2026-05-25）
+NAISC Ripple 期间在 Mac Mini 后台运行（PID 48771，2026-05-03 nohup detached → killed 2026-05-25 pivot）。Lanyard WebSocket → Node listener → Supabase (3 表 + 1 view) → Vercel API endpoint 全链路曾跑通，捕获真实 Discord presence 数据。**源代码 + Supabase schema + 复用指引 + 重启说明**都在 `shared/assets/discord-presence-listener/README.md`。Supabase 数据 + schema 保留不动；重启 listener 直接对接现有表即可。
 
 ### [2026-04-20] correction: "每 5 min auto sync" 不等于 iOS 真的每 5 min 跑
 用户之前笃信 HAE 设置 "每分钟/每 5 分钟" 就会定时推。真相：HealthyApps 官方文档明确 iOS 锁屏禁访 HealthKit + 后台调度 iOS 决定而非 app 配置决定。UI 让你设是让你表达期望，实际跑多少取决于 iOS 心情。实测 Recipe 1 最近 30 天只有 24 job（~0.8/day），4/18 后零触发。凡是涉及 "iOS app 自动推" 的诉求，要先承认"延迟几分钟 + 手机解锁 + 充电中"这三个前置，不是真实时。
 
-### [2026-04-20] correction: Workato CodeMirror 不是标准 CM，JS setValue 不持久
-CodeMirror 在 Workato 里是一层 preview，click 激活才生成真 CM 实例。调 `cm.setValue()` / `replaceSelection()` 能改显示，但 Angular 表单绑定不认，blur 后值回退。JS 驱动 Workato 表单唯一稳定路径：focus 一下让真 CM 出现 → user paste (Cmd+V) → Tab 离开触发提交。想做全自动粘贴需研究 ClipboardEvent + DataTransfer 路径（未验证）。
+### [2026-04-20] verified: Workato 平台 CodeMirror 自动化的边界
+Workato 表单里的 CodeMirror **不是标准 CM** —— preview 状态下 JS `cm.setValue()` / `replaceSelection()` 改显示但 Angular 表单绑定不认，blur 后回退。
+**真正能做的**：`document.execCommand('insertText', false, text)` 对**已激活的**真 CM 持久写入（URL 字段 Save + reload 后还在）；dropdown / 按钮 / view 切换 JS 全部能驱动。
+**真正不能做的**：preview 状态下 click / focus / mousedown / pointerdown synthetic event 全部唤不醒真 CM —— Workato Angular 对 `isTrusted` 加 gate。
+**结论**：Workato 表单 JS 自动化只能做到"半自动 + 用户手粘 CM"，不能全程 JS。**下次想全自动，走 Workato REST API（clone/import recipe）而非 UI 死磕**。
+**回滚招**：Workato Versions 标签页 → 点版本号（如 "3 2026-04-19 09:26"）→ 右上"恢复此版本" → "是"。recipe 坏了用这招（亲测）。
 
-### [2026-04-20] correction + verified: Workato CM 全自动写入真相（深度实验）
-02:25 用户让全自动化 Plan B。跑了 30 min 实验。
-**能做的**：`document.execCommand('insertText', false, text)` 对**已激活的**真 CM 写入成功且持久（URL 字段 Save + reload 后还在）。dropdown/按钮/view 切换 JS 全部能驱动。
-**不能做的**：**Body CM preview 状态下 click/focus/mousedown/pointerdown synthetic event 全都唤不醒真 CM**（等 5s 不起作用）。Save 后再次打开 step panel 也不响应。推测是 Workato Angular 对 `isTrusted` 加了 gate。
-**副作用**：半途 Save 了残缺 step 2 → Recipe 8 不能 Start → 用 **Workato Versions 标签页 → 点版本号（如"3 2026-04-19 09:26"）→ 右上"恢复此版本" → 弹窗点"是"** 回滚。这招以后遇到坏掉的 recipe 必须记得用。
-**教训**：Workato 表单自动化只能做到"JS 半自动 + user 手粘 CM"，不能真全程 JS。下次想全自动，先真用户交互一次建好模板 recipe，然后做 clone/import 路线（走 Workato REST API），别在 UI 死磕。
-
-### [2026-04-19] project: Ripple (NAISC Workato) 两向 chat 上线，端到端 live pipeline 验证
-完成了从 watch 检测 → 触发 → WhatsApp 提醒 → 用户回复 → bot ack 的完整 round-trip。8 个 Workato recipe 上线（bulk ingest / live spike / 24h watchdog / 4 个 MCP tool / 两向 chat bot）。真实 WhatsApp round-trip：用户发 "gaming" → 3 秒内收到 bot 回复，Twilio log 20:32:02 in → 20:32:05 out。
-关键踩坑写进 sub-MD 知识沉淀：Twilio incoming 是 form-encoded（非 JSON）/ Reply To 必须用 pill / IF branch 语义坑 / Ruby formula 在 Workato 沙箱限制 / cloned recipe schema 缓存。
-状态：技术实现完成；4/20 录 demo，4/23 发 submission email。
-→ [NAISC.md](projects/naisc-workato/NAISC.md) / → vault: Workato NAISC/Implementation Log.md
-
-### [2026-04-19] correction: Watchdog 不等于 live pipeline
-用户纠正："我没看到 手表检测然后触发问题 然后通知 whatsapp 整个流程"。Watchdog 是 24h 轮询 seed data，不是实时链路。evidence-of-working ≠ pipeline-works-end-to-end，下次构建 agent 产品要先画 trigger-to-action 的完整路径再分步实现，避免出现"demo 没有从用户视角打通"的情况。
+### [2026-04-19] correction: evidence-of-working ≠ pipeline-works-end-to-end
+构建 agent / pipeline 产品时，watchdog / 24h 轮询 / 局部 demo **不能等同于"端到端 live pipeline 跑通"**。用户视角的完整路径（trigger → action）必须显式画出来再分步实现，否则会出现"我做了很多东西，但用户视角看不到流程"的情况。**下次构建 agent 产品先画 trigger-to-action 完整路径**。NAISC 案例：watchdog 跑通 ≠ 手表检测→触发→WhatsApp 通知整链路跑通，用户立刻指出 framing 错误。
 
 ### [2026-04-17] spike: TemplateApp ONLYOFFICE CE 限制 spike 验证
 同日下午跑了一个实战 spike 验证 IFSG 团队 4/15 报的 CE plugin 限制。起 `onlyoffice/documentserver:latest` 本地栈 + 自建最小插件 + docxtpl 合成测试，跑完 11 个按钮 + 6 个合成 case。
@@ -399,14 +432,16 @@ Linda 2026-04-17 非正式 brief：建独立于 IFSG 的通用 template/CSV/RAG 
 ### [2026-04-13] infra: Obsidian Vault 外置大脑建立
 三层记忆体系建立：CLAUDE.md/Hermes memory（轻量指针）→ Obsidian Vault（重内容）。Vault 路径 `~/Documents/Obsidian Vault/`，PARA 变体结构，含时间线（年/月/周/日）和项目笔记。Hermes 可自动写入 `06 - Auto/`。详见 §0.7。→ vault: HOME
 
-### [2026-04-03] architecture: MoyuanIdea V2 第一轮架构审查完成
-对 V2 三份核心文档做了系统性架构攻击。六个攻击点中用户确认了两个真问题：(1) 文档是产品愿景不是技术架构，缺 schema/API/技术栈决策；(2) Phase 1 范围需要再切割。用户反驳了四个：零代码是有意的（先调研再动手）、三端基础设施不需要过度设计、AI 成本暂不考虑（老板说预算不是问题）、有帮手且时间灵活。下一步：从最小垂直切片（老师开课→拍作品→家长看到）开始做技术架构。
+### [2026-04-03] (moved) architecture: MoyuanIdea V2 第一轮架构审查
+6 个攻击点 / 用户接受 2（缺技术架构 + Phase 1 需切割）/ 反驳 4（零代码有意 / 三端不过度设计 / AI 成本 / 有帮手）/ 下一步 = 最小垂直切片。**全文在** [MOYUAN.md](projects/moyuan/MOYUAN.md) "架构审查记录" 段。
 
 ### [2026-04-03] correction: 零代码不是老模式的重演
 我曾判断仓库全是 markdown 没有代码是用户"做到能跑就停"模式的又一次重演。用户纠正：这次是有意识地先做线下调研（跟老师、家长、学生聊），再写规划文档，是反过来的——先搞清楚再动手。这是好的改变，不应该被归入旧模式。
+**→ 跨期联动**：[2026-05-25] frame shift 进一步验证用户"先调研 / 重新校准赛道"的方向调整能力。从 2026-03 "先调研再写"到 2026-05 "重新校准核心赛道"（架构降级 / 营销升级），是同一个能力的升级体现，**不应误读为"摇摆"**。
 
 ### [2026-04-03] decision: Claude 生态基础设施方案确定
 选择三层方案：(1) CLAUDE.md 作为跨会话持久化的 context 文件（手动 backup）；(2) memory skill 自动管理记忆写入（已打包 memory.skill）；(3) scheduled task 每周日 22:00 自动做记忆整理（memory-heartbeat，只写 proposal 不直接改文件）。用户明确要求：不需要复杂，但必须有效、可查问题、可迭代。
 
 ### [2026-04-03] preference: 用户对 Claude 生态的定制化期望
 用户把 Claude 定位为架构对抗审查者，不是代码生成器。期望 Claude 的 infra 能自动维护上下文记忆（类似 Codex YoRHa 的 MEMORY.md），但用 Claude 自己的生态（skill + MCP + scheduled task）实现，不照搬 Codex 架构。
+**→ 跨期联动**：[2026-05-25] frame shift 后 Claude 的定位从单一"架构对抗审查者"演化为 **5 模式系统**（chat / code / architecture-review / content / memory，见 §9）。"架构对抗"现在是 mode 之一，不再是 default。本条体现 Claude 生态定制化的方向**没变**，颗粒度演进。
