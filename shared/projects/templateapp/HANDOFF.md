@@ -1,6 +1,6 @@
 ---
-source: claude
-updated: 2025-05-23
+source: claude/codex
+updated: 2026-05-24
 purpose: Onboarding doc — read first when picking up TemplateApp in a new session
 ---
 
@@ -74,20 +74,33 @@ Plan written: `~/.claude/plans/eager-humming-crown.md` — **this is the AUTHORI
 
 ---
 
-## Current state (2025-05-23)
+## Current state (2026-05-24)
 
 | Component | Status | Notes |
 |---|---|---|
 | Frontend scaffold | ✅ Done | 9 pages, `templateapp/frontend/`. `npm run dev` on 5173. tsc + build clean. |
-| Frontend → real API | ❌ TODO (W3d) | All pages use localStorage; need swap to fetch to Node gateway |
-| Node Express gateway (api/) | ❌ TODO (W3c) | Empty placeholder. Auth + CRUD + proxy to Python |
-| Python agent service | ❌ TODO (W3a) | FastAPI + LangGraph + Claude API. Will live at `templateapp/agent-service/` |
-| LangChain + CrewAI prototypes | ❌ TODO (W3b) | For paper's Framework Comparison section |
-| Multi-tier LLM benchmark | ❌ TODO (W3b) | For paper's Cost-Performance section |
-| Gold-standard judge test set | ❌ TODO | ~20-30 human-labeled cases. **Blocking** for any judge benchmark |
-| W1 literature review (LLM-as-Judge) | 🔄 In progress | 2 subagents running 5-23, output to `vault/research/group-a-judge-techniques.md` + `group-b-judge-techniques.md` |
-| Paper edits | ❌ TODO (W2) | Figure 1 redraw, Table 1 fill, new sections (Architecture Mapping, Data Binding Mechanics, LLM-as-Judge Methodology, Framework Comparison, Experimental Setup, Results × 2, Limitations) |
-| ONLYOFFICE removal | ❌ TODO | Frontend TemplateEditor.tsx still has mock-doc placeholder pretending to be ONLYOFFICE iframe; needs rip-out |
+| Frontend → real API | 🔄 Partial | Auth plus runs/review, Generate Wizard selected-run generation, real run history metadata, stale-run Regenerate action, persisted run Details expansion, schemas list/editor, templates list/editor, datasets, and rules call the Node gateway and pass browser smoke. Auth discovers configured OAuth providers. Generation now uses selected Node template/dataset records and active rule-set context rather than a fixed demo case, and HistorySection no longer uses static mock jobs. `scripts/verify-l0-runtime.sh` records the one-command memory-backed local runtime acceptance gate; `scripts/verify-l1-runtime.sh` records the local Postgres+MinIO persistent-stack gate with all browser-smoke flags true, including `runsRegenerateOk` and `runsEventsOk`, and ports released after cleanup. |
+| Node Express gateway (api/) | 🔄 Partial | Health, JWT auth/session route protection with memory default plus optional Postgres auth persistence including `auth_identities`, configurable OAuth2/OIDC authorization-code login with provider identity linking, Python generate/review/SSE proxy, `/runs/generate` with active `/rules` context and sanitized `llmTraceSummary` run metadata retention, `/runs/:id/regenerate` manual stale-run refresh, `/runs/:id/events` persisted sanitized timeline/judge detail, stored DOCX template handoff to Python `docx_template` mode, `/runs` metadata list/detail/delete, request-owner-scoped live-data binding, schemas/templates/datasets/rules CRUD with memory default plus optional request-owner-scoped JSONB Postgres persistence including `app_runs`, multipart DOCX placeholder extraction, CSV/XLSX dataset ingest, local/S3-compatible uploaded-file storage with `fileRef` metadata, owner-checked stored-file downloads, L0 file cleanup, local upload backup/restore drill, local DB+upload restore drill, production upload-storage guards with backup-policy checks, SQL migration runner/foundation migration, tests/build, and Postgres auth/app-data/live-data foundations exist. Local Docker Postgres auth/app-data/live-data smoke, migration smoke, DB+upload restore drill, local Docker MinIO S3-compatible smoke, and combined local L1 runtime smoke on Postgres+MinIO passed on 2026-05-24 using `DB_HOST_PORT=55432`; real Google/Microsoft OAuth smoke, external/cloud object-storage proof, managed deployment backup restore proof, live LLM/model evidence, and production DB hardening remain. |
+| Python agent service | 🔄 Partial | FastAPI L0 pipeline, deterministic/source-consistency/hybrid judge scaffolds, V2-first second-human review protocol plus V1/V2 review-packet exporter/artifacts plus adjudication analyzer/summaries, `judge_rule_sets` state/metadata handoff, Responses-first OpenAI adapter with `rubric_context` rule payload and non-content trace metadata plus provider token-usage pass-through, env-gated OpenAI source-consistency adapter plus no-key-safe benchmark runner with non-content trace metadata plus provider token-usage pass-through, LangGraph conditional/checkpoint/resume L0 graph, LangChain wrapper, CrewAI native sequential task-callback path, framework ergonomics L0 audit artifact, and pytest coverage exist. Live API-key LLM/source-consistency benchmark evidence remains. |
+| LangChain + CrewAI prototypes | 🔄 Partial | LangChain Core runtime wrapper exists; CrewAI now executes real `Crew.kickoff()` sequential tasks with local `BaseLLM` and stage callbacks for Dataset/Loader/Writer/Judge/ReviewController. `framework_ergonomics_l0.*` records L0 source/test/benchmark-derived engineering evidence. CrewAI memory, delegation, tool ergonomics, and production checkpoint behavior remain out of scope/pending. |
+| Multi-tier LLM benchmark | 🔄 Partial | Disabled-by-default model-tier runner/config exists; no API-key/live model-tier evidence yet. |
+| Gold-standard judge test set | 🔄 V2 Synthetic Done | 20-case V0, 50-case synthetic V1, and 80-case synthetic V2 JSONL with schema/distribution validation accepted; V2-first second-human review protocol, CSV/Markdown review packets, and adjudication analyzer/summaries exist; completed reviewer/adjudication labels remain paper-strengthening work. |
+| W1 literature review (LLM-as-Judge) | ✅ Done | Consolidated survey, Table 1 source, judge architecture, primary-source verification log, Table 1 paper-safe audit script/output, manuscript citation-key ledger, reference skeleton, 13-entry literature/framework draft BibTeX, BibTeX usage audit, artifact citation map, and P1 citation/reference gap audit exist; Table 1 high-risk SelfCheckGPT/AlignScore/Prometheus2/time-cost wording has been cleaned and mechanically guarded; current draft BibTeX maps 13 P0 literature/framework keys to 13 entries with 0 audit issues; final venue citation-style cleanup remains. |
+| Paper edits | 🔄 Partial | Figure 1 asset plus `.mmd`/`.svg`/`.png` renders and caption, methodology/architecture/live-data-binding/setup/evidence-status/preliminary results/error analysis/judge-technique results/framework results/model-tier no-live-results/limitations sections, manuscript v0 skeleton, Linda P0 DOCX/Markdown review draft plus change summary, repeatable P0 DOCX structural audit, P1 figure/table checklist, citation-safe introduction/scope pass, Related Work prose first pass, citation-key ledger, reference skeleton, draft BibTeX, artifact citation map, package-relative artifact appendix draft, citation-to-claim matrix, release-readiness audit, tool-landscape Annex policy, and P1 citation gap audit exist; `scripts/verify-paper-package-l0.sh` is the preferred no-key paper/package gate; the current P0 generated manuscript passes release-readiness strict audit with 0 blockers after output-layer Artifact A1-A20 conversion; QuickLook first-page DOCX smoke and structural DOCX audit passed, but full-document visual render QA is blocked by missing `soffice` and Word PDF export timing out; final venue/release policy and live evidence are still pending. |
+| ONLYOFFICE removal | ✅ L0 Done | Active architecture dropped ONLYOFFICE. Frontend TemplateEditor now shows metadata, parsed placeholders, read-only preview, a read-only reference palette, and real DOCX placeholder parsing through upload. |
+| Demo seed data | ✅ L0 Done | `scripts/seed-demo-data-l0.js` seeds a demo account, schema, dataset with two source versions, metadata-only template, and active judge rule set through public API routes. |
+| Observability | 🔄 Partial | Node gateway has optional structured JSON request logs via `REQUEST_LOGS_ENABLED=true` and run records retain sanitized `llmTraceSummary` metadata when Python returns it; rubric/source-consistency LLM adapter outputs include non-content prompt hashes, response/prompt character counts, latency, provider token-usage pass-through when available, and cost fields; real-rubric/model-tier benchmark rows/summaries surface provider token usage when available and estimate cost only from explicit per-1M-token pricing inputs or provider-reported cost; `docs/trace-cost-governance-l0.md` and `scripts/verify-trace-cost-governance-l0.py` now define/check the L0 trace/cost retention boundary. Production monitoring, spend caps, and centralized retention controls remain pending. |
+| Reproducibility/deployment docs | ✅ L0 Done | `docs/reproducibility-package.md`, `docs/deployment-l1.md`, `docs/credential-gated-evidence-runbook.md`, `.env.production.example`, `docs/trace-cost-governance-l0.md`, `docs/release-checklist-l0.md`, and `docs/post-launch-backlog-l0.md` document no-key reproducibility, L1 deployment guardrails, demo seed data, request logging, production/internal-beta env variables, trace/cost retention boundaries, release hygiene, post-launch backlog, launch blockers, and exact credential-gated evidence commands. |
+| Internal peer review | ✅ P0 Done | `paper-reviews/internal-peer-review-v1.md` gives a major-revision review, major risks, roadmap, and overclaim audit for the Linda P0 draft. |
+| P0 response-to-review log | ✅ P0 Done | `paper-reviews/p0-response-to-review-log.md` maps the 8 major review findings to responses, remaining blockers, fix-now roadmap items, and P1 open decisions. |
+| P0 evidence-boundary mitigation | ✅ P0 Done | Results sections and the regenerated Linda P0 DOCX/Markdown now include explicit `Evidence type` / `Claim boundary` markers so current deterministic/interface/no-run artifacts are not presented as live LLM/model evidence. |
+| P0 evidence-status table | ✅ P0 Done | `paper-drafts/section-evidence-status.md` is integrated into the regenerated P0 manuscript and centralizes supported vs unsupported claims. |
+| Submission scope options | ✅ P0 Done | `paper-drafts/submission-scope-options.md` defines Option A pilot/scaffold vs Option B empirical LLM evaluator routes for Linda's scope decision. |
+| P0 benchmark-label wording | ✅ P0 Done | Paper-facing text now frames V0/V1/V2 as author-labeled synthetic calibration data pending second-human adjudication, not externally adjudicated gold-standard evidence. |
+| Citation-to-claim matrix | ✅ P0 Done | `paper-drafts/citation-to-claim-matrix.md` maps 14 major paper-facing claims to current evidence, support status, safe wording, unsafe wording, and final P1 actions. |
+| Review artifact package | ✅ L0 Done | `scripts/build-review-package-l0.py` builds `/Users/yorha/Downloads/templateapp-review-package-l0` with `MANIFEST.json` SHA-256 checksums and whitelist/exclusion boundaries; `scripts/build-artifact-appendix-l0.py` generates `paper-drafts/artifact-appendix-l0.md` with A1-A20 package-relative paths/checksums/evidence boundaries; not a final public/supplement release. |
+| Linda demo script | ✅ L0 Done | `demo/linda-demo-script.md` gives the five-minute internal demo flow, expected screenshots, failure recovery notes, and evidence boundaries. |
+| Beta feedback loop | ✅ L0 Done | `demo/beta-feedback-form.md`, `demo/beta-feedback-triage.md`, and `demo/beta-feedback-summary-template.md` map feedback to bug/paper/product/future-work/decision buckets. |
 
 ---
 
@@ -111,7 +124,8 @@ Plan written: `~/.claude/plans/eager-humming-crown.md` — **this is the AUTHORI
 │   │   │   ├── runs/{GenerateWizard,Step1Template,...}.tsx
 │   │   │   ├── review/Review.tsx
 │   │   │   └── rules/RulesPage.tsx
-│   │   └── store/schemas.ts          ← localStorage layer (to be replaced)
+│   │   ├── api/                      ← auth/runs/review/schemas/templates/datasets/rules Node API clients
+│   │   └── store/schemas.ts          ← legacy/local helper still used by older flows
 │   ├── design/                       ← Claude Design HTML refs, chat history, prompts
 │   │   ├── PROMPT.md                 ← Claude Design boilerplate
 │   │   ├── chat-history.md
@@ -120,19 +134,18 @@ Plan written: `~/.claude/plans/eager-humming-crown.md` — **this is the AUTHORI
 │   ├── package.json
 │   ├── tailwind.config.js
 │   └── tsconfig.json
-├── api/                              ❌ TODO — Node Express gateway
-│   └── README.md                     ← only a stub
-├── agent-service/                    ❌ TODO — Python+FastAPI+LangGraph
-├── services/{llm-service,report-service}/  ❌ Empty placeholders, will be folded into agent-service
+├── api/                              🔄 PARTIAL — Node Express gateway L0
+│   ├── src/                          health, Python proxy/SSE, live-data L0, schemas/templates/datasets/rules CRUD L0, DOCX placeholder parsing, DB foundation
+│   └── tests/                        Node route/service tests, optional Postgres integration test
+├── agent-service/                    🔄 PARTIAL — Python+FastAPI+LangGraph/LangChain wrappers
 ├── spike/                            ✅ HISTORICAL — ONLYOFFICE+docxtpl validation
 │   ├── docker-compose.yml            (ports 9981+8082)
 │   ├── plugin/                       ONLYOFFICE plugin reference
 │   ├── docxtpl-test/render.py        ← reuse this for Writer agent
 │   └── README.md                     ← step-by-step validation notes
-├── word-addin/                       Phase 2 stub
-├── docs/
+├── scripts/                          L0 startup, runtime acceptance, verification, browser smoke, optional Postgres smoke
 ├── docker-compose.yml                Skeleton, needs update post-pivot
-└── 规划.md                            (probably old)
+└── AGENTS.md                         Codex-facing synced project context
 ```
 
 ### Plans
@@ -149,7 +162,7 @@ Plan written: `~/.claude/plans/eager-humming-crown.md` — **this is the AUTHORI
 - Title: "Agentic AI for Generic Document Generation with Live-Data Binding and LLM Evaluator"
 - Has 3 inline images:
   - Image 1: Microsoft "Agentic AI Lifecycle Stages" example
-  - Image 2: Figure 1 — Orchestrator + 5 agents + Judge with feedback loop  ★ THE FIGURE TO REDRAW
+  - Image 2: Figure 1 — Orchestrator + 5 agents + Judge with feedback loop  ★ redrawn/rendered; final manuscript insertion/layout check pending
   - Image 3: Layer architecture (Perception → Memory → Reasoning → Action → Judge → Governance → Feedback)
 - Table 0: Gap analysis (Hallucination/Data Binding/LLM-Judge)
 - Table 1: EMPTY skeleton — Criteria × Technique × Performance × Time (to fill from W1 research)
@@ -253,20 +266,23 @@ cd ~/Desktop/intern/templateapp/frontend
 ./node_modules/.bin/vite build         # should produce 60+ modules
 ```
 
-### Python agent service (NOT YET EXISTS, build per plan W3a)
+### Python agent service
 ```bash
 cd ~/Desktop/intern/templateapp/agent-service
 python -m venv .venv
 source .venv/bin/activate
-pip install fastapi uvicorn langgraph langchain crewai anthropic openai google-genai ollama docxtpl pydantic pytest
-uvicorn app:app --reload --port 8001   # planned port
+pip install -e ".[test]"
+PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest -p no:cacheprovider
+uvicorn app:app --reload --host 127.0.0.1 --port 8001
 ```
 
-### Node gateway (NOT YET EXISTS, build per plan W3c)
+### Node gateway
 ```bash
 cd ~/Desktop/intern/templateapp/api
 npm install
-npm run dev                            # planned port 3001
+npm test
+npm run build
+npm run dev                            # port 3001
 ```
 
 ---
@@ -315,7 +331,7 @@ User pattern: "我先想清楚每个决策，你帮我列出决策空间和 trad
 - Paper target conference/journal + submission deadline?
 - Budget for Claude API (especially for multi-tier benchmarking — Opus + Sonnet + Haiku × N cases × multiple revisions adds up)?
 - Co-authors? (Geng Yue + Linda + Ms Hu? Or just first two?)
-- Who builds the human-labeled gold-standard test set (~20-50 cases)?
+- Who completes second-human adjudication for the synthetic V1/V2 gold-standard labels?
 - Open-source the implementation alongside the paper?
 - ONLYOFFICE dropped — does she agree, or did she want the rich editing UX preserved?
 - The 4-27 expansion items (multi-table, reverse Excel, Case B) — still all in scope for the paper, or scoped down to just the agentic story?

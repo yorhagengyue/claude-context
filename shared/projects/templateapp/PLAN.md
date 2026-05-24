@@ -1,6 +1,18 @@
+---
+source: claude
+updated: 2026-05-24
+type: plan
+parent: TemplateApp - Overview
+authority: highest
+mirrors:
+  - ~/.claude/plans/eager-humming-crown.md (local working copy)
+  - ~/Desktop/claude-context/shared/projects/templateapp/PLAN.md (cross-machine)
+---
+
 # TemplateApp — Agentic AI Pivot (Linda 5-23 Brief)
 
 > **Status**: Direction locked 2025-05-23. Long-term project — no immediate deadline.
+> **Progress note (2026-05-24)**: Python agent-service L0, 20-case V0 + 50-case synthetic V1 + 80-case synthetic V2 gold sets, V2-first second-human review protocol plus V1/V2 review packets and adjudication analyzer/summaries, deterministic/source-consistency L0 V1/V2 baseline artifacts, Node gateway auth/OAuth/proxy/request-owner-scoped live-data/schemas/templates/datasets/rules/run metadata L0, `/runs/generate` selected-run generation L0 with queryable `/runs` history, active rule-set context handoff to Python, stored-DOCX handoff to Python `docx_template` mode, env-gated LLM rubric `rubric_context` prompt contract, env-gated OpenAI source-consistency adapter + no-key-safe benchmark runner, Node/Frontend DOCX placeholder upload parsing/download/cleanup L0, CSV/XLSX dataset ingest/download/cleanup L0, local/S3-compatible uploaded-file storage with `fileRef` metadata plus local backup/restore drill and production startup guards/backup-policy checks, SQL migration runner/foundation migration, optional Postgres auth persistence foundation with `auth_identities`, optional request-owner-scoped JSONB Postgres app-data persistence foundation including `app_runs`, local Docker Postgres auth/app-data/live-data smoke plus migration smoke and DB/upload restore drill, local Docker MinIO S3-compatible smoke, combined local L1 runtime smoke on Docker Postgres + Docker MinIO with the full browser workflow, frontend auth/runs history/review/schemas/templates/datasets/rules API wiring, Auth provider discovery, TemplateEditor pivot cleanup, framework/model-tier scaffolds including CrewAI native sequential task callbacks, and manuscript v0 assets including citation-safe introduction/scope pass, Related Work prose first pass, citation-key ledger, and reference skeleton now exist. Remaining major work: real Google/Microsoft OAuth smoke, external/cloud object-storage proof if claimed beyond local MinIO, managed deployment backup restore proof, live API-key LLM/model-tier/source-consistency evidence, completed second-human gold-set adjudication, CrewAI memory/delegation/tool ergonomics only if broader framework claims are kept, and submission-ready paper audit.
 > **Predecessor plan**: `~/.claude/plans/shimmying-dreaming-naur.md` (pre-pivot, M1-M9 generic CRUD). Most data models survive; the orchestration layer flips.
 > **Paper draft**: `~/Downloads/Draft Paper - Documentation.docx`
 
@@ -82,7 +94,7 @@ Timing-wise lucky: backend was unwritten when the pivot hit. No code thrown away
 **Goal**: Fill Linda's Table 1 (`Criteria | Technique | Performance | Time`).
 
 Techniques to cover (minimum):
-- **G-Eval** (Liu et al., NeurIPS 2023) — CoT + form-filling, GPT-4 backbone
+- **G-Eval** (Liu et al., EMNLP 2023) — CoT + form-filling, GPT-4 backbone
 - **GPTScore** — token log-prob weighted, reference-free
 - **FactScore** (Min et al., 2023) — atomic fact decomposition; for Accuracy / factuality
 - **AlignScore** (Zha et al., 2023) — alignment to source; for Data Consistency
@@ -171,7 +183,7 @@ Path: `templateapp/agent-service/prototypes/`
 **Model-tier comparison** (separate axis, runs on whichever framework wins):
 - `prototypes/judge_models.py` — pluggable LLM backend (Claude / OpenAI / Gemini / Ollama)
 - `prototypes/benchmark_models.py` — runs same judge prompt on every model in the matrix; records accuracy vs gold standard, latency, USD cost per eval
-- `prototypes/gold_standard.jsonl` — human-labeled test set (~20-50 cases). Each case: `{document_text, expected_pass: bool, expected_findings: [...]}`. This is the foundation; without it the model comparison is hand-wavy.
+- `prototypes/gold_standard_v2.jsonl` — synthetic gold-standard test set (80 cases; V0/V1/V2 chain). Each case records source data, rendered text, `expected_pass`, criteria scores, and `expected_findings`. This is the current foundation; without completed second-human adjudication and live model runs, model comparison remains pilot-scoped.
   → paper §Cost-Performance Analysis
 
 **Local model setup**:
@@ -182,7 +194,7 @@ Path: `templateapp/agent-service/prototypes/`
 Path: `templateapp/api/`
 
 Mostly the original Phase 1 plan (`shimmying-dreaming-naur.md` M1-M6) but trimmed:
-- Auth (M1) — JWT + Identities + Users (own table). No change.
+- Auth (M1) — in-memory JWT/session L0, optional Postgres users/sessions/identities, request owner-scoping, and configurable OAuth2/OIDC login L0 exist; real provider smoke remains.
 - Templates CRUD (M2) — upload docx, parse `{{tags}}` server-side via docxtpl, store
 - **REMOVED: M3 ONLYOFFICE callback** — no in-browser editing, no callback dance
 - **REMOVED: M4 ONLYOFFICE plugin** — no plugin
@@ -196,11 +208,7 @@ Existing data model in `shimmying-dreaming-naur.md` mostly carries over. Templat
 #### W3d — Frontend additions / changes
 - **New page**: `src/pages/runs/AgentTimeline.tsx` — visualize Orchestrator's DAG live: each agent node lights up with status (idle/running/done/failed); Judge node shows score + revision number; SSE-driven
 - **Existing pages**: drop localStorage stubs, wire to Node gateway REST (`@/api/*.ts` files); keep the contract surface the same
-- **TemplateEditor.tsx** — **gut the ONLYOFFICE mock-doc**, replace with:
-  - Upload zone (.docx) — already in TemplatesList NewTemplateArea, just promote here
-  - Read-only docx preview pane (server renders docx → PDF or HTML via libreoffice headless, frontend shows iframe of that)
-  - Column palette stays on the right, but **read-only / informational**: shows which columns are referenced by the parsed `{{tags}}`, no click-to-insert
-  - Optional: "Re-upload to edit" button → user downloads, edits in Word, uploads new version
+- **TemplateEditor.tsx** — L0 has removed the ONLYOFFICE mock-doc surface. Current UI shows template metadata, manual parsed-placeholder preview, read-only metadata preview, and a read-only schema reference palette. Remaining work is real multipart `.docx` upload, server-side parsing, and optional rendered DOCX/PDF/HTML preview.
 - **Review.tsx**: replace mock findings with real judge JSON output; show revision history (round 1 score 0.62, round 2 score 0.78, round 3 0.91 → pass)
 - **Generate Wizard**: after Run, push user to Agent Timeline view
 
@@ -223,8 +231,8 @@ Not a deadline, just a dependency order:
 
 ```
 1.  W1 literature review                              ← paper-quality work starts
-2.  Build gold-standard judge test set (~20-30 cases) ← unlocks any benchmarking
-3.  W3a skeleton (FastAPI + LangGraph + judge + writer)
+2.  Build gold-standard judge test set (~20-80 cases) ← V2 synthetic + V2-first review protocol + review packets + adjudication analyzer done; completed second-human adjudication remains
+3.  W3a skeleton (FastAPI + LangGraph + judge + writer) ← L0 accepted; LangGraph conditional/checkpoint/resume graph exists, production cross-process durable resume/retry remains
 4.  W3a end-to-end on gold-standard cases             ← first real numbers (frontier judge)
 5.  W2 §Framework intro + redraw Figure 1             ← parallel with 3-4
 6.  W3b framework prototypes (CrewAI + LangChain)
@@ -233,7 +241,7 @@ Not a deadline, just a dependency order:
 9.  W3b model benchmark run                           ← §Cost-Performance numbers
 10. W2 fill Table 1 + §Framework Comparison + §Experimental Setup + §Results — Judge + §Results — Model Tier
 11. W3c Node gateway (M1 Auth → M6 Datasets) — long tail, parallel-izable
-12. W3d frontend wiring + Agent Timeline view + TemplateEditor.tsx ONLYOFFICE rip-out
+12. W3d frontend wiring + Agent Timeline view + TemplateEditor.tsx ONLYOFFICE rip-out  ← L0 done for runs/review/history/schemas/templates/datasets/rules, active rule-set context handoff, LLM rubric prompt context, DOCX placeholder upload parsing, CSV/XLSX ingest, local file storage/download/cleanup, queryable run metadata, and LangGraph conditional/checkpoint/resume graph coverage; production persistence/storage hardening, cross-process durable resume/retry, and live LLM evidence remain
 13. W2 polish + §Limitations section
 ```
 
@@ -252,7 +260,7 @@ Steps 1-10 produce a paper draft Linda can review. Steps 11-12 are productizatio
 
 ## Risks / open issues
 
-1. **Judge calibration** — judge will likely be optimistic regardless of model. Need human-labeled gold-standard set (~20-50 cases) to evaluate the judge itself. Without this, paper's "judge works" claim is hand-wavy. **Building this gold set is a bottleneck task** — should plan it early.
+1. **Judge calibration** — judge will likely be optimistic regardless of model. A 20-case V0, 50-case synthetic V1, and 80-case synthetic V2 gold set now exist, but the paper's "judge works" claim still depends on completed second-human adjudication and live LLM/source-consistency runs. **Adjudication and live benchmark evidence are now the bottleneck tasks**.
 2. **Cost** — frontier model benchmarking × N test cases × N models × multiple revision rounds adds up fast. Budget plan needed. Mitigation: small commercial models (Haiku / 4o-mini) can do bulk runs, frontier reserved for ceiling experiments.
 3. **Hybrid backend complexity** — Node ↔ Python HTTP adds latency + ops overhead. Worth it for ecosystem split but: who runs migrations? Python or Node? My default: Node owns the DB (Sequelize migrations), Python is stateless and reads via Node's API.
 4. **Frontend SSE compatibility** — agent timeline needs server-sent events through Node proxy. Confirm Express SSE works with Vite dev proxy.
