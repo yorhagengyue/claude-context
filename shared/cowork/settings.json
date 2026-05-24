@@ -3,5 +3,7 @@
     "swift-lsp@claude-plugins-official": true
   },
   "alwaysThinkingEnabled": true,
-  "effortLevel": "high"
+  "effortLevel": "high",
+  "agentPushNotifEnabled": true,
+  "inputNeededNotifEnabled": true
 }
