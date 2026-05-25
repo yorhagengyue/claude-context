@@ -117,4 +117,62 @@
 - Hermes 的 user profile 存在 `~/.hermes/config.yaml`（或对应配置路径）
 - 修改 config.yaml 中的 user profile 字段后，下次 Hermes 会话会自动读取新内容
 
+---
+
+## 5. Profile / Persona 清单（2026-05-25 更新）
+
+`~/.hermes/profiles/` 下当前有 2 个独立 profile（各自有独立 SOUL.md / memories / sessions / state.db）：
+
+| Profile | gateway plist | 用途 | 状态 |
+|---|---|---|---|
+| `dad` | `ai.hermes.gateway-dad` | 父亲健康追踪 + 微信沟通 | ✅ 活跃（2026-05-25 升级见 §6） |
+| `xirui` | `ai.hermes.gateway-xirui` | （用途未在 claude-context 记录，Claude 未读 SOUL 保护 PII） | ✅ 活跃 |
+
+`xirui` profile 不继承独立 config.yaml，可能继承主 `~/.hermes/config.yaml` —— 是否有跟 dad 同样的 fallback_model 配错问题待用户确认。
+
+---
+
+## 6. 2026-05-25 Dad 子系统升级
+
+NAISC 决赛 + harness 全面更新会话顺手做的 Dad-Hermes 升级。详细决策见 CLAUDE.md §8 同日条目。
+
+**变更**：
+1. **fallback_model 修复** — 原 `openai-codex + claude-sonnet-4-6` 不兼容（5 天反复 400），改为 `null`。配真 fallback 前必须验证 provider 真支持指定 model
+2. **清理 dead code**：
+   - `~/.hermes/user_personas.yaml` 的 `PLACEHOLDER_DAD_USER_ID` 占位条删除（从未匹配真 user_id）
+   - 3 个废弃 cron output dir 删除（4-29 老数据：`25e0e004f7bb / 847174cb0aac / d30e92133d04`），活跃 `ba3c601557ed` 早间新闻保留
+3. **SOUL.md 新增 "数据落点 routing" 段** — 强制 bot 按 Daily / Profile/04-异常追踪 / HEALTH-LOG / per-user USER.md 的 routing 写新数据
+4. **Obsidian Dad Health/** 互引声明：
+   - `HEALTH-LOG.md` 头部 `⚠️ READ-ONLY 历次报告快照`
+   - `Profile/04-异常追踪.md` 头部 `✅ LIVE source-of-truth · 活台账`
+
+**Follow-up（task #11）**：open-loop 推送 → closed-loop 反馈循环（meal 提醒 / 早间新闻效果采集 + 自适应），单独 session 设计。
+
+---
+
+## 7. 2026-05-25 主系统 cron 暂停
+
+跟 Journal v1 重构（CLAUDE.md §0.7 / Obsidian `05 - Journal/README.md`）配套，2 个 Hermes 主 profile cron paused 等 prompt 重写：
+
+| Cron ID | 名称 | 原 schedule | 暂停理由 |
+|---|---|---|---|
+| `9bb0519ba199` | AI Daily Report | 0 8 * * * | 现 prompt 在 journal 加一行 `[08:01] AI Daily Report 已生成`，但 journal 改了形态 |
+| `06d0452064bb` | Mac Mini Work Log | 0 6 * * * | 现 prompt 写"前一天日记 ## AI 栏"，但新 journal 没有 daily 文件 |
+
+**备份**：`~/.hermes/cron/jobs.json.bak.20260525`
+
+**Follow-up（task #9）**：重写 prompt —— AI Daily 取消加 journal 行；Work Log 改写 `06 - Auto/Mac Mini Activity/<date>.md`
+
+---
+
+## 8. Discord listener 已停（2026-05-25）
+
+NAISC 期间在 Mac Mini 后台跑（PID 48771，nohup detached），killed 2026-05-25 NAISC pivot。代码 / Supabase schema / 复用指引在 `shared/assets/discord-presence-listener/`。Supabase 数据保留不动。
+
+---
+
+## 维护备注
+
+本文件 2026-05-25 起由 Claude 在 Hermes 子系统有重大变更时主动更新（auto-memory default-on 规则覆盖，见 CLAUDE.md §0.3.1）。
+
 如果你编辑了 §2 部分（Memory Store），那是 Hermes 运行时通过 memory tool 管理的，手动编辑后需要确认 Hermes 侧已同步。

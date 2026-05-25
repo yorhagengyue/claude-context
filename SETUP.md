@@ -224,6 +224,9 @@ Claude Harness 初始化完成：
 | 机器特有的配置、路径 | `machines/<name>/local.md` | "Mac Mini 的项目目录在 ~/Projects" |
 | 新 skill | `shared/skills/` | 新的 .skill 文件或 SKILL.md |
 | 新 MCP 配置 | `shared/mcp/` | 新的配置文件 |
+| **跨项目可复用资产**（2026-05-25 新增） | `shared/assets/<asset-name>/` | rule library / listener snapshot / 架构模式 |
+| **会话产生的 sediment**（重大决策 / 复盘 / 情绪节点） | Obsidian Vault `05 - Journal/YYYY/MM/YYYY-MM-DD-slug.md` | 见 Vault 内 `05 - Journal/README.md` |
+| **模式定义**（Claude harness 5 模式） | Obsidian Vault `02 - Areas/Claude Harness/` | chat / code / architecture-review / content / memory |
 
 **绝对禁止**：
 
@@ -231,6 +234,23 @@ Claude Harness 初始化完成：
 - 不得将机器特有的路径硬编码到 shared/ 下的任何文件
 - 不得在没有用户确认的情况下删除或修改已有的记忆条目
 - 不得静默修改已有记忆（只能追加新条目或在用户确认后归档旧条目）
+
+### 4.1.1 自动记忆触发（2026-05-25 起）
+
+**Claude 在任何会话、任何模式下，必须主动写入 sediment-worthy 内容，不需要用户提醒。**
+
+完整规则见 CLAUDE.md §0.3.1。简化版：
+
+- 用户做出**重大决策 / 校准 framing** → §8
+- 用户**纠正 Claude 判断** → §8 correction
+- 跨项目**洞察 / 模式** → §8 insight
+- **项目重大节点** → sub-MD + §8 pointer
+- 用户**沟通偏好声明** → §8 preference
+- **跨会话有价值的复盘** → Obsidian `05 - Journal/`
+
+**回复末尾必须告知**：`📝 已记入 §8 [类型]: 标题` / `[文件路径]`
+
+用户不满意可随时删除（低门槛 ≠ 不可逆）。
 
 ### 4.2 写入后的强制动作
 
@@ -263,9 +283,12 @@ Claude Harness 初始化完成：
 | 新增内容 | 注册位置 |
 |----------|----------|
 | 新项目 | CLAUDE.md §5 项目索引表 + `shared/projects/<name>/` |
-| 新 Skill | 本文件 Step 4 的 Skills 注册表 |
-| 新 MCP | 本文件 Step 5 的 MCP 注册表 |
+| 新 Skill | 本文件 Step 4 的 Skills 注册表 + CLAUDE.md §0.5 |
+| 新 MCP | 本文件 Step 5 的 MCP 注册表 + CLAUDE.md §0.6 |
 | 新机器 | 本文件 Step 1 的机器识别表 + `machines/<name>/` |
+| 新跨项目资产 | `shared/assets/<name>/` + 顶层 `shared/assets/README.md` + CLAUDE.md §0.6.1 |
+| 新模式（Claude harness） | Obsidian `02 - Areas/Claude Harness/<mode>.md` + 同目录 `INDEX.md` 表 + CLAUDE.md §9 速查表 |
+| 项目归档 | mv `shared/projects/<name>/` → `archive/<name>/` + CLAUDE.md §5 "已归档项目" 表 + §8 终局记忆条 |
 
 ---
 
@@ -340,6 +363,46 @@ mkdir -p machines/<machine-name>/
 # 3. 同步
 ```
 
+### 6.5 新增跨项目资产（2026-05-25 新增）
+
+跨项目可复用的代码 / 文档 / 架构思路（不是项目本体）：
+
+```bash
+# 1. 创建 shared/assets/<asset-name>/
+# 2. 写 README.md 说明：来源 / 用途 / 状态 / 复用场景 / trade-off
+# 3. 复制必要文件（代码用 .snapshot 后缀避免误认为是 source of truth）
+# 4. 更新 shared/assets/README.md 索引
+# 5. 更新 CLAUDE.md §0.6.1 资产表
+# 6. 提交：git add shared/assets/ && git commit -m "project: extract <asset>"
+```
+
+参考已有：`shared/assets/wellness-rule-library/` / `shared/assets/discord-presence-listener/`
+
+### 6.6 新增 / 修改 Claude 模式（2026-05-25 新增）
+
+5 模式当前在 Obsidian Vault `02 - Areas/Claude Harness/`：
+
+```bash
+# 新增模式：
+# 1. 在 02 - Areas/Claude Harness/ 创建 <mode>.md（参照现有 5 个模式）
+# 2. 更新同目录 INDEX.md 表格
+# 3. 更新 CLAUDE.md §9 速查表
+# 4. 在 02 - Areas/Claude Harness/INDEX.md 的 "自动识别表" 加触发词
+
+# 修改现有模式：直接 edit 对应 .md 文件 + 同步 §9 摘要
+```
+
+### 6.7 项目归档（2026-05-25 新增）
+
+```bash
+mkdir -p archive/<name>
+mv shared/projects/<name>/* archive/<name>/
+rmdir shared/projects/<name>
+# 更新 CLAUDE.md §5 "已归档项目" 表
+# 写 §8 终局记忆条目（type: project，含归档原因 + 拆出的资产 + 遗留决策）
+# 如有可复用资产，按 §6.5 拆到 shared/assets/
+```
+
 ---
 
 ## 第七章：文件清单
@@ -347,20 +410,28 @@ mkdir -p machines/<machine-name>/
 | 文件 | 用途 | 谁维护 | 更新时机 |
 |------|------|--------|----------|
 | `SETUP.md` | 操作手册（新增/初始化步骤） | 用户 + Claude（需确认） | 新增资源、规则变更时 |
-| `shared/CLAUDE.md` | 用户 profile + 记忆 | Claude（memory skill） | 每次有值得记住的事 |
-| `shared/HERMES.md` | Hermes Agent 记忆导出 | Hermes / 用户 | Hermes 记忆变更时 |
+| `shared/CLAUDE.md` | 用户 profile + 记忆 + harness 规则 | Claude（auto-memory default-on） | sediment-worthy 内容、规则变更时 |
+| `shared/HERMES.md` | Hermes Agent 系统状态 + 关键变更 | Claude + 用户 | Hermes 子系统变更时 |
 | `shared/credentials.md` | 账号密码 | 用户 | 新增/变更凭据时 |
 | `shared/cowork/settings.json` | 全局设置（plugins, thinking） | 用户 | 插件/设置变更时 |
 | `shared/cowork/settings.local.json` | 项目级权限 | 用户 | 权限变更时 |
 | `shared/skills/*/SKILL.md` | Skill 源码 | 用户 + Claude | Skill 逻辑变更时 |
 | `shared/mcp/*` | MCP 配置 | 用户 + Claude | MCP 新增/变更时 |
-| `shared/projects/*/` | 项目速报 | Claude（memory skill） | 项目状态变更时 |
+| `shared/projects/*/` | 项目速报（active） | Claude | 项目状态变更时 |
 | `shared/projects/TEMPLATE.md` | 新项目模板 | 用户 | 模板需要更新时 |
+| **`shared/assets/*/`** | 跨项目可复用资产 | Claude | 项目归档 / 提取复用模块时 |
 | `machines/*/setup.sh` | 机器初始化脚本 | 用户 | 环境依赖变更时 |
-| `machines/*/local.md` | 机器特有上下文（含 Google/Hermes/Obsidian 配置） | Claude | 机器配置变更时 |
-| `archive/` | 记忆归档 | Claude（consolidation 时） | §8 超过 30 条时 |
+| `machines/*/local.md` | 机器特有上下文 | Claude | 机器配置变更时 |
+| `archive/` | 已结束项目归档 | Claude（项目归档时） | 项目完结 |
 | `README.md` | 仓库说明（给人看） | 用户 | 结构变更时 |
 | `.gitignore` | 排除规则 | 用户 | 需要排除新文件类型时 |
+
+**外部依赖**（不在本仓库但 Claude 必须知道）：
+| 路径 | 用途 |
+|---|---|
+| `~/Documents/Obsidian Vault/02 - Areas/Claude Harness/` | 5 模式定义（chat/code/architecture-review/content/memory） |
+| `~/Documents/Obsidian Vault/05 - Journal/` | 触发式 sediment journal entries (v1, 2026-05-25 起) |
+| `~/.hermes/` | Hermes Agent 系统（独立于本仓库） |
 
 ---
 
