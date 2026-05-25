@@ -90,6 +90,38 @@ claude-context/
 - 机器路径硬编码到 shared/ 下的文件
 - 未经用户确认删除或修改已有记忆条目
 
+### 0.3.1 自动记忆触发（2026-05-25 起永久规则）
+
+**Claude 在任何会话、任何模式下，遇到 sediment-worthy 内容时必须自己主动写入，不需要用户提醒、不需要先问"要不要记"。**
+
+**Sediment-worthy 判定**（满足任一即触发）：
+- 用户做出**重大决策 / 改变方向 / 校准 framing**（如 frame shift、技术选型、项目转向）
+- 用户**纠正 Claude 的判断**（→ §8 correction）
+- 用户**确认非显然的方法可行**（→ §8 feedback "validated approach"）
+- 跨项目可复用的**洞察 / 模式 / pitch 框架**（→ §8 insight）
+- 项目重大节点（启动 / pivot / 终局 / 归档）（→ sub-MD + §8 project pointer）
+- 用户**沟通偏好 / 工作流偏好**的明确表达（→ §8 preference）
+- 一段对话产生**跨会话仍有价值的复盘** → Obsidian `05 - Journal/` entry
+- mentor / 重要他人反馈消化 → sub-MD + §8 pattern entry
+
+**写入位置选择**：按 §0.3 表 + §0.7 三层体系（轻量指针 §8 / sub-MD / 重内容 Vault）
+
+**回复末尾告知格式**（不可省）：
+> 📝 已记入 §8 `[类型]: 标题` / `[sub-MD path]` / `[journal entry path]`
+
+**用户控制权**：
+- 写错了用户 `rm` / Edit 删（**低门槛 ≠ 不可逆**）
+- 用户说"先不记 / 别写"立刻停手
+- 用户说"这条删掉"立即从 §8 移除
+
+**绝对不能做**：
+- ❌ 等用户说"记一下"才写（被动模式，废除）
+- ❌ 写了不告知用户（暗中累积）
+- ❌ 把项目过程性细节写 §8（违反 §0.3 既有规则；应进 sub-MD）
+- ❌ 重复写相同内容到多处（按表选 1 处）
+
+**为什么这条是强规则**：用户多次表达"重视过程而不是速度"（§2）+ 已建三层记忆体系（§0.7）+ 模式系统的 `memory` 模式（§9）。这条把"主动记忆"从 memory 模式 limited 提升到全模式 default。Claude 是用户的**外脑** —— 外脑应该自己工作，不该每次都要主人按按钮。
+
 ### 0.4 同步约定
 
 所有机器直接在 `main` branch 上工作。推送前先 pull：
@@ -110,6 +142,30 @@ cd ~/Desktop/claude-context && git pull && git add -A && git commit -m "<type>: 
 ### 0.6 已注册的 MCP
 
 （暂无）
+
+### 0.6.1 已注册的模式 / 资产
+
+| 类型 | 位置 | 用途 |
+|---|---|---|
+| 模式系统（5 模式） | `~/Documents/Obsidian Vault/02 - Areas/Claude Harness/` | chat / code / architecture-review / content / memory，详见 §9 |
+| 跨项目复用资产 | `shared/assets/` | wellness-rule-library / discord-presence-listener / mcp-architecture-patterns / whisper-hallucination-cleanup |
+
+### 0.6.2 Codex CLI 状态（2026-05-25 调研后）
+
+OpenAI Codex CLI 跟 Claude / Hermes **完全隔离，三家无共享记忆层**。
+
+| 项 | 值 |
+|---|---|
+| 安装 | `~/.codex/`（CLI 工具，无常驻 daemon） |
+| 版本 | `codex-cli 0.117.0` |
+| 实际 model | `gpt-5.3-codex` + migration notice → `gpt-5.4`（未实际切换） |
+| Global memory | `~/.codex/memory.md` — 2026-05-25 重写（移除 YoRHa Dashboard Policy 僵尸 contract） |
+| Skills | `~/.codex/skills/` — `cloudflare-deploy` / `codex-primary-runtime` / `cyrene`（角色扮演）/ `notion-knowledge-capture` 仍 active；`dashboard-session-operator` 已 disabled |
+| 实际活跃度 | 中间状态。NAISC 后冷却 5+ 周。某些项目还用、某些不用 |
+| 跨机器同步 | **无**。`~/.codex` 目录每台机器独立 |
+| AGENTS.md 现状 | **几乎全无**（仅死掉的 YoRHa 有 1 份）。活跃项目（IFSG / SBS Transit / MoyuanIdea / TemplateApp）均无 → Codex 每次冷启动 |
+
+**Codex 在本 harness 里的"应有职责"**：写代码 / 跑技术任务。**实际等用户决定后续投入多少**——5/25 后再启动深度集成（claude-context 加 shared/codex/、补 AGENTS.md）的决策待定，列在 follow-up。
 
 ### 0.7 外置大脑（Obsidian Vault）
 
@@ -147,7 +203,10 @@ Obsidian Vault 是三层记忆体系的底层——存放重内容。关系：
 - **GitHub**：https://github.com/yorhagengyue
 - **所在地**：新加坡
 - **学校**：Temasek Polytechnic（淡马锡理工），IT 专业，Y2 → Y3，即将进入实习
-- **主力开发工具**：OpenAI Codex (GPT-5.4)；Hermes Agent（主力 agent 系统，替代 YoRHa/Moltbot）；Claude Code CLI（CTO 顾问角色）
+- **主力开发工具**：
+  - OpenAI Codex CLI（model: `gpt-5.3-codex`，配 migration notice 指向 `gpt-5.4` 但未实际切换）— **中间状态**：某些项目还用、某些不用了；NAISC 后冷却 5+ 周（详见 §3 + §0.6.2）
+  - Hermes Agent（主力 agent 系统，替代 YoRHa/Moltbot；多 profile：主用户 + dad + xirui，见 [HERMES.md](HERMES.md)）
+  - Claude Code CLI（5 模式系统 chat/code/architecture-review/content/memory，见 §9；自动记忆 default-on 见 §0.3.1）
 - **系统**：macOS，主力浏览器 OpenAI Atlas（Chrome 内核）
 
 ## 2. 跟我对话的方式
@@ -303,6 +362,12 @@ Claude 的行为按**模式**切换，避免单一人格覆盖所有场景（之
 ## 8. 记忆追加区
 
 > 由 memory skill 自动追加，按时间倒序。最近一次 consolidation：2026-05-25（NAISC pivot 后，~30 条 → ~21 条）。
+
+### [2026-05-25] correction: Codex 主力工具 framing 不准 + 僵尸 contract 清理
+之前 §1 写 "OpenAI Codex (GPT-5.4)" 当主力代码工具。调研后纠正：(1) 实际 model 是 `gpt-5.3-codex` + migration notice，**未实际切换 5.4**；(2) Codex 现状是**中间状态**——NAISC 后冷却 5+ 周，活跃度比 Claude / Hermes 低很多；(3) `~/.codex/memory.md` 长期强制每个任务调 YoRHa dashboard（4-22 已死），全部 session 都在调死服务。**已修**：CLAUDE.md §1 改为反映实际 model + 中间状态；§0.6.2 新增 Codex 调研段；`~/.codex/memory.md` 重写删 dashboard policy；`dashboard-session-operator` skill rename `.disabled-20260525`。**未做（follow-up）**：删 config.toml 的 Ripple MCP+wkt_token（等用户 Workato 后台 revoke 后做）；YoRHa 物理归档；shared/codex/ 跨机同步；活跃项目 AGENTS.md 补全。**教训**：跨工具生态（Claude / Codex / Hermes）的 contract 必须在生态边界变化时同步更新——之前 YoRHa 在 §5 标"归档"但 Codex 端的 contract 没改，5 周污染。下次任何生态层归档都要扫一遍跨边界 contract。
+
+### [2026-05-25] feedback: Claude 自动记忆是 default-on 不再被动 (§0.3.1)
+用户明确要求：以后无论哪个对话、哪个模式，Claude 遇到 sediment-worthy 内容**必须主动写入**，不需要用户提醒、不需要先问。**Why**：用户已建三层记忆体系（§0.7）+ 模式系统（§9），但之前自动记忆是 memory 模式 limited——这次提升为全模式 default。Claude 是用户的外脑，外脑应该自己工作。**How to apply**：判定见 §0.3.1 sediment-worthy 清单；写入回复末尾必须用 `📝 已记入 ...` 一行告知；用户随时可 rm；说"先不记"立刻停。memory 模式 → 显式批量操作；自动记忆 → 全模式 default。
 
 ### [2026-05-25] correction: 架构判断力不再是 #1 短板（§3 frame shift）
 NAISC 5/22 决赛是触发节点。之前 §3 把"架构判断力 = 核心缺口"当宪法，半年实践下来用户重新校准：作为**学生 + 同龄人参照系**，架构能力已经是强项，不是 #1。学生阶段不存在"在架构能力上有极大突破"的物理可能（没有大规模生产系统在手 + 没有 10 年级别的重构经历），继续恶补边际效用很低。
