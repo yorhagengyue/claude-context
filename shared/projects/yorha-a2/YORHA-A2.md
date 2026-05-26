@@ -78,8 +78,9 @@ YoRHa-A2
 | 2026-05-25 | 项目分两 part：short-video（引流） + conversion-site（转化） | 本对话 |
 | 2026-05-25 | 两 part 并行启动 | 本对话 |
 | 2026-05-25 | claude-context 端拓扑 = 子目录式（part 独立 sub-MD） | 本对话 |
-| 2026-05-25 | Vault 端 framework / drafts 暂不挪（当前归属 short-video，未来如需拆再说）| 本对话 |
 | 2026-05-25 | conversion-site 当前 concept，等 user 专题对话填 | 本对话 |
+| 2026-05-25 | Vault 端重组对称：framework / drafts / published 已挪到 `short-video/` 子目录；YoRHa-A2 根只保留 README + SETUP + 两 part 子目录 | 立项后第二轮重组（user 直接指示，覆盖之前"暂不挪"的决策）|
+| 2026-05-25 | Vault 端 README + SETUP + 各 part README 写满"想法 + 聊的东西"（不只是规约）| 同上 |
 
 **part-specific 决策**写在各自 part 的状态板，不重复到这里。
 
@@ -89,14 +90,22 @@ YoRHa-A2
 
 一句话：**listener + 工具人，不在内容选题 / 商业框架 / 网站架构上 attack**（领域不熟，今天的对话已经 6 次试错全错）。
 
-## Vault 工作区
+## Vault 工作区（已对称重组）
 
-- `Vault/01 - Projects/YoRHa-A2/` —— 顶级
-- `Vault/01 - Projects/YoRHa-A2/framework/` —— short-video part framework v0 (4 文件)
-- `Vault/01 - Projects/YoRHa-A2/drafts/` + `published/` —— short-video part 工作区
-- `Vault/01 - Projects/YoRHa-A2/conversion-site/` —— conversion-site part 占位
+```
+Vault/01 - Projects/YoRHa-A2/
+├── README.md                    项目说明
+├── SETUP.md                     Vault 端工作规约
+├── short-video/
+│   ├── README.md                想法 + 聊的东西
+│   ├── framework/               v0 framework 4 文件
+│   ├── drafts/
+│   └── published/
+└── conversion-site/
+    └── README.md                想法 + 聊的东西
+```
 
-如果未来 conversion-site 需要自己的 framework / drafts，会重组成 `short-video/` + `conversion-site/` 平级结构。当前未拆。
+未来 conversion-site 长出自己的 framework / drafts 时，直接在 `conversion-site/` 下扩展（拓扑已对称）。
 
 ## 下一步（顶级，pending user）
 

@@ -177,7 +177,7 @@ OpenAI Codex CLI 跟 Claude / Hermes **完全隔离，三家无共享记忆层**
 
 | ✅ 用 | ❌ 不用 |
 |---|---|
-| `Vault/01 - Projects/YoRHa-A2/framework/voice.md` | `~/Documents/Obsidian Vault/01 - Projects/YoRHa-A2/framework/voice.md` |
+| `Vault/01 - Projects/YoRHa-A2/short-video/framework/voice.md` | `~/Documents/Obsidian Vault/01 - Projects/YoRHa-A2/short-video/framework/voice.md` |
 | `Vault/02 - Areas/Claude Harness/INDEX.md` | `~/Documents/Obsidian Vault/02 - Areas/Claude Harness/INDEX.md` |
 | `Vault/05 - Journal/2026/05/<slug>.md` | `~/Documents/Obsidian Vault/05 - Journal/...` |
 

@@ -2,7 +2,7 @@
 project: YoRHa-A2
 type: setup + manifesto
 last-updated: 2026-05-25
-read-order: 1 (本文件) → 2 (YORHA-A2.md 顶级 hub) → 3 (各 part 状态板：short-video/SHORT-VIDEO.md + conversion-site/CONVERSION-SITE.md) → 4 (Vault/01 - Projects/YoRHa-A2/framework/*)
+read-order: 1 (本文件) → 2 (YORHA-A2.md 顶级 hub) → 3 (各 part 状态板：short-video/SHORT-VIDEO.md + conversion-site/CONVERSION-SITE.md) → 4 (Vault/01 - Projects/YoRHa-A2/short-video/framework/*)
 parts:
   - short-video (引流)
   - conversion-site (转化)
@@ -16,7 +16,7 @@ parts:
 > - [YORHA-A2.md](YORHA-A2.md) 顶级状态板（两 part 总览）
 > - [short-video/SHORT-VIDEO.md](short-video/SHORT-VIDEO.md) 短视频 part 状态板
 > - [conversion-site/CONVERSION-SITE.md](conversion-site/CONVERSION-SITE.md) 转化站 part 状态板
-> - Obsidian Vault 里的 4 个 framework 文件（`Vault/01 - Projects/YoRHa-A2/framework/`，当前归属 short-video part）
+> - Obsidian Vault 里的 4 个 framework 文件（`Vault/01 - Projects/YoRHa-A2/short-video/framework/`，当前归属 short-video part）
 
 ---
 
@@ -72,7 +72,7 @@ AI 概念: multi-agent / subagent
 | 产出："AI 怎么用 / AI 怎么进步" | 产出："情感分析 / 人生道理" | 产出：**用 A 解释 B**，是新的命名系统 |
 | 受众：技术 / 创业圈 | 受众：情感共鸣类 | **受众：被 AI 热度吸引的下沉用户，但留下来是因为内容打中了"我也是这样"** |
 
-护城河不在内容质量本身，**在这个映射只有 user 能持续输出**。Voice 是用户独有的（`Vault/01 - Projects/YoRHa-A2/framework/voice.md`），Claude / 队友 / 抄袭者都模仿不来。
+护城河不在内容质量本身，**在这个映射只有 user 能持续输出**。Voice 是用户独有的（`Vault/01 - Projects/YoRHa-A2/short-video/framework/voice.md`），Claude / 队友 / 抄袭者都模仿不来。
 
 ## 4. 战略地图 · 两 part × 双轨
 
@@ -107,7 +107,7 @@ AI 概念: multi-agent / subagent
 
 **当前状态**：
 
-- ✅ short-video framework v0 定（位于 `Vault/01 - Projects/YoRHa-A2/framework/`）
+- ✅ short-video framework v0 定（位于 `Vault/01 - Projects/YoRHa-A2/short-video/framework/`）
 - ⏸️ 国外 完整计划 user 未写完，**Claude 不展开讨论**
 
 ## 5. 当前阶段 / 阶段定义
@@ -123,7 +123,7 @@ v0 (今天) → v1 (跑 10 条出来，voice/shape 稳定) → v2 (有 metric �
 - [ ] User 扩 / 砍 concept-library (AI 概念库)
 - [ ] User 扩 / 砍 scenario-library (人性场景库)
 - [ ] User 决 story-shapes gap：先 Shape A 同质化 vs 一开始 mix arc
-- [ ] User 把已发的 subagent / 分手 抖音版本回灌进 `Vault/01 - Projects/YoRHa-A2/drafts/`
+- [ ] User 把已发的 subagent / 分手 抖音版本回灌进 `Vault/01 - Projects/YoRHa-A2/short-video/drafts/`
 - [ ] User 跑出 5-10 条文案，验证 framework 是否能稳定生成不同主题
 
 **Part 2 conversion-site**：
@@ -163,7 +163,8 @@ v0 (今天) → v1 (跑 10 条出来，voice/shape 稳定) → v2 (有 metric �
 12. **2026-05-25** 节点 / 止损 / 流量转化路径 = user 决定，Claude 不思考
 13. **2026-05-25** 项目分两 part：**short-video（引流）+ conversion-site（转化）**，并行启动
 14. **2026-05-25** claude-context 端拓扑 = 子目录式（每 part 独立 sub-MD）
-15. **2026-05-25** Vault 端 framework / drafts 当前归属 short-video，不挪；conversion-site 子目录仅 placeholder（等专题）
+15. **2026-05-25** Vault 端**已对称重组**：framework / drafts / published 已挪到 `short-video/` 子目录；YoRHa-A2 根只保留 README + SETUP + 两 part 子目录（覆盖之前"暂不挪"的决策）
+16. **2026-05-25** Vault 端 README + SETUP + 各 part README 都写满"想法 + 聊的东西"，不只是规约（user 直接指示）
 
 新的决策由 user 加进 [YORHA-A2.md](YORHA-A2.md) 决策 log，不在本 SETUP 改。
 
@@ -173,7 +174,7 @@ v0 (今天) → v1 (跑 10 条出来，voice/shape 稳定) → v2 (有 metric �
 
 ### 该做的
 
-1. **维护 framework 库**：user 增 / 删 / 重组时把改动落入对应文件，位于 `Vault/01 - Projects/YoRHa-A2/framework/`（concept-library / scenario-library / story-shapes / voice）
+1. **维护 framework 库**：user 增 / 删 / 重组时把改动落入对应文件，位于 `Vault/01 - Projects/YoRHa-A2/short-video/framework/`（concept-library / scenario-library / story-shapes / voice）
 2. **拆解 user 文案**：每写一条 draft → 按 framework 标 (a) 哪个概念 / (b) 哪个场景 / (c) 哪个 arc / (d) voice 是否一致
 3. **voice 校准**：用 voice.md 的 6 条规则 + 白/黑名单 + review checklist 给 user 反馈
 4. **数据收集**（待 user 跑起来）：metric 汇总 → 喂回 framework 迭代
@@ -213,29 +214,26 @@ shared/projects/yorha-a2/
     └── CONVERSION-SITE.md         ← 转化站 part 状态板 + 8 个待解决问题
 ```
 
-**Obsidian Vault 端**（**重内容**：framework + drafts + published + conversion-site 工作区）：
+**Obsidian Vault 端**（**重内容**：framework + drafts + published + conversion-site 工作区；**已对称重组**）：
 
 ```
 Vault/01 - Projects/YoRHa-A2/
-├── README.md                ← 工作区索引，回链 claude-context
-├── framework/               ← v0 framework 4 文件（**当前归属 short-video part**）
-│   ├── concept-library.md
-│   ├── scenario-library.md
-│   ├── story-shapes.md
-│   └── voice.md
-├── drafts/                  ← short-video 文案稿
-├── published/               ← short-video 已发布 + metric（待启用）
-└── conversion-site/         ← 转化站 part 工作区（当前 placeholder，等专题）
-    └── README.md
+├── README.md                ← 项目说明（一句话 + 两 part 概述 + 入口）
+├── SETUP.md                 ← Vault 端工作规约（不是项目级宪法）
+├── short-video/             ← 引流 part 工作区
+│   ├── README.md            ← 想法 + 聊的东西（沉淀立项对话）
+│   ├── framework/           ← v0 framework 4 文件
+│   │   ├── concept-library.md
+│   │   ├── scenario-library.md
+│   │   ├── story-shapes.md
+│   │   └── voice.md
+│   ├── drafts/              ← 文案稿（`YYYY-MM-DD-concept-scenario.md`）
+│   └── published/           ← 已发布 + metric（待启用）
+└── conversion-site/         ← 转化 part 工作区
+    └── README.md            ← 想法 + 聊的东西（8 个待回答问题）
 ```
 
-**Vault 端将来可能的拆分**（当前未做）：如果 conversion-site 长出自己的 framework，会重组成：
-```
-Vault/01 - Projects/YoRHa-A2/
-├── short-video/{framework,drafts,published}/
-└── conversion-site/{design,content,ai-assistant,infra}/
-```
-当前为了不破坏 Obsidian 已有链路，保持平铺。
+**未来扩展**：如果 conversion-site 长出自己的 framework / drafts，直接在 `conversion-site/` 下新建对应子目录（拓扑已对称，扩展无摩擦）。
 
 > `Vault/` 是占位，**实际路径每台机器可能不同**——见 CLAUDE.md §0.7 + `machines/<host>/local.md`。
 
@@ -256,7 +254,7 @@ Vault/01 - Projects/YoRHa-A2/
 
 ### 哪些写在 Obsidian（Vault/01 - Projects/YoRHa-A2/）？
 
-- **Framework 4 个详细文件** → `Vault/01 - Projects/YoRHa-A2/framework/{concept-library, scenario-library, story-shapes, voice}.md`
+- **Framework 4 个详细文件** → `Vault/01 - Projects/YoRHa-A2/short-video/framework/{concept-library, scenario-library, story-shapes, voice}.md`
 - 单条文案 draft / 脚本 / 改稿历史 → `drafts/<date>-<slug>.md`
 - 发布后的版本 + 数据 → `published/<date>-<slug>.md`
 - 视觉 / 配图素材 → `Vault/Attachments/yorha-a2/`
@@ -275,7 +273,7 @@ Vault/01 - Projects/YoRHa-A2/
 | Vault framework/*.md | 文本指向 `claude-context: shared/projects/yorha-a2/YORHA-A2.md` + 同伴用 Obsidian 双链 `[[concept-library]]` 等 |
 | Obsidian drafts/*.md | `[[../README\|工作区索引]]` 或 `[[YORHA-A2]]` |
 | CLAUDE.md §5 行 | `→ [YORHA-A2.md](projects/yorha-a2/YORHA-A2.md) / [SETUP.md](projects/yorha-a2/SETUP.md)` |
-| Obsidian content mode (02 - Areas) | `→ shared/projects/yorha-a2/` + `Vault/01 - Projects/YoRHa-A2/framework/` |
+| Obsidian content mode (02 - Areas) | `→ shared/projects/yorha-a2/` + `Vault/01 - Projects/YoRHa-A2/short-video/framework/` |
 
 外部入口 / 主索引：
 
@@ -292,11 +290,11 @@ Vault/01 - Projects/YoRHa-A2/
 
 ## 13. Voice 守护（unique angle 守护）
 
-本项目核心护城河：**用 AI 机制解释人性**。Claude / 任何写手在 review 文案时按下面准则守护，详细规则在 `Vault/01 - Projects/YoRHa-A2/framework/voice.md`：
+本项目核心护城河：**用 AI 机制解释人性**。Claude / 任何写手在 review 文案时按下面准则守护，详细规则在 `Vault/01 - Projects/YoRHa-A2/short-video/framework/voice.md`：
 
 1. **AI 概念是钩子，不是装饰** —— 文案要真借 AI 机制做映射，不是套个词
 2. **人性场景要"可代入"** —— 普世经验优先（分手 / 加班 / 自我怀疑），冷门或抽象的场景容易掉粉
-3. **撕扯感是 Shape A 的核心** —— 但不能所有文案都用同一 arc（详见 `Vault/01 - Projects/YoRHa-A2/framework/story-shapes.md` 的 gap 段）
+3. **撕扯感是 Shape A 的核心** —— 但不能所有文案都用同一 arc（详见 `Vault/01 - Projects/YoRHa-A2/short-video/framework/story-shapes.md` 的 gap 段）
 4. **不"AI 味"** —— 避免"在 X 时代"、"赋能"、"让我们一起"、emoji 堆砌
 5. **用户语气** —— 口语、不端着、自嘲 OK、中英混 OK
 6. **下沉读者也能懂** —— AI 在国内热度高，术语反而是钩子；但段落里要有"翻译进人性"的桥段，不是纯技术讲解
@@ -309,7 +307,7 @@ v0 (今天) → v1 (10 条出来) → v2 (metric 数据回流)
 
 每次升级：
 1. 在 [YORHA-A2.md](YORHA-A2.md) 决策 log 加一行
-2. `Vault/01 - Projects/YoRHa-A2/framework/` 内对应文件更新版本号
+2. `Vault/01 - Projects/YoRHa-A2/short-video/framework/` 内对应文件更新版本号
 3. 重大改动写一条 Journal entry（`05 - Journal/YYYY/MM/`）记述升级原因
 
 ## 15. 涉及其它 harness 部分
@@ -333,9 +331,9 @@ v0 (今天) → v1 (10 条出来) → v2 (metric 数据回流)
 #### 进 short-video 路径
 
 3. **读 [short-video/SHORT-VIDEO.md](short-video/SHORT-VIDEO.md)** —— part 状态 + 决策 log
-4. **读 `Vault/01 - Projects/YoRHa-A2/framework/concept-library.md`** —— AI 概念库 v0 + 配对历史
-5. **读 `Vault/01 - Projects/YoRHa-A2/framework/voice.md`** —— 最关键，决定能不能 review 文案
-6. **（可选）读 `Vault/01 - Projects/YoRHa-A2/framework/story-shapes.md`** —— v0 默认 shape + 候选 arc
+4. **读 `Vault/01 - Projects/YoRHa-A2/short-video/framework/concept-library.md`** —— AI 概念库 v0 + 配对历史
+5. **读 `Vault/01 - Projects/YoRHa-A2/short-video/framework/voice.md`** —— 最关键，决定能不能 review 文案
+6. **（可选）读 `Vault/01 - Projects/YoRHa-A2/short-video/framework/story-shapes.md`** —— v0 默认 shape + 候选 arc
 
 #### 进 conversion-site 路径
 
