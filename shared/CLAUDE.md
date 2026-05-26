@@ -295,7 +295,7 @@ Obsidian Vault 是三层记忆体系的底层——存放重内容。关系：
 | **SBS Transit** | 进行中（最活跃） | SBS Transit 多仓库项目，Phase2+Webapp+WhisperAPI+GenAI | → vault: SBS Transit - Overview |
 | **Hermes** | 主力 agent 系统 | 替代 YoRHa/Moltbot，集成 Gmail/Calendar/GitHub/Obsidian | → vault: Hermes - Overview |
 | **心涟 (Peer)** | 前端已上线 · ingest 改造待启动 | Hermes 多 profile (dad/xirui) 微信 operator console，[ripple-wellness.vercel.app/peer/u/dad](https://ripple-wellness.vercel.app/peer/u/dad) | → [HANDOFF.md](projects/xinlian/HANDOFF.md) |
-| **YoRHa-A2** | framework v0 (2026-05-25) · 待跑第一波 | AI×人性 双轨内容（国内追流量 / 国外追转化）— frame shift 后第一个交付项目；护城河 = 用 AI 机制解释人性，只有 user 能持续输出 | → [YORHA-A2.md](projects/yorha-a2/YORHA-A2.md) / [SETUP.md](projects/yorha-a2/SETUP.md) |
+| **YoRHa-A2** | short-video framework v0 + conversion-site concept (2026-05-25) | 分两 part：**short-video**（引流，国内追流量/国外导流）+ **conversion-site**（转化，国外付费/国内 backup）；frame shift 后第一个交付项目；护城河 = 用 AI 机制解释人性，只有 user 能持续输出 | → [YORHA-A2.md](projects/yorha-a2/YORHA-A2.md) hub · [SETUP.md](projects/yorha-a2/SETUP.md) 宪法 |
 | **Slay the Spire 2 AI** | 半成品 | PPO + 遗传超参数进化，离自主打游戏还有距离 | GitHub/slay_the_spire |
 
 ### 已归档项目

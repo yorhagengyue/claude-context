@@ -2,12 +2,21 @@
 project: YoRHa-A2
 type: setup + manifesto
 last-updated: 2026-05-25
-read-order: 1 (本文件) → 2 (YORHA-A2.md 状态) → 3 (Vault/01 - Projects/YoRHa-A2/framework/*)
+read-order: 1 (本文件) → 2 (YORHA-A2.md 顶级 hub) → 3 (各 part 状态板：short-video/SHORT-VIDEO.md + conversion-site/CONVERSION-SITE.md) → 4 (Vault/01 - Projects/YoRHa-A2/framework/*)
+parts:
+  - short-video (引流)
+  - conversion-site (转化)
 ---
 
 # YoRHa-A2 · SETUP（宪法 + 操作手册）
 
-> **本文件目的**：一个新进来的 Claude / 队友 / 未来的我，读完这一份就懂 70% 的 YoRHa-A2 —— 为什么做、做什么、怎么参与。剩下 30% 看 [YORHA-A2.md](YORHA-A2.md) 当前状态 + Obsidian Vault 里的 4 个 framework 文件（路径：`Vault/01 - Projects/YoRHa-A2/framework/`，vault 根见 CLAUDE.md §0.7）。
+> **本文件目的**：一个新进来的 Claude / 队友 / 未来的我，读完这一份就懂 70% 的 YoRHa-A2 —— 为什么做、做什么、怎么参与。
+>
+> **本文件是项目级宪法**，跨两个 part 共用。剩下 30% 看：
+> - [YORHA-A2.md](YORHA-A2.md) 顶级状态板（两 part 总览）
+> - [short-video/SHORT-VIDEO.md](short-video/SHORT-VIDEO.md) 短视频 part 状态板
+> - [conversion-site/CONVERSION-SITE.md](conversion-site/CONVERSION-SITE.md) 转化站 part 状态板
+> - Obsidian Vault 里的 4 个 framework 文件（`Vault/01 - Projects/YoRHa-A2/framework/`，当前归属 short-video part）
 
 ---
 
@@ -15,7 +24,14 @@ read-order: 1 (本文件) → 2 (YORHA-A2.md 状态) → 3 (Vault/01 - Projects/
 
 ## 0. 30 秒读懂
 
-YoRHa-A2 是用户 NAISC 决赛后 **frame shift** 的第一个交付项目。**核心命题：用 AI 的运作机制解释人性现象**。这是只有用户能持续输出的内容（LLM 思考模式 ≈ 人类思考模式 + 用户两边都熟）。**双轨策略**：国内追流量（不变现，资产积累）、国外追转化（专业向、付费咨询）。**当前阶段**：framework v0 已定，待跑第一波。
+YoRHa-A2 是用户 NAISC 决赛后 **frame shift** 的第一个交付项目。**核心命题：用 AI 的运作机制解释人性现象**。这是只有用户能持续输出的内容（LLM 思考模式 ≈ 人类思考模式 + 用户两边都熟）。
+
+**项目分两 part**（2026-05-25 立项决策）：
+
+- **short-video** = 引流。AI×人性 内容放到平台。国内追流量、国外为 conversion-site 导流。
+- **conversion-site** = 转化。独立网站 + AI 咨询服务。国外付费为主、国内 backup。
+
+**两 part 并行启动**。当前阶段：short-video framework v0 定 / conversion-site 还 concept。
 
 ## 1. 为什么是这个项目（Why now）
 
@@ -58,49 +74,40 @@ AI 概念: multi-agent / subagent
 
 护城河不在内容质量本身，**在这个映射只有 user 能持续输出**。Voice 是用户独有的（`Vault/01 - Projects/YoRHa-A2/framework/voice.md`），Claude / 队友 / 抄袭者都模仿不来。
 
-## 4. 战略地图 · 双轨
+## 4. 战略地图 · 两 part × 双轨
+
+项目有 **两个正交分轴**：
 
 ```
-                    ┌─────────────────────────────────┐
-                    │  主导思想：用 AI 解释人性          │
-                    └─────────────────────────────────┘
+                  主导思想：用 AI 解释人性
                           │
-              ┌───────────┴───────────┐
-              │                       │
-        ╭─────▼──────╮         ╭──────▼──────╮
-        │  国内轨     │         │  国外轨      │
-        ├────────────┤         ├─────────────┤
-        │ 平台: 抖音  │         │ 平台: 待定   │
-        │ (后续 B站   │         │ (YouTube /  │
-        │  小红书等)  │         │  Twitter /  │
-        │            │         │  Newsletter)│
-        ├────────────┤         ├─────────────┤
-        │ Metric:    │         │ Metric:     │
-        │ **流量本身**│         │ **付费转化** │
-        │ (粉丝/播放/│         │ (咨询单 /   │
-        │  互动)     │         │  订阅)      │
-        ├────────────┤         ├─────────────┤
-        │ 转化压力:  │         │ 转化压力:   │
-        │ **无**     │         │ **高**      │
-        │ 流量当资产 │         │ 直奔商业    │
-        ├────────────┤         ├─────────────┤
-        │ 调性:      │         │ 调性:       │
-        │ AI×情感    │         │ AI×专业     │
-        │ (subagent  │         │ (case study │
-        │  那种)     │         │  方法论)    │
-        └────────────┘         └─────────────┘
-              │                       │
-              └───────────┬───────────┘
-                          ▼
-              ┌─────────────────────────────────┐
-              │  网站：AI 咨询入口                │
-              │  (AI 接初接 → 真人接深度)         │
-              │  (主要服务国外付费 + 国内 backup) │
-              └─────────────────────────────────┘
+   ┌──────────────────────┴──────────────────────┐
+   │                                              │
+   ▼ Part 1: short-video (引流)        Part 2: conversion-site (转化)
+   ┌──────────────────────────┐         ┌───────────────────────────┐
+   │ 国内轨                    │         │                           │
+   │   抖音 (+B站/小红书/公众号) │  流量积累  │                           │
+   │   metric: 流量本身         │ ──不绑死→ │  独立网站 + AI 咨询        │
+   │   调性: AI×情感           │         │  (AI 接初接 → 真人深度)     │
+   │   转化压力: 无             │         │                           │
+   ├──────────────────────────┤         │  国外付费为主              │
+   │ 国外轨                    │  导流    │  国内 backup              │
+   │   待定 (YouTube/X/News)   │ ── 主要 →│                           │
+   │   metric: 转化 + 专业受众  │         │  (具体形态待 user 专题)    │
+   │   调性: AI×专业           │         │                           │
+   └──────────────────────────┘         └───────────────────────────┘
+       short-video/SHORT-VIDEO.md             conversion-site/CONVERSION-SITE.md
 ```
+
+**两个分轴的关系**：
+
+- **Part 分轴**（短视频 vs 转化站）：**功能维度**——引流和变现是两个独立工程
+- **双轨分轴**（国内 vs 国外）：**地理 + metric 维度**——内嵌在 short-video part 里（不同地区 metric 不同）；conversion-site 主要服务国外
+- 不要混淆两个分轴：当一句话说"国内"时是双轨语义、说"短视频"时是 part 语义
 
 **当前状态**：
-- ✅ 国内 framework v0 定（位于 `Vault/01 - Projects/YoRHa-A2/framework/`）
+
+- ✅ short-video framework v0 定（位于 `Vault/01 - Projects/YoRHa-A2/framework/`）
 - ⏸️ 国外 完整计划 user 未写完，**Claude 不展开讨论**
 
 ## 5. 当前阶段 / 阶段定义
@@ -110,14 +117,24 @@ v0 (今天) → v1 (跑 10 条出来，voice/shape 稳定) → v2 (有 metric �
 ```
 
 **v0 任务清单**（user 主导，Claude 工具人）：
+
+**Part 1 short-video**：
 - [x] Framework 4 个核心文件定稿
 - [ ] User 扩 / 砍 concept-library (AI 概念库)
 - [ ] User 扩 / 砍 scenario-library (人性场景库)
 - [ ] User 决 story-shapes gap：先 Shape A 同质化 vs 一开始 mix arc
-- [ ] User 把已发的 subagent / 分手 抖音版本回灌进 Obsidian drafts/
+- [ ] User 把已发的 subagent / 分手 抖音版本回灌进 `Vault/01 - Projects/YoRHa-A2/drafts/`
 - [ ] User 跑出 5-10 条文案，验证 framework 是否能稳定生成不同主题
 
-**v1 触发条件**：跑出 10 条，3 条以上数据明显好，voice / shape 在团队里能复刻。
+**Part 2 conversion-site**：
+- [ ] User 开"conversion-site 专题对话"，回答 8 个核心问题
+  （详见 [conversion-site/CONVERSION-SITE.md](conversion-site/CONVERSION-SITE.md) "专题对话要解决的核心问题"）
+- [ ] 网站技术栈 / domain / AI chat backend 选择
+- [ ] 收费模型 + 服务页文案
+
+**v1 触发条件**：
+- short-video v1: 跑出 10 条，3 条以上数据明显好，voice / shape 在团队里能复刻
+- conversion-site v1: 第一版网站上线 + 第一个付费咨询单跑通 (从 lead → AI → 真人 → 收款 全链路)
 
 ## 6. 谁做什么 · roles
 
@@ -144,6 +161,9 @@ v0 (今天) → v1 (跑 10 条出来，voice/shape 稳定) → v2 (有 metric �
 10. **2026-05-25** 用户群 = 下沉市场 / 不懂 AI 但被 AI 热度吸引的人（AI 概念词是钩子不是 barrier）
 11. **2026-05-25** Claude 不在本项目做 attack（领域不熟，6 次试错全错；详见 §8 correction）
 12. **2026-05-25** 节点 / 止损 / 流量转化路径 = user 决定，Claude 不思考
+13. **2026-05-25** 项目分两 part：**short-video（引流）+ conversion-site（转化）**，并行启动
+14. **2026-05-25** claude-context 端拓扑 = 子目录式（每 part 独立 sub-MD）
+15. **2026-05-25** Vault 端 framework / drafts 当前归属 short-video，不挪；conversion-site 子目录仅 placeholder（等专题）
 
 新的决策由 user 加进 [YORHA-A2.md](YORHA-A2.md) 决策 log，不在本 SETUP 改。
 
@@ -185,23 +205,37 @@ v0 (今天) → v1 (跑 10 条出来，voice/shape 稳定) → v2 (有 metric �
 
 ```
 shared/projects/yorha-a2/
-├── SETUP.md       ← 本文件（宪法 + 规约 + 路径协议）
-└── YORHA-A2.md    ← 状态板（当前状态 / 决策 log / 下一步）
+├── SETUP.md                       ← 本文件（项目级宪法 + 规约 + 路径协议）
+├── YORHA-A2.md                    ← 顶级 hub（两 part 总览 + 项目级决策 log）
+├── short-video/
+│   └── SHORT-VIDEO.md             ← 短视频 part 状态板 + part 决策 log
+└── conversion-site/
+    └── CONVERSION-SITE.md         ← 转化站 part 状态板 + 8 个待解决问题
 ```
 
-**Obsidian Vault 端**（**重内容**，包括 framework + drafts + published）：
+**Obsidian Vault 端**（**重内容**：framework + drafts + published + conversion-site 工作区）：
 
 ```
 Vault/01 - Projects/YoRHa-A2/
 ├── README.md                ← 工作区索引，回链 claude-context
-├── framework/               ← v0 framework 4 文件（详细库 + 规则）
-│   ├── concept-library.md   ← AI 概念库
-│   ├── scenario-library.md  ← 人性场景库
-│   ├── story-shapes.md      ← arc 模式 + gap 警告
-│   └── voice.md             ← 6 条规则 + 白/黑名单
-├── drafts/                  ← 文案稿 / 脚本（一条 = 一文件）
-└── published/               ← 已发出去的 + metric（待启用）
+├── framework/               ← v0 framework 4 文件（**当前归属 short-video part**）
+│   ├── concept-library.md
+│   ├── scenario-library.md
+│   ├── story-shapes.md
+│   └── voice.md
+├── drafts/                  ← short-video 文案稿
+├── published/               ← short-video 已发布 + metric（待启用）
+└── conversion-site/         ← 转化站 part 工作区（当前 placeholder，等专题）
+    └── README.md
 ```
+
+**Vault 端将来可能的拆分**（当前未做）：如果 conversion-site 长出自己的 framework，会重组成：
+```
+Vault/01 - Projects/YoRHa-A2/
+├── short-video/{framework,drafts,published}/
+└── conversion-site/{design,content,ai-assistant,infra}/
+```
+当前为了不破坏 Obsidian 已有链路，保持平铺。
 
 > `Vault/` 是占位，**实际路径每台机器可能不同**——见 CLAUDE.md §0.7 + `machines/<host>/local.md`。
 
@@ -289,11 +323,29 @@ v0 (今天) → v1 (10 条出来) → v2 (metric 数据回流)
 
 如果你（新 Claude / 队友 / 未来的我）刚进入本项目：
 
-1. **读这一份 SETUP.md** —— 你正在做
-2. **读 [YORHA-A2.md](YORHA-A2.md)** —— 当前状态 + 决策 log + 下一步
-3. **读 `Vault/01 - Projects/YoRHa-A2/framework/concept-library.md`** —— 看 AI 概念库 v0 + 配对历史
-4. **读 `Vault/01 - Projects/YoRHa-A2/framework/voice.md`** —— 这个最关键，决定能不能写 / 校准文案
-5. **（可选）读 `Vault/01 - Projects/YoRHa-A2/framework/story-shapes.md`** —— 看 v0 默认 shape + 候选
-6. **（可选）读 Journal entry [`2026-05-25-yorha-a2-framework-v0.md`](../../../../Documents/Obsidian%20Vault/05%20-%20Journal/2026/05/2026-05-25-yorha-a2-framework-v0.md)** —— 看对话弧线 + Claude 6 次错攻击的 meta-lesson
+### 通用路径
 
-读完这 4-6 份文件，应该能完整 onboard。
+1. **读这一份 SETUP.md** —— 项目级宪法，你正在做
+2. **读 [YORHA-A2.md](YORHA-A2.md)** —— 顶级 hub，两 part 总览 + 项目级决策 log
+
+### 然后按你要做的 part 分支：
+
+#### 进 short-video 路径
+
+3. **读 [short-video/SHORT-VIDEO.md](short-video/SHORT-VIDEO.md)** —— part 状态 + 决策 log
+4. **读 `Vault/01 - Projects/YoRHa-A2/framework/concept-library.md`** —— AI 概念库 v0 + 配对历史
+5. **读 `Vault/01 - Projects/YoRHa-A2/framework/voice.md`** —— 最关键，决定能不能 review 文案
+6. **（可选）读 `Vault/01 - Projects/YoRHa-A2/framework/story-shapes.md`** —— v0 默认 shape + 候选 arc
+
+#### 进 conversion-site 路径
+
+3. **读 [conversion-site/CONVERSION-SITE.md](conversion-site/CONVERSION-SITE.md)** —— part 状态 + 8 个待解决核心问题
+4. **（如已开始填）读 `Vault/01 - Projects/YoRHa-A2/conversion-site/`** —— 工作区
+
+### 跨 part 上下文（强烈建议读）
+
+- **Journal entry**: `Vault/05 - Journal/2026/05/2026-05-25-yorha-a2-framework-v0.md` —— 立项对话弧线 + Claude 6 次错攻击的 meta-lesson + 项目从 0 到 1 的来由
+- **CLAUDE.md §3 frame shift**: 这个项目为什么诞生的更深 framing
+- **CLAUDE.md §8 [2026-05-25]**: 项目相关的几条 sediment（correction / insight / project / 中国市场判断错）
+
+读完应该能完整 onboard。如果 Claude，**特别注意 §8 Claude 姿势**：在本项目不 attack，是 listener + 工具人。
