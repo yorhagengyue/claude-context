@@ -171,6 +171,53 @@ NAISC 期间在 Mac Mini 后台跑（PID 48771，nohup detached），killed 2026
 
 ---
 
+## 9. 心涟 (Peer) Operator Console（2026-05-25 发现 + 升级）
+
+Hermes 多 profile 系统**不只是 backend + WeChat gateway**，还有一个 web 端 operator console 让用户实时查看 / 干预跟 dad / xirui 的微信对话。**这个 console 在 [Toffeemoon Design System](~/Desktop/Toffeemoon%20Design%20System/) 仓库的 `peer/` 子产品**，2026-05-25 之前 claude-context 完全没记录这层关系，调研 + UI 升级后才连上。
+
+### 架构
+
+```
+WeChat user (dad / xirui) ← weixin gateway → Hermes profile (dad / xirui) → SOUL.md + memories + sessions
+                                                  ↓
+                                          db/profile_messages.sql (Supabase)
+                                                  ↑
+                                  peer/ web console (operator = 用户自己)
+                                  - 看实时对话流
+                                  - 注入消息 (intervene) → bot_send_queue → 3s 轮询发回 WeChat
+```
+
+### Web Console（5 个页面）
+
+| 页面 | 用途 |
+|---|---|
+| `peer/index.html` | Dashboard：4 KPI tiles（活跃 profile / 今日消息 / 本周对话 / 中位响应）+ 7 日 sparkline + per-profile bar + 活动 feed |
+| `peer/chat.html` | 实时对话视图 + intervene 注入 |
+| `peer/timeline.html` | 跨 profile 时间线，按日分组 |
+| `peer/pipeline.html` | 6 节点 ops 视图 + 24h heat strip + 5 health pills + latency 表 |
+| `peer/demo.html` | Public landing (no PII) |
+
+### API
+
+- `api/peer.js` actions：`profiles` / `messages` / `intervene` / `auth`
+- `db/profile_messages.sql` Supabase schema
+
+### Auth
+
+- 密码 gate（pre-existing）：`PEER_PASSWORD` 默认硬编码 `526811`（`api/peer/_auth.js:7`）→ **生产应改 env**
+
+### 已知 follow-up
+
+- 加 `api/peer.js?action=queue_count` 让 pipeline 看真"队列待发"
+- 未绑定 chat_id 的 profile 没有 web 端绑定入口（目前只能 SQL）
+- `npm run dev` e2e 验证（UI 升级 subagent 没亲眼跑过）
+
+### Why 这个发现重要
+
+跨工具生态 contract 的又一例（参考 §8 [2026-05-25] Codex 教训）：Hermes profile 系统、`peer/` web console、WeChat gateway 三处其实是同一个产品的三个面，但之前在三个不同的文档系统里各记各的。本次连上后，未来任何对 dad / xirui 子系统的改动都应该扫这三处。
+
+---
+
 ## 维护备注
 
 本文件 2026-05-25 起由 Claude 在 Hermes 子系统有重大变更时主动更新（auto-memory default-on 规则覆盖，见 CLAUDE.md §0.3.1）。

@@ -365,6 +365,9 @@ Claude 的行为按**模式**切换，避免单一人格覆盖所有场景（之
 
 > 由 memory skill 自动追加，按时间倒序。最近一次 consolidation：2026-05-25（NAISC pivot 后，~30 条 → ~21 条）。
 
+### [2026-05-25] insight: peer = 心涟 Hermes operator console，跨仓库的同一产品
+派 subagent 升级 `~/Desktop/Toffeemoon Design System/peer/` UI 时发现 peer 不是"peer comparison"（之前误以为）—— **它是 Hermes 多 profile 系统（dad / xirui）的 web operator console**，让用户实时看 / 干预 WeChat 对话流（`bot_send_queue` 表注入 → 3s 轮询发回微信）。**Why 重要**：之前 Hermes profile 系统、`peer/` web console、WeChat gateway 三处其实是同一产品的三个面，但各记各的——HERMES.md 不知道有 peer console、peer/ 不知道自己是 Hermes 的 UI、`~/.hermes/profiles/` 不知道有 web 端在读它的数据。已在 HERMES.md §9 把架构图 + 5 页面 + API + 已知 follow-up 全连起来。**教训**：跨仓库 / 跨工具的产品在 docs 上是 N 个孤岛是默认状态——任何 framework 重构都应该主动扫"还有什么孤岛"。Subagent 推断 product 定位的过程值得复用——读 db schema + API actions 就能 reverse-engineer 出真定位。
+
 ### [2026-05-25] correction: 模式系统 v1 测试发现 6 个 gap + 修复
 模式系统建好后做了一轮结构审计 + 行为模拟。发现：(1) auto-memory 规则只在 chat / memory 模式提了，code / architecture-review / content 三个 mode 文件未体现"全模式 default-on"；(2) "复盘"在 chat 和 memory 都声明触发词、无分流；(3) "实现"单字会误进 code（用户实际想 design 讨论）；(4) chat ↔ code 临时切的"回主模式"信号未明示；(5) "记一下" 在 INDEX 触发词缺失；(6) chat 缺 small talk / 问 Claude 能力的 fallback 兜底。**修法**：INDEX 拆"明确触发词"vs"歧义触发词必须问"两张表 + 加模式叠加回主信号说明 + 全模式通用准则加 auto-memory 一行；code/architecture-review/content 各 mode 加 auto-memory reminder；chat 加兜底 entry + 反向 INDEX link；content 补反例段；§9 速查表同步。**教训**：写完 framework v1 必须自审 + 跑典型 prompt 测试，不能假定"逻辑闭合"。下次任何 spec 落地后**先跑 5 个边界 prompt** 再用。
 
