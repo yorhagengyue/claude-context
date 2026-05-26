@@ -326,11 +326,13 @@ Claude 的行为按**模式**切换，避免单一人格覆盖所有场景（之
 
 | 模式 | 用途 | 何时进入 |
 |---|---|---|
-| `chat`（默认） | 思考、复盘、对抗、决策对话；**不动手** | 不指定时的默认 |
-| `code` | 真写代码 / 跑命令 / 多步实施 | 显式声明 或 "实现/写/改/跑" 等触发词 |
+| `chat`（默认 + 兜底） | 思考、复盘、对抗、决策对话；**不动手** | 不指定时的默认；short talk / 问 Claude 能力 / 短"复盘"/"记一下" 都进 chat |
+| `code` | 真写代码 / 跑命令 / 多步实施 | 显式声明 或 "写/改/跑/调试" **+ 具体文件路径或命令** |
 | `architecture-review` | 架构对抗审查、追问被省略决策、按严重程度排序 | 显式声明 或 用户贴架构方案让评 |
 | `content` | 社交媒体写作、选题、平台调性（v0 占位，待专题对话填充） | 显式声明 或 "写一条/发/标题/脚本/选题" |
-| `memory` | 整理记忆、consolidate、写 review log、维护 sub-MD、归档 | 显式声明 或 "整理记忆/复盘/归档/consolidate" |
+| `memory` | 整理记忆、consolidate、写 review log、维护 sub-MD、归档 | 显式声明 或 **bulk** 操作（"整理记忆/归档/consolidate"），≥3 条 entry 才进 |
+
+**歧义触发词必须问**（"实现"无文件 / "复盘"无 scope / "记一下"无内容 / "写一个 X" 不知技术还是文案）→ 详见 [Obsidian Areas/Claude Harness/INDEX.md](~/Documents/Obsidian%20Vault/02%20-%20Areas/Claude%20Harness/INDEX.md) 的"歧义触发词"段。
 
 ### 9.2 切换语法
 
@@ -362,6 +364,9 @@ Claude 的行为按**模式**切换，避免单一人格覆盖所有场景（之
 ## 8. 记忆追加区
 
 > 由 memory skill 自动追加，按时间倒序。最近一次 consolidation：2026-05-25（NAISC pivot 后，~30 条 → ~21 条）。
+
+### [2026-05-25] correction: 模式系统 v1 测试发现 6 个 gap + 修复
+模式系统建好后做了一轮结构审计 + 行为模拟。发现：(1) auto-memory 规则只在 chat / memory 模式提了，code / architecture-review / content 三个 mode 文件未体现"全模式 default-on"；(2) "复盘"在 chat 和 memory 都声明触发词、无分流；(3) "实现"单字会误进 code（用户实际想 design 讨论）；(4) chat ↔ code 临时切的"回主模式"信号未明示；(5) "记一下" 在 INDEX 触发词缺失；(6) chat 缺 small talk / 问 Claude 能力的 fallback 兜底。**修法**：INDEX 拆"明确触发词"vs"歧义触发词必须问"两张表 + 加模式叠加回主信号说明 + 全模式通用准则加 auto-memory 一行；code/architecture-review/content 各 mode 加 auto-memory reminder；chat 加兜底 entry + 反向 INDEX link；content 补反例段；§9 速查表同步。**教训**：写完 framework v1 必须自审 + 跑典型 prompt 测试，不能假定"逻辑闭合"。下次任何 spec 落地后**先跑 5 个边界 prompt** 再用。
 
 ### [2026-05-25] correction: Codex 主力工具 framing 不准 + 僵尸 contract 清理
 之前 §1 写 "OpenAI Codex (GPT-5.4)" 当主力代码工具。调研后纠正：(1) 实际 model 是 `gpt-5.3-codex` + migration notice，**未实际切换 5.4**；(2) Codex 现状是**中间状态**——NAISC 后冷却 5+ 周，活跃度比 Claude / Hermes 低很多；(3) `~/.codex/memory.md` 长期强制每个任务调 YoRHa dashboard（4-22 已死），全部 session 都在调死服务。**已修**：CLAUDE.md §1 改为反映实际 model + 中间状态；§0.6.2 新增 Codex 调研段；`~/.codex/memory.md` 重写删 dashboard policy；`dashboard-session-operator` skill rename `.disabled-20260525`。**未做（follow-up）**：删 config.toml 的 Ripple MCP+wkt_token（等用户 Workato 后台 revoke 后做）；YoRHa 物理归档；shared/codex/ 跨机同步；活跃项目 AGENTS.md 补全。**教训**：跨工具生态（Claude / Codex / Hermes）的 contract 必须在生态边界变化时同步更新——之前 YoRHa 在 §5 标"归档"但 Codex 端的 contract 没改，5 周污染。下次任何生态层归档都要扫一遍跨边界 contract。
