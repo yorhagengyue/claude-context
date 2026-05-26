@@ -147,7 +147,7 @@ cd ~/Desktop/claude-context && git pull && git add -A && git commit -m "<type>: 
 
 | 类型 | 位置 | 用途 |
 |---|---|---|
-| 模式系统（5 模式） | `~/Documents/Obsidian Vault/02 - Areas/Claude Harness/` | chat / code / architecture-review / content / memory，详见 §9 |
+| 模式系统（5 模式） | `Vault/02 - Areas/Claude Harness/` | chat / code / architecture-review / content / memory，详见 §9 |
 | 跨项目复用资产 | `shared/assets/` | wellness-rule-library / discord-presence-listener / mcp-architecture-patterns / whisper-hallucination-cleanup |
 
 ### 0.6.2 Codex CLI 状态（2026-05-25 调研后）
@@ -169,15 +169,35 @@ OpenAI Codex CLI 跟 Claude / Hermes **完全隔离，三家无共享记忆层**
 
 ### 0.7 外置大脑（Obsidian Vault）
 
-**路径**：`~/Documents/Obsidian Vault/`（各机器 setup.sh 负责检查 Obsidian 是否已安装）
+**默认路径**：`~/Documents/Obsidian Vault/`（macOS 当前所有机器都是这个；各机器 setup.sh 负责检查 Obsidian 已安装）
+
+**⚠️ 路径协议（重要）**：claude-context 内部所有文档引用 Vault 内容时**必须用 `Vault/` 前缀的相对路径**，不要硬编码 `~/Documents/Obsidian Vault/`。理由：跨机器（Windows / 不同 macOS 配置 / 未来云盘搬家）实际路径可能变；写绝对路径相当于把跨机器约定锁死。
+
+约定示例：
+
+| ✅ 用 | ❌ 不用 |
+|---|---|
+| `Vault/01 - Projects/YoRHa-A2/framework/voice.md` | `~/Documents/Obsidian Vault/01 - Projects/YoRHa-A2/framework/voice.md` |
+| `Vault/02 - Areas/Claude Harness/INDEX.md` | `~/Documents/Obsidian Vault/02 - Areas/Claude Harness/INDEX.md` |
+| `Vault/05 - Journal/2026/05/<slug>.md` | `~/Documents/Obsidian Vault/05 - Journal/...` |
+
+**例外（仍可写绝对路径的场合）**：
+
+- Setup / bootstrap 命令 (`ls`, `mkdir` 等 shell 命令需要真实路径)
+- `machines/<host>/local.md` —— 这就是各机器的实际路径登记表
+- `SETUP.md` 里 step-by-step 可粘贴的 bash 命令
+
+**Vault 根 → 实际路径**的映射唯一权威：本 §0.7 + `machines/<host>/local.md`。新机器接入时把 vault 实际位置登记进对应 local.md。如果未来 macOS 路径不再统一，本节"默认路径"改为 per-machine 表。
+
+---
 
 Obsidian Vault 是三层记忆体系的底层——存放重内容。关系：
 
 | 层级 | 存储位置 | 内容类型 |
 |------|----------|----------|
 | CLAUDE.md §8 / sub-MD | claude-context 仓库 | 轻量指针、决策摘要、纠正 |
-| Hermes memory | ~/.hermes/ | 轻量指针、偏好 |
-| **Obsidian Vault** | ~/Documents/Obsidian Vault/ | 详细笔记、项目记录、时间线、知识沉淀 |
+| Hermes memory | `~/.hermes/`（含 `$OBSIDIAN_VAULT_PATH` 环境变量） | 轻量指针、偏好 |
+| **Obsidian Vault** | `Vault/`（默认 `~/Documents/Obsidian Vault/`，跨机器变量） | 详细笔记、项目记录、framework 详细库、时间线、知识沉淀 |
 
 当内容超过几句话、不适合写入 §8 或 sub-MD 时，写入 Obsidian，然后在此处留指针：`→ vault: 笔记名`
 
@@ -343,7 +363,7 @@ Claude 的行为按**模式**切换，避免单一人格覆盖所有场景（之
 
 ### 9.3 详细定义位置
 
-详细行为规则、tool 偏好、回复风格、入退条件、反例 → `~/Documents/Obsidian Vault/02 - Areas/Claude Harness/`
+详细行为规则、tool 偏好、回复风格、入退条件、反例 → `Vault/02 - Areas/Claude Harness/`
 
 - `INDEX.md` — 切换语法 + 自动识别表 + 通用准则
 - `chat.md` / `code.md` / `architecture-review.md` / `content.md` / `memory.md` — 每个模式独立文件
@@ -525,7 +545,7 @@ Linda 2026-04-17 非正式 brief：建独立于 IFSG 的通用 template/CSV/RAG 
 验证信息时不能只靠本地测试。每次遇到可验证声明，先想：这个信息的源头在哪？直接去那里查。本地跑不通可能是版本/权限/地区限制，不等于不存在。已写入 douyin-transcribe skill 和 AI Digest cron prompt。
 
 ### [2026-04-13] infra: Obsidian Vault 外置大脑建立
-三层记忆体系建立：CLAUDE.md/Hermes memory（轻量指针）→ Obsidian Vault（重内容）。Vault 路径 `~/Documents/Obsidian Vault/`，PARA 变体结构，含时间线（年/月/周/日）和项目笔记。Hermes 可自动写入 `06 - Auto/`。详见 §0.7。→ vault: HOME
+三层记忆体系建立：CLAUDE.md/Hermes memory（轻量指针）→ Obsidian Vault（重内容）。Vault 路径用 `Vault/` 占位（默认 `~/Documents/Obsidian Vault/`，跨机器可变），PARA 变体结构，含时间线和项目笔记。Hermes 可自动写入 `Vault/06 - Auto/`。详见 §0.7 路径协议。→ Vault: HOME.md
 
 ### [2026-04-03] (moved) architecture: MoyuanIdea V2 第一轮架构审查
 6 个攻击点 / 用户接受 2（缺技术架构 + Phase 1 需切割）/ 反驳 4（零代码有意 / 三端不过度设计 / AI 成本 / 有帮手）/ 下一步 = 最小垂直切片。**全文在** [MOYUAN.md](projects/moyuan/MOYUAN.md) "架构审查记录" 段。

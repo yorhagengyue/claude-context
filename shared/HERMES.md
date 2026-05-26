@@ -68,18 +68,18 @@
 - 不使用 Google Drive
 
 ### Obsidian 外置大脑
-- Obsidian Vault = 外置大脑（重内容），路径 ~/Documents/Obsidian Vault/
+- Obsidian Vault = 外置大脑（重内容），`Vault/` 占位，默认 `~/Documents/Obsidian Vault/`（跨机器约定见 CLAUDE.md §0.7）
 - 三层记忆：CLAUDE.md/Hermes memory（轻量指针）→ Obsidian（详细笔记）
-- 自动写入到 06 - Auto/，frontmatter 带 source: hermes
-- OBSIDIAN_VAULT_PATH 已配置在 .env
+- 自动写入到 `Vault/06 - Auto/`，frontmatter 带 `source: hermes`
+- `$OBSIDIAN_VAULT_PATH` 已配置在 `~/.hermes/.env`（per-machine 实际路径来源）
 - Obsidian 社区插件：Periodic Notes, Calendar, Dataview, Templater
 
-### 日记系统
-- 路径：`05 - Journal/YYYY/MM/W<ISO周号>/YYYY-MM-DD.md`
-- 5 栏：Health / Mood / Log / AI / Misc
-- Mood 栏 1-10 打分追踪情绪曲线（用户是抑郁症患者）
-- AI 栏每条带时间戳 [HH:MM]
-- frontmatter 必须有 mood 和 energy 数字字段（Dataview 依赖）
+### 日记系统（已重构 v1, 2026-05-25）
+- ~~路径：`05 - Journal/YYYY/MM/W<ISO周号>/YYYY-MM-DD.md`~~ —— **老 daily 模板已废弃**，全部归档在 `Vault/04 - Archive/Journal/`
+- **新机制 v1**：触发式 / 对话流。Claude/Hermes 判断 sediment-worthy 时主动写 entry 到 `Vault/05 - Journal/YYYY/MM/YYYY-MM-DD-slug.md`
+- 详见 `Vault/05 - Journal/README.md`
+- ~~5 栏：Health / Mood / Log / AI / Misc~~ —— **不再用模板格式**，自由形式
+- ⏸️ Hermes cron `06d0452064bb` (Mac Mini Work Log) + `9bb0519ba199` (AI Daily Report) 当前 paused，等 prompt 重写到新机制（claude-context task #9）
 
 ### 偏好
 - Gmail 分析时关注竞赛/重要里程碑，不要 billing 摘要
@@ -91,8 +91,8 @@
 | 层级 | 存储 | 内容类型 | 管理者 |
 |------|------|----------|--------|
 | CLAUDE.md §8 / sub-MD | claude-context 仓库 | 轻量指针、决策摘要、纠正 | Claude Code |
-| Hermes memory | ~/.hermes/config (注入) | 轻量指针、偏好、环境 | Hermes Agent |
-| **Obsidian Vault** | ~/Documents/Obsidian Vault/ | 详细笔记、项目记录、时间线、知识沉淀 | 用户 + Hermes (06-Auto) |
+| Hermes memory | `~/.hermes/config`（含 `$OBSIDIAN_VAULT_PATH`） | 轻量指针、偏好、环境 | Hermes Agent |
+| **Obsidian Vault** | `Vault/`（默认 `~/Documents/Obsidian Vault/`） | 详细笔记、项目 framework、时间线、知识沉淀 | 用户 + Hermes (06-Auto) |
 
 ### Hermes 与 Obsidian 的关系
 - Hermes 可以读写 Obsidian Vault

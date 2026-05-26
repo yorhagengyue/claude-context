@@ -2,12 +2,12 @@
 project: YoRHa-A2
 type: setup + manifesto
 last-updated: 2026-05-25
-read-order: 1 (本文件) → 2 (YORHA-A2.md 状态) → 3 (framework/*)
+read-order: 1 (本文件) → 2 (YORHA-A2.md 状态) → 3 (Vault/01 - Projects/YoRHa-A2/framework/*)
 ---
 
 # YoRHa-A2 · SETUP（宪法 + 操作手册）
 
-> **本文件目的**：一个新进来的 Claude / 队友 / 未来的我，读完这一份就懂 70% 的 YoRHa-A2 —— 为什么做、做什么、怎么参与。剩下 30% 看 [YORHA-A2.md](YORHA-A2.md) 当前状态 + framework/ 4 文件。
+> **本文件目的**：一个新进来的 Claude / 队友 / 未来的我，读完这一份就懂 70% 的 YoRHa-A2 —— 为什么做、做什么、怎么参与。剩下 30% 看 [YORHA-A2.md](YORHA-A2.md) 当前状态 + Obsidian Vault 里的 4 个 framework 文件（路径：`Vault/01 - Projects/YoRHa-A2/framework/`，vault 根见 CLAUDE.md §0.7）。
 
 ---
 
@@ -56,7 +56,7 @@ AI 概念: multi-agent / subagent
 | 产出："AI 怎么用 / AI 怎么进步" | 产出："情感分析 / 人生道理" | 产出：**用 A 解释 B**，是新的命名系统 |
 | 受众：技术 / 创业圈 | 受众：情感共鸣类 | **受众：被 AI 热度吸引的下沉用户，但留下来是因为内容打中了"我也是这样"** |
 
-护城河不在内容质量本身，**在这个映射只有 user 能持续输出**。Voice 是用户独有的（[voice.md](framework/voice.md)），Claude / 队友 / 抄袭者都模仿不来。
+护城河不在内容质量本身，**在这个映射只有 user 能持续输出**。Voice 是用户独有的（`Vault/01 - Projects/YoRHa-A2/framework/voice.md`），Claude / 队友 / 抄袭者都模仿不来。
 
 ## 4. 战略地图 · 双轨
 
@@ -100,7 +100,7 @@ AI 概念: multi-agent / subagent
 ```
 
 **当前状态**：
-- ✅ 国内 framework v0 定（本目录 framework/）
+- ✅ 国内 framework v0 定（位于 `Vault/01 - Projects/YoRHa-A2/framework/`）
 - ⏸️ 国外 完整计划 user 未写完，**Claude 不展开讨论**
 
 ## 5. 当前阶段 / 阶段定义
@@ -153,7 +153,7 @@ v0 (今天) → v1 (跑 10 条出来，voice/shape 稳定) → v2 (有 metric �
 
 ### 该做的
 
-1. **维护 framework 库**：user 增 / 删 / 重组时把改动落入对应文件（[concept-library.md](framework/concept-library.md) / [scenario-library.md](framework/scenario-library.md) / [story-shapes.md](framework/story-shapes.md) / [voice.md](framework/voice.md)）
+1. **维护 framework 库**：user 增 / 删 / 重组时把改动落入对应文件，位于 `Vault/01 - Projects/YoRHa-A2/framework/`（concept-library / scenario-library / story-shapes / voice）
 2. **拆解 user 文案**：每写一条 draft → 按 framework 标 (a) 哪个概念 / (b) 哪个场景 / (c) 哪个 arc / (d) voice 是否一致
 3. **voice 校准**：用 voice.md 的 6 条规则 + 白/黑名单 + review checklist 给 user 反馈
 4. **数据收集**（待 user 跑起来）：metric 汇总 → 喂回 framework 迭代
@@ -181,41 +181,52 @@ v0 (今天) → v1 (跑 10 条出来，voice/shape 稳定) → v2 (有 metric �
 
 ## 9. 仓库 / 文件夹拓扑
 
-```
-shared/projects/yorha-a2/              ← 这里（claude-context 内）
-├── SETUP.md                           ← 本文件（宪法 + 规约）
-├── YORHA-A2.md                        ← 状态板（当前状态 / 决策 log / 下一步）
-└── framework/                         ← v0 framework 4 文件
-    ├── concept-library.md             ← AI 概念库
-    ├── scenario-library.md            ← 人性场景库
-    ├── story-shapes.md                ← arc 模式 + gap 警告
-    └── voice.md                       ← 6 条规则 + 白/黑名单
+**claude-context 端**（跨机器宪法 / 状态 / 决策，**轻量**）：
 
-~/Documents/Obsidian Vault/01 - Projects/YoRHa-A2/   ← 工作区（Obsidian）
-├── README.md                          ← 工作区索引，回链 claude-context
-├── drafts/                            ← 文案稿 / 脚本（一条 = 一文件）
-└── published/                         ← 已发出去的 + metric（待启用）
 ```
+shared/projects/yorha-a2/
+├── SETUP.md       ← 本文件（宪法 + 规约 + 路径协议）
+└── YORHA-A2.md    ← 状态板（当前状态 / 决策 log / 下一步）
+```
+
+**Obsidian Vault 端**（**重内容**，包括 framework + drafts + published）：
+
+```
+Vault/01 - Projects/YoRHa-A2/
+├── README.md                ← 工作区索引，回链 claude-context
+├── framework/               ← v0 framework 4 文件（详细库 + 规则）
+│   ├── concept-library.md   ← AI 概念库
+│   ├── scenario-library.md  ← 人性场景库
+│   ├── story-shapes.md      ← arc 模式 + gap 警告
+│   └── voice.md             ← 6 条规则 + 白/黑名单
+├── drafts/                  ← 文案稿 / 脚本（一条 = 一文件）
+└── published/               ← 已发出去的 + metric（待启用）
+```
+
+> `Vault/` 是占位，**实际路径每台机器可能不同**——见 CLAUDE.md §0.7 + `machines/<host>/local.md`。
 
 **两边为什么分开**：
-- claude-context = framework + 状态 + 决策（**慢变 / 跨机器**）
-- Obsidian = drafts + metric + 视觉素材（**快变 / 重内容 / 本地**）
+
+- **claude-context** = 状态 + 决策 + 宪法（**轻 / 跨机器 / 版本化**）
+- **Obsidian** = framework + drafts + metric + 视觉素材（**重 / 本地 / 不放 git**）
+
+按 CLAUDE.md §0.7 三层记忆体系：claude-context = 轻量指针，Obsidian = 重内容。
 
 ## 10. 写入规则
 
 ### 哪些写在 claude-context（这里）？
 
-- Framework 4 个核心文件（concept / scenario / shape / voice）
 - 状态 / 决策 log（YORHA-A2.md）
-- SETUP / 规约 / 主旨（本文件）
-- **不写**：单条文案 drafts / metric 数据 / 视频素材
+- SETUP / 规约 / 主旨 / 路径协议（本文件）
+- **不写**：framework 详细库（已搬 Obsidian）、单条文案 drafts、metric 数据、视频素材
 
-### 哪些写在 Obsidian？
+### 哪些写在 Obsidian（Vault/01 - Projects/YoRHa-A2/）？
 
+- **Framework 4 个详细文件** → `Vault/01 - Projects/YoRHa-A2/framework/{concept-library, scenario-library, story-shapes, voice}.md`
 - 单条文案 draft / 脚本 / 改稿历史 → `drafts/<date>-<slug>.md`
 - 发布后的版本 + 数据 → `published/<date>-<slug>.md`
-- 视觉 / 配图素材 → `Attachments/yorha-a2/`
-- 跨条对话 sediment（重要观察 / pattern 发现）→ `05 - Journal/YYYY/MM/`
+- 视觉 / 配图素材 → `Vault/Attachments/yorha-a2/`
+- 跨条对话 sediment（重要观察 / pattern 发现）→ `Vault/05 - Journal/YYYY/MM/`
 
 ### 哪些写在 CLAUDE.md §8？
 
@@ -227,10 +238,10 @@ shared/projects/yorha-a2/              ← 这里（claude-context 内）
 
 | 文件 | 必须链回 |
 |---|---|
-| framework/*.md | `[YORHA-A2.md](../YORHA-A2.md)` |
-| Obsidian drafts/*.md | `[[YORHA-A2]]` 或绝对路径 |
+| Vault framework/*.md | 文本指向 `claude-context: shared/projects/yorha-a2/YORHA-A2.md` + 同伴用 Obsidian 双链 `[[concept-library]]` 等 |
+| Obsidian drafts/*.md | `[[../README\|工作区索引]]` 或 `[[YORHA-A2]]` |
 | CLAUDE.md §5 行 | `→ [YORHA-A2.md](projects/yorha-a2/YORHA-A2.md) / [SETUP.md](projects/yorha-a2/SETUP.md)` |
-| Obsidian content mode | `→ shared/projects/yorha-a2/` |
+| Obsidian content mode (02 - Areas) | `→ shared/projects/yorha-a2/` + `Vault/01 - Projects/YoRHa-A2/framework/` |
 
 外部入口 / 主索引：
 
@@ -247,11 +258,11 @@ shared/projects/yorha-a2/              ← 这里（claude-context 内）
 
 ## 13. Voice 守护（unique angle 守护）
 
-本项目核心护城河：**用 AI 机制解释人性**。Claude / 任何写手在 review 文案时按下面准则守护，详细规则在 [framework/voice.md](framework/voice.md)：
+本项目核心护城河：**用 AI 机制解释人性**。Claude / 任何写手在 review 文案时按下面准则守护，详细规则在 `Vault/01 - Projects/YoRHa-A2/framework/voice.md`：
 
 1. **AI 概念是钩子，不是装饰** —— 文案要真借 AI 机制做映射，不是套个词
 2. **人性场景要"可代入"** —— 普世经验优先（分手 / 加班 / 自我怀疑），冷门或抽象的场景容易掉粉
-3. **撕扯感是 Shape A 的核心** —— 但不能所有文案都用同一 arc（详见 [story-shapes.md](framework/story-shapes.md) 的 gap 段）
+3. **撕扯感是 Shape A 的核心** —— 但不能所有文案都用同一 arc（详见 `Vault/01 - Projects/YoRHa-A2/framework/story-shapes.md` 的 gap 段）
 4. **不"AI 味"** —— 避免"在 X 时代"、"赋能"、"让我们一起"、emoji 堆砌
 5. **用户语气** —— 口语、不端着、自嘲 OK、中英混 OK
 6. **下沉读者也能懂** —— AI 在国内热度高，术语反而是钩子；但段落里要有"翻译进人性"的桥段，不是纯技术讲解
@@ -264,7 +275,7 @@ v0 (今天) → v1 (10 条出来) → v2 (metric 数据回流)
 
 每次升级：
 1. 在 [YORHA-A2.md](YORHA-A2.md) 决策 log 加一行
-2. framework/ 内对应文件更新版本号
+2. `Vault/01 - Projects/YoRHa-A2/framework/` 内对应文件更新版本号
 3. 重大改动写一条 Journal entry（`05 - Journal/YYYY/MM/`）记述升级原因
 
 ## 15. 涉及其它 harness 部分
@@ -280,9 +291,9 @@ v0 (今天) → v1 (10 条出来) → v2 (metric 数据回流)
 
 1. **读这一份 SETUP.md** —— 你正在做
 2. **读 [YORHA-A2.md](YORHA-A2.md)** —— 当前状态 + 决策 log + 下一步
-3. **读 [framework/concept-library.md](framework/concept-library.md)** —— 看 AI 概念库 v0 + 配对历史
-4. **读 [framework/voice.md](framework/voice.md)** —— 这个最关键，决定能不能写 / 校准文案
-5. **（可选）读 [framework/story-shapes.md](framework/story-shapes.md)** —— 看 v0 默认 shape + 候选
+3. **读 `Vault/01 - Projects/YoRHa-A2/framework/concept-library.md`** —— 看 AI 概念库 v0 + 配对历史
+4. **读 `Vault/01 - Projects/YoRHa-A2/framework/voice.md`** —— 这个最关键，决定能不能写 / 校准文案
+5. **（可选）读 `Vault/01 - Projects/YoRHa-A2/framework/story-shapes.md`** —— 看 v0 默认 shape + 候选
 6. **（可选）读 Journal entry [`2026-05-25-yorha-a2-framework-v0.md`](../../../../Documents/Obsidian%20Vault/05%20-%20Journal/2026/05/2026-05-25-yorha-a2-framework-v0.md)** —— 看对话弧线 + Claude 6 次错攻击的 meta-lesson
 
 读完这 4-6 份文件，应该能完整 onboard。

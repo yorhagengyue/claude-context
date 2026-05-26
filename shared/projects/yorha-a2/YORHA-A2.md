@@ -45,19 +45,20 @@ manifesto: SETUP.md (主旨 + 主导思想 + roles + 决策)
 
 ```
 选题 = AI 概念 × 人性场景  (矩阵生成)
-  (a) AI 概念库      → framework/concept-library.md
-  (b) 人性场景库     → framework/scenario-library.md
-  (c) 故事结构 / arc → framework/story-shapes.md
-  (d) 语气 / voice  → framework/voice.md
+  (a) AI 概念库      → Vault/01 - Projects/YoRHa-A2/framework/concept-library.md
+  (b) 人性场景库     → Vault/01 - Projects/YoRHa-A2/framework/scenario-library.md
+  (c) 故事结构 / arc → Vault/01 - Projects/YoRHa-A2/framework/story-shapes.md
+  (d) 语气 / voice  → Vault/01 - Projects/YoRHa-A2/framework/voice.md
 ```
 
 (配视觉 / 发布节奏 / 数据复盘) **不进 framework**——是后期 SOP，不是创作框架。
 
-详细的 4 个文件 link：
-- [framework/concept-library.md](framework/concept-library.md) — AI 概念库 + 配对历史
-- [framework/scenario-library.md](framework/scenario-library.md) — 人性场景库 + 反例
-- [framework/story-shapes.md](framework/story-shapes.md) — Shape A 已验证 + 5 候选 + gap 警告
-- [framework/voice.md](framework/voice.md) — 6 voice 规则 + 白/黑名单 + review checklist
+详细的 4 个文件（**位于 Obsidian Vault**；vault 路径见 CLAUDE.md §0.7 + 各机器 `machines/<host>/local.md`）：
+
+- `Vault/01 - Projects/YoRHa-A2/framework/concept-library.md` — AI 概念库 + 配对历史
+- `Vault/01 - Projects/YoRHa-A2/framework/scenario-library.md` — 人性场景库 + 反例
+- `Vault/01 - Projects/YoRHa-A2/framework/story-shapes.md` — Shape A 已验证 + 5 候选 + gap 警告
+- `Vault/01 - Projects/YoRHa-A2/framework/voice.md` — 6 voice 规则 + 白/黑名单 + review checklist
 
 ## 团队 / 形态
 
@@ -93,8 +94,8 @@ manifesto: SETUP.md (主旨 + 主导思想 + roles + 决策)
 
 ## 下一步（pending user）
 
-- [ ] User 扩 / 砍 AI 概念库（[framework/concept-library.md](framework/concept-library.md)）
-- [ ] User 扩 / 砍 人性场景库（[framework/scenario-library.md](framework/scenario-library.md)）
+- [ ] User 扩 / 砍 AI 概念库（`Vault/01 - Projects/YoRHa-A2/framework/concept-library.md`）
+- [ ] User 扩 / 砍 人性场景库（`Vault/01 - Projects/YoRHa-A2/framework/scenario-library.md`）
 - [ ] User 决定 story-shapes gap：**先靠 Shape A 同质化建立账号风格识别度（前 3-6 个月）vs 一开始 mix 2-3 个 arc** —— 这条对识别度影响很大
 - [ ] User 把已发抖音的 subagent / 分手版本回灌进 `01 - Projects/YoRHa-A2/drafts/`
 - [ ] User 跑出 5-10 条文案验证 framework

@@ -25,15 +25,18 @@ chmod +x machines/<machine-name>/setup.sh
 ```
 CLAUDE.md / Hermes memory     ← 轻量指针、偏好、决策摘要
          ↓ 指向
-Obsidian Vault                ← 重内容 (项目笔记、时间线、知识沉淀)
-  ~/Documents/Obsidian Vault/
+Obsidian Vault (Vault/)       ← 重内容（项目笔记、framework 详细库、
+                                 时间线、知识沉淀）
+  默认路径: ~/Documents/Obsidian Vault/
+  跨机器约定: 文档内引用用 `Vault/` 占位
+              实际路径见 CLAUDE.md §0.7
 ```
 
 | 层 | 存储 | 管理者 |
 |----|------|--------|
 | CLAUDE.md §8 + sub-MD | 本仓库 shared/ | Claude Code |
-| Hermes memory | ~/.hermes/ | Hermes Agent |
-| Obsidian Vault | ~/Documents/Obsidian Vault/ | 用户 + Hermes (自动写入) |
+| Hermes memory | `~/.hermes/`（含 `$OBSIDIAN_VAULT_PATH`） | Hermes Agent |
+| Obsidian Vault | `Vault/`（默认 `~/Documents/Obsidian Vault/`） | 用户 + Hermes (自动写入) |
 
 ## 新机器需要配置的完整清单
 

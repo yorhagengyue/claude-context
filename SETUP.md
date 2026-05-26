@@ -426,11 +426,12 @@ rmdir shared/projects/<name>
 | `README.md` | 仓库说明（给人看） | 用户 | 结构变更时 |
 | `.gitignore` | 排除规则 | 用户 | 需要排除新文件类型时 |
 
-**外部依赖**（不在本仓库但 Claude 必须知道）：
+**外部依赖**（不在本仓库但 Claude 必须知道；Vault 路径见 CLAUDE.md §0.7 路径协议）：
 | 路径 | 用途 |
 |---|---|
-| `~/Documents/Obsidian Vault/02 - Areas/Claude Harness/` | 5 模式定义（chat/code/architecture-review/content/memory） |
-| `~/Documents/Obsidian Vault/05 - Journal/` | 触发式 sediment journal entries (v1, 2026-05-25 起) |
+| `Vault/02 - Areas/Claude Harness/` | 5 模式定义（chat/code/architecture-review/content/memory） |
+| `Vault/05 - Journal/` | 触发式 sediment journal entries (v1, 2026-05-25 起) |
+| `Vault/01 - Projects/<name>/` | 项目工作区（framework 详细库 / drafts / metric），如 YoRHa-A2 |
 | `~/.hermes/` | Hermes Agent 系统（独立于本仓库） |
 
 ---
