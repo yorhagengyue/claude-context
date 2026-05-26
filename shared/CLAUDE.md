@@ -366,6 +366,19 @@ Claude 的行为按**模式**切换，避免单一人格覆盖所有场景（之
 
 > 由 memory skill 自动追加，按时间倒序。最近一次 consolidation：2026-05-25（NAISC pivot 后，~30 条 → ~21 条）。
 
+### [2026-05-26] insight: IM-bot 媒体 ingest 改造的 5-layer pattern（gateway → state.db → sync → proxy → lightbox）
+心涟 (Peer) 2026-05-26 实施。WeChat 媒体（图/语音/视频/文件）原本在 Hermes enrich pipeline 被压成 `[图片]` text marker 整丢，**修复链路 5 层每层都要动**：
+
+1. **Gateway upload 层**（`weixin.py:_collect_media`）：媒体 cache 本地后立即 upload to object storage（Supabase Storage 同款 `peer-media` bucket，service role key），不依赖后续。bucket missing → log + local-only fallback，**不阻塞主消息流**
+2. **state.db schema 层**（`messages.attachments TEXT/JSONB`）：加列存结构化 `[{type, storage_path, mime, size_bytes}]`。**关键防御 PRAGMA-guarded INSERT** —— Hermes state.db 有 schema drift 历史，新代码必须先 `PRAGMA table_info` 验证再写
+3. **MessageEvent 层**（`base.py`）：加新字段 `media_attachments: List[dict]`，**不动 media_urls: List[str]** 避免破坏其它 47 处 reader
+4. **Sync 层**（`profile_sync.py`）：SELECT 加新列 + POST jsonb 字符串到 PostgREST，**也 PRAGMA-guarded** 以兼容 drift
+5. **Frontend lightbox 层**：API proxy endpoint（`/api/peer?action=media&path=...`）验 cookie + 签 5min Supabase signed URL + 302 redirect。前端 `parseContent` positional 配对 content markers 与 attachments[]
+
+**通用 pattern**：任何"IM bot 收媒体却丢媒体"问题（telegram/discord/slack 同款），按这 5 层修。
+**关键防御**：(a) **content 列保留 enriched marker** 给 LLM "读图"能力 + attachments 给 UI 渲染（两者共存）；(b) bucket missing 不阻塞 ingest 主流；(c) PRAGMA-guarded INSERT/SELECT 防 schema drift；(d) 加新字段 ≠ 改字段类型（兼容老 reader）；(e) 5min signed URL TTL 够 lightbox 打开 + browser cache max-age 复用。
+**反例（不要这么做）**：直接 strip media 标记 / 写 binary 进 db / public bucket / 改 media_urls 类型签名。
+
 ### [2026-05-25] insight: peer = 心涟 Hermes operator console，跨仓库的同一产品
 派 subagent 升级 `~/Desktop/Toffeemoon Design System/peer/` UI 时发现 peer 不是"peer comparison"（之前误以为）—— **它是 Hermes 多 profile 系统（dad / xirui）的 web operator console**，让用户实时看 / 干预 WeChat 对话流（`bot_send_queue` 表注入 → 3s 轮询发回微信）。**Why 重要**：之前 Hermes profile 系统、`peer/` web console、WeChat gateway 三处其实是同一产品的三个面，但各记各的——HERMES.md 不知道有 peer console、peer/ 不知道自己是 Hermes 的 UI、`~/.hermes/profiles/` 不知道有 web 端在读它的数据。已在 HERMES.md §9 把架构图 + 5 页面 + API + 已知 follow-up 全连起来。**教训**：跨仓库 / 跨工具的产品在 docs 上是 N 个孤岛是默认状态——任何 framework 重构都应该主动扫"还有什么孤岛"。Subagent 推断 product 定位的过程值得复用——读 db schema + API actions 就能 reverse-engineer 出真定位。
 
@@ -378,15 +391,23 @@ Claude 的行为按**模式**切换，避免单一人格覆盖所有场景（之
 ### [2026-05-25] feedback: Claude 自动记忆是 default-on 不再被动 (§0.3.1)
 用户明确要求：以后无论哪个对话、哪个模式，Claude 遇到 sediment-worthy 内容**必须主动写入**，不需要用户提醒、不需要先问。**Why**：用户已建三层记忆体系（§0.7）+ 模式系统（§9），但之前自动记忆是 memory 模式 limited——这次提升为全模式 default。Claude 是用户的外脑，外脑应该自己工作。**How to apply**：判定见 §0.3.1 sediment-worthy 清单；写入回复末尾必须用 `📝 已记入 ...` 一行告知；用户随时可 rm；说"先不记"立刻停。memory 模式 → 显式批量操作；自动记忆 → 全模式 default。
 
+### [2026-05-25] correction: 我对中国短视频 / 抖音生态的判断不准
+用户给我看了一条 1500+ 字 subagent / 分手类比的内省文案，我下意识 attack "长文不适合短视频"——前提是"短视频 = 30-90 秒"。用户 pushback：这条文案就是抖音爆款的转录，3-4 分钟（不超 5 分钟）在抖音被市场验证 OK，**关键是配的视频画面而非文字时长**。
+**Why 错了**：我的"短视频应该 X"是通用 / 西方平台默认，**不等于中国具体平台的玩法**。抖音 / 小红书 / B 站 / 微信视频号每个有自己的内容生态规律。
+**How to apply**：未来任何中国内容平台讨论 —— **先承认我不熟生态、问用户实际跑出来的案例**，不要先 assert 通用规则。我的训练数据里中国平台 first-hand 数据少，应该把判断权交给用户 + 实际数据。
+**连带校准**：同次对话还 attack 了"情感粉 ≠ AI 咨询粉"。用户实际策略是**国内初期不追求转化、追求好流量**（资产积累），国外才追转化。我把两个市场当同一漏斗逻辑评，也错了。**国内 metric = 流量 / 国外 metric = 转化** 是不同游戏。
+
 ### [2026-05-25] correction: 架构判断力不再是 #1 短板（§3 frame shift）
 NAISC 5/22 决赛是触发节点。之前 §3 把"架构判断力 = 核心缺口"当宪法，半年实践下来用户重新校准：作为**学生 + 同龄人参照系**，架构能力已经是强项，不是 #1。学生阶段不存在"在架构能力上有极大突破"的物理可能（没有大规模生产系统在手 + 没有 10 年级别的重构经历），继续恶补边际效用很低。
 **调整**：架构对抗不再是 Claude 的 default 行为，下沉为 `architecture-review` 模式按需调用。§3 即将重写。Claude 的 CTO 顾问定位从"无条件 on"改为"显式/识别触发"。
 **没改的部分**：架构对抗这件事本身没问题，仍是 Claude 工具箱里的核心能力之一；改的是默认权重和叙事顺序，不是删能力。
 
-### [2026-05-25] insight: 新 #1 短板 = 售卖 / 营销 / 产品包装
-NAISC 决赛 4 评委中只有 Workato 那位（AI 出身）听懂作品；另 3 位非技术评委对偏技术的产品理解不到，"如何证明你是有市场的"这类 business 问题答得不好。这不是单点失误，是整个能力栈的真实缺口暴露：**技术节奏已经够快，下一阶段重心挪到"怎么让别人买账"**。
-**形式**：不一定个人完成，可能跟组员分工。第一步是开多平台社交媒体账号。具体策略待后续专题对话。
-**对 Claude 的影响**：新增 `content` 模式（社交媒体写作 / 选题 / 平台调性）入模式系统初版。
+### [2026-05-25] insight: 新 #1 短板 = 交付（赚到一个结果）
+NAISC 决赛 4 评委中只有 Workato 那位（AI 出身）听懂作品；另 3 位非技术评委对偏技术的产品理解不到，"如何证明你是有市场的"答得不好。这不是单点失误，是整个能力栈的真实缺口暴露：**技术节奏已经够快，下一阶段重心挪到"赚到一个结果"**。
+**framing 校准（5/25 二轮）**：第一轮写"售卖 / 营销 / 产品包装"太窄。真正的 #1 不是营销这件事本身，而是 **交付一个结果**——unit 可以是钱 / 流量 / 资源 / 名次 / 任何 tangible 的"赚到了"。营销只是路径之一。
+**Why 这个 framing 更准**：activity 框架（做营销）让人想"投入更多时间做营销"；outcome 框架（赚一个结果）让人想"什么路径最短最便宜"。后者更接近商业判断。
+**形式**：不一定个人完成，可能跟组员分工。多平台社交媒体是第一条尝试路径（5/25 立项见 §5），但只是路径之一不是终点。
+**对 Claude 的影响**：`content` 模式定位调整——不是"为营销服务"，是"为某个具体的交付结果服务"。后续专题对话会进一步细化"哪些结果类型 × 哪些路径"。
 
 ### [2026-05-25] project: NAISC 2026 Workato Track 终局 — 第三名 + pivot
 Team YoRHa / Ripple 5/22 决赛拿到 **Workato Track 第三名**。比赛结束，pivot 决定：Ripple 本体收尾归档；**rule library (53 rules) / Discord listener / MCP 4-tool 架构 / Whisper 幻觉清洗脚本** 作为可复用资产拆出（落点待定）。claude-context 的 `shared/projects/naisc-workato/` 和 Obsidian Vault 的 `01 - Projects/Workato NAISC/` 都即将归档到各自的 `04 - Archive/`。

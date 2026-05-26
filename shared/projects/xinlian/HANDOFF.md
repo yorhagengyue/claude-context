@@ -1,8 +1,18 @@
 ---
 project: 心涟 (Peer) — Hermes WeChat Operator Console
-status: 前端 UI 已上线 · 后端 ingest 媒体改造待启动
-last-updated: 2026-05-26
+status: 前端 UI + ingest 改造 plumbing 已完成 · 用户侧 5 步收尾（bucket / migration / launchctl × 2 / 验证）
+last-updated: 2026-05-26 (晚)
 session-handoff: true
+---
+
+## 🚨 立即必做（5 步收尾，否则前端 lightbox 弹的还是 "Object not found"）
+
+1. **Supabase Dashboard → Storage → New bucket**: `peer-media`（**Public OFF**）
+2. **Supabase Dashboard → SQL Editor**: 跑 `~/Desktop/Toffeemoon Design System/db/migration_2026-05-26_add_attachments.sql`
+3. `launchctl unload ~/Library/LaunchAgents/ai.hermes.gateway-dad.plist && launchctl load ~/Library/LaunchAgents/ai.hermes.gateway-dad.plist`（xirui 同理）
+4. `launchctl unload ~/Library/LaunchAgents/ai.hermes.profile-sync.plist && launchctl load ~/Library/LaunchAgents/ai.hermes.profile-sync.plist`
+5. E2E 验证：dad 真发 1 张图 → `~/.hermes/image_cache/` 新文件 + Supabase Storage `peer-media/media/dad/2026-05/*.jpg` 出现 + 刷 `/peer/u/dad` 点缩略图弹真图
+
 ---
 
 # 心涟 (Peer) — HANDOFF for next session
