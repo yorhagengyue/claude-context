@@ -274,6 +274,7 @@ Obsidian Vault 是三层记忆体系的底层——存放重内容。关系：
 | **TemplateApp** | 🚨 Pivot 为 agentic AI 论文项目 (2026-05-23) | Frontend 9 屏已 scaffold；Python LangGraph agent service + Node gateway 待建；Linda 邮件要 publishable paper，含 Live Data Binding + LLM-as-Judge 创新点 | → [TEMPLATEAPP.md](projects/templateapp/TEMPLATEAPP.md) / [HANDOFF.md](projects/templateapp/HANDOFF.md) |
 | **SBS Transit** | 进行中（最活跃） | SBS Transit 多仓库项目，Phase2+Webapp+WhisperAPI+GenAI | → vault: SBS Transit - Overview |
 | **Hermes** | 主力 agent 系统 | 替代 YoRHa/Moltbot，集成 Gmail/Calendar/GitHub/Obsidian | → vault: Hermes - Overview |
+| **心涟 (Peer)** | 前端已上线 · ingest 改造待启动 | Hermes 多 profile (dad/xirui) 微信 operator console，[ripple-wellness.vercel.app/peer/u/dad](https://ripple-wellness.vercel.app/peer/u/dad) | → [HANDOFF.md](projects/xinlian/HANDOFF.md) |
 | **社交媒体 / 内容（新方向）** | 待启动 | 多平台账号 + 内容生产，配合营销/售卖能力建设；可能与组员分工 | → 专题对话后建 sub-MD |
 | **Slay the Spire 2 AI** | 半成品 | PPO + 遗传超参数进化，离自主打游戏还有距离 | GitHub/slay_the_spire |
 
