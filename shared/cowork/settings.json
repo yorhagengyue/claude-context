@@ -5,5 +5,18 @@
   "alwaysThinkingEnabled": true,
   "effortLevel": "high",
   "agentPushNotifEnabled": true,
-  "inputNeededNotifEnabled": true
+  "inputNeededNotifEnabled": true,
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "test -x \"$HOME/Desktop/yorha-a2-team/.claude/hooks/pull-on-slack.sh\" && \"$HOME/Desktop/yorha-a2-team/.claude/hooks/pull-on-slack.sh\" || true"
+          }
+        ]
+      }
+    ]
+  }
 }
