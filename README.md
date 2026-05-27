@@ -1,6 +1,6 @@
 # claude-context
 
-Cross-machine context harness for Geng Yue (耿越).
+Cross-machine context harness for Gengyue (耿越).
 
 Single source of truth for: AI agent memory, project context, skills, machine setup, and the three-layer memory system.
 

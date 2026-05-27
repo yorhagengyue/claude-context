@@ -20,7 +20,7 @@ TemplateApp is **耿越 (Geng Yue)** 's intern project at Temasek Polytechnic un
 
 | Person | Role | Contact / notes |
 |---|---|---|
-| **Geng Yue** (耿越 / Tommy Chen) | Intern, project owner | `tommychen030607@gmail.com`. macOS user. Sees Claude as "CTO advisor" not code generator — challenge architecture, don't auto-implement (CLAUDE.md §3). |
+| **Gengyue** (耿越) | Intern, project owner | `gengyue081@gmail.com`. macOS user. Sees Claude as "CTO advisor" not code generator — challenge architecture, don't auto-implement (CLAUDE.md §3). |
 | **Linda William** | Manager, paper co-author | Brief delivered via voice (audio at `~/Downloads/Temasek Polytechnic 6.m4a`). On leave **5/13–5/27**. Email of 5/23 sets the agentic pivot. |
 | **Esther** | Admin, GitHub access gatekeeper | GitHub push for templateapp repo still pending her authorization (as of 4/27). |
 | **Ms Hu** | Email thread of unclear scope | One email needs to be rewritten and resent. Low context. |

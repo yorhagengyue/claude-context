@@ -12,7 +12,7 @@
 
 ### 1.1 这是什么
 
-本仓库 `claude-context` 是 Geng Yue（耿越）跨机器 Claude harness 的 **single source of truth**。它管理：
+本仓库 `claude-context` 是 Gengyue（耿越）跨机器 Claude harness 的 **single source of truth**。它管理：
 
 - **上下文记忆**：用户 profile、项目状态、架构决策历史
 - **自建 Skills**：Claude 的自定义能力扩展

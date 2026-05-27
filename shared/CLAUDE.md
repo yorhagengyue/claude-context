@@ -1,4 +1,4 @@
-# CLAUDE.md — Geng Yue (耿越) Context File
+# CLAUDE.md — Gengyue (耿越) Context File
 
 > **用途**：每次新会话开始时，Claude 自动读取本文件。这是整个 harness 系统的入口。
 > **维护**：§0 和 §1-7 由用户维护，§8 由 memory skill 自动追加。
@@ -220,8 +220,9 @@ Obsidian Vault 是三层记忆体系的底层——存放重内容。关系：
 
 ## 1. 基本信息
 
-- **姓名**：Geng Yue（耿越），英文名 Tommy Chen
-- **邮箱**：tommychen030607@gmail.com
+- **姓名**：Gengyue（耿越）
+- **邮箱**：gengyue081@gmail.com
+- **身份校准 (2026-05-28)**：之前 §1 错写"英文名 Tommy Chen / 邮箱 tommychen030607@gmail.com" —— Tommy Chen / tommychen030607 是 **Yufei (Chen Yuqin) 的英文名 + 邮箱**，不是我的。详见 §8 [2026-05-28] correction
 - **GitHub**：https://github.com/yorhagengyue
 - **所在地**：新加坡
 - **学校**：Temasek Polytechnic（淡马锡理工），IT 专业，Y2 → Y3，即将进入实习
@@ -387,6 +388,16 @@ Claude 的行为按**模式**切换，避免单一人格覆盖所有场景（之
 ## 8. 记忆追加区
 
 > 由 memory skill 自动追加，按时间倒序。最近一次 consolidation：2026-05-25（NAISC pivot 后，~30 条 → ~21 条）。
+
+### [2026-05-28] correction: 我的名字 = Gengyue，Tommy 是 Yufei 的英文名（不是我的）
+半年多以来 §1 一直写"姓名 Geng Yue（耿越），英文名 Tommy Chen / 邮箱 tommychen030607@gmail.com" —— **这是错的**。
+**正确身份映射**：
+- **Gengyue (耿越)** = 我，主理人，邮箱 `gengyue081@gmail.com`，GitHub `yorhagengyue`，Slack `Yue John Geng`（YoRHa-A2 workspace）
+- **Yufei = Chen Yuqin = Tommy (英文名)** = NAISC team / YoRHa-A2 协作者，邮箱 `tommychen030607@gmail.com`，GitHub `toffemoon`，Slack `Yuqin Chen`
+- **Zicheng = Liu Zicheng** = NAISC team / YoRHa-A2 协作者，邮箱 `liuzicheng357@gmail.com`，GitHub `Monika-12138`，Slack `liuzicheng357`
+**影响范围已校准**：claude-context §1 / yorha-a2-team repo 多处 / NAISC §8 [2026-05-04] correction 'team 真实第三人 Chen Yufei' 原意应该是 user 之前把 Tommy 当自己的名字塞进 trailer/website，实际 Tommy 就是 Chen Yufei (=Chen Yuqin) — 不是另一个人。这条校准让那条 NAISC 记忆终于自洽。
+**Why 错了这么久**：早期 CLAUDE.md 是手动建的，可能用了 Yufei 的英文名当模板没改回来 → 后续每次 session Claude 都假定 Tommy = user，没去 verify。Slack 设置后才暴露（Yufei 用 tommychen030607 注册显示 Yuqin Chen）。
+**对 Claude 的影响**：以后引用主理人就叫"Gengyue"，不要叫 Tommy / Tommy Chen。Yufei 可以叫 Yufei / Yuqin / Tommy 任一（项目内部 team-logs 子目录用 yufei 不动）。
 
 ### [2026-05-26] insight: IM-bot 媒体 ingest 改造的 5-layer pattern（gateway → state.db → sync → proxy → lightbox）
 心涟 (Peer) 2026-05-26 实施。WeChat 媒体（图/语音/视频/文件）原本在 Hermes enrich pipeline 被压成 `[图片]` text marker 整丢，**修复链路 5 层每层都要动**：

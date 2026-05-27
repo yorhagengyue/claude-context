@@ -12,7 +12,8 @@
 > Hermes 系统每次会话自动注入的内容。
 
 ### 1.1 联系方式
-- 邮箱：gengyue081@gmail.com（私人）、2403880d@tp.edu.sg（学校）、tommychen030607@gmail.com
+- 邮箱：gengyue081@gmail.com（私人，主邮箱）、2403880d@tp.edu.sg（学校）
+- 注：`tommychen030607@gmail.com` 是 Yufei 的邮箱（不是 user 的），详见 CLAUDE.md §1 + §8 [2026-05-28] correction
 
 ### 1.2 技术栈
 - **前端**：React（主力）、Next.js、Angular、Vue、Flutter/Dart、Three.js
