@@ -81,6 +81,8 @@ YoRHa-A2
 | 2026-05-25 | conversion-site 当前 concept，等 user 专题对话填 | 本对话 |
 | 2026-05-25 | Vault 端重组对称：framework / drafts / published 已挪到 `short-video/` 子目录；YoRHa-A2 根只保留 README + SETUP + 两 part 子目录 | 立项后第二轮重组（user 直接指示，覆盖之前"暂不挪"的决策）|
 | 2026-05-25 | Vault 端 README + SETUP + 各 part README 写满"想法 + 聊的东西"（不只是规约）| 同上 |
+| 2026-05-27 | 建独立 yorha-a2-team repo (private)，team 协作走本 repo（隔离主理人个人 harness）；Slack #yorha-a2-team channel 接 GitHub Slack App，push 自动通知全链路打通 | sync 决策 + setup |
+| 2026-05-27 | 团队 user 身份映射：toffemoon (GitHub) = Yuqin Chen (Slack) / Monika-12138 (GitHub) = liuzicheng357 (Slack) = Zicheng / team-logs 子目录命名保留 yufei + zicheng（项目内部约定） | 身份校准 |
 
 **part-specific 决策**写在各自 part 的状态板，不重复到这里。
 

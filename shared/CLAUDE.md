@@ -143,12 +143,14 @@ cd ~/Desktop/claude-context && git pull && git add -A && git commit -m "<type>: 
 
 （暂无）
 
-### 0.6.1 已注册的模式 / 资产
+### 0.6.1 已注册的模式 / 资产 / 协作 repo
 
 | 类型 | 位置 | 用途 |
 |---|---|---|
 | 模式系统（5 模式） | `Vault/02 - Areas/Claude Harness/` | chat / code / architecture-review / content / memory，详见 §9 |
 | 跨项目复用资产 | `shared/assets/` | wellness-rule-library / discord-presence-listener / mcp-architecture-patterns / whisper-hallucination-cleanup |
+| YoRHa-A2 team 协作 repo | https://github.com/yorhagengyue/yorha-a2-team (private) | 3 人协作（user + toffemoon + Monika-12138），独立于本 repo，隔离个人 framing；team Claude 按本 repo CLAUDE.md auto-write `team-logs/<name>/` → push → 主理人 git pull 收 sediment |
+| YoRHa-A2 Slack workspace | YoRHa-A2 workspace · `#yorha-a2-team` channel (C0B61J5K63Z) | GitHub Slack App 已 subscribe（commits/pulls/reviews/comments）—— team repo 任何 push 自动通知到 channel；2026-05-27 全链路验证通过 |
 
 ### 0.6.2 Codex CLI 状态（2026-05-25 调研后）
 
