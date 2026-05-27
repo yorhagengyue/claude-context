@@ -389,6 +389,19 @@ Claude 的行为按**模式**切换，避免单一人格覆盖所有场景（之
 
 > 由 memory skill 自动追加，按时间倒序。最近一次 consolidation：2026-05-25（NAISC pivot 后，~30 条 → ~21 条）。
 
+### [2026-05-28] correction: code mode 改 CI / workflow 后必须等 CI green 才算修完，不要 push 就 claim 完成
+User pushback：连续两次"修完 push"但 CI 仍 fail（第一次 mode 错→第二次 secret 缺）。第二次 claim "修了" 后 user 实际看到的还是红 ×，对他来说就是"依然 fail"。
+**问题根因**：我以为"错误信息变了"就算进步 + 验证完成（mode error → auth error），但用户体验维度看仍是 fail。push 后我应该自己 sleep + check `gh run list` 直到 SUCCESS 才告诉用户"修完"。
+**正确流程**：改 CI / workflow / Action 类文件后：
+1. push
+2. `sleep 15-30` 等 CI 触发
+3. `gh run list --limit 1` 看状态
+4. 如果 in_progress → 继续等
+5. 如果 failure → 看 log + 改 + 再 push + 再等（迭代直到 green）
+6. **只有 green 才说"修完"**
+**适用范围**：任何 CI / GitHub Action / hook / cron 配置改动。一次性脚本不在此列。
+**关联**：本条加进 Obsidian `02 - Areas/Claude Harness/code.md` 行为规则段。
+
 ### [2026-05-28] correction: 我的名字 = Gengyue，Tommy 是 Yufei 的英文名（不是我的）
 半年多以来 §1 一直写"姓名 Geng Yue（耿越），英文名 Tommy Chen / 邮箱 tommychen030607@gmail.com" —— **这是错的**。
 **正确身份映射**：
