@@ -1,117 +1,67 @@
 ---
 project: YoRHa-A2
-status: framework v0 (short-video) + concept (conversion-site)
-last-updated: 2026-05-25
-upstream: ../../CLAUDE.md §5
-manifesto: SETUP.md
-parts:
-  - short-video/SHORT-VIDEO.md
-  - conversion-site/CONVERSION-SITE.md
+type: stage-project hub
+status: 阶段性团队项目 · 进行中
+last-updated: 2026-06-02
+parent: ../../CLAUDE.md (个人主宪法)
+working-mode: WORKING-MODE.md
+goal: conversion-site (咨询网站)
+sub-projects:
+  - sub-projects/conversion-site.md (= 最终目标)
+  - sub-projects/short-video.md (引流)
+  - sub-projects/ai-interactive-story.md (owner: Yufei)
 ---
 
-# YoRHa-A2 — 顶级状态板（hub）
+# YoRHa-A2 — 阶段性团队项目 hub
 
-> **本文件是顶级 hub**。
-> 主旨 / 主导思想 / 战略 / Claude 姿势 / 操作规约 → [SETUP.md](SETUP.md)
-> 短视频 part 状态板 → [short-video/SHORT-VIDEO.md](short-video/SHORT-VIDEO.md)
-> 转化站 part 状态板 → [conversion-site/CONVERSION-SITE.md](conversion-site/CONVERSION-SITE.md)
-
----
+> **YoRHa-A2 是什么**：耿越（主理人）+ 雨飞 + Zicheng 三人的一个**阶段性协作项目**。它从属于[个人主宪法 `shared/CLAUDE.md`](../../CLAUDE.md) —— 主宪法是耿越永久的 harness，YoRHa-A2 只是挂在它下面、有始有终的一个项目，不是另一部宪法。
+>
+> - 三人怎么结合着干、各自负责什么 → [WORKING-MODE.md](WORKING-MODE.md)
+> - 每个子项目的状态 → `sub-projects/` 下对应文件
 
 ## TL;DR
 
-**一句话**：用 AI 运作机制解释人性现象的内容 + 服务项目。**分两 part**：
+**最终目标**：做出一个**咨询网站（conversion-site）**——访客经 AI 接初接、真人接深度、最后收费。这是整个项目要交付的那个结果。
+
+**怎么到那**：不是一步到位，而是路上做**若干子项目**，每个既是独立产出、也为最终目标积累能力 / 流量 / 资产。当前的子项目：短视频（引流）、AI 互动故事引擎（雨飞负责）。后面还会长出新的。
+
+**护城河**：用 AI 的运作机制解释人性现象——这个映射只有耿越能持续输出（既懂 AI 工程又懂人性，已被抖音 subagent / 分手 文案验证）。完整论证在 [WORKING-MODE.md](WORKING-MODE.md)。
+
+## 子项目花名册
+
+| 子项目 | 角色 | owner | 状态 | 详情 |
+|---|---|---|---|---|
+| **conversion-site** | 最终目标 · 咨询网站 | 耿越 | concept（8 个核心问题待答） | [sub-projects/conversion-site.md](sub-projects/conversion-site.md) |
+| **short-video** | 引流 | 耿越 | framework v0 · 待跑第一波 | [sub-projects/short-video.md](sub-projects/short-video.md) |
+| **ai-interactive-story** | AI 互动故事引擎（独立 repo） | **雨飞** | 纯后端 API · 核心闭环已成 | [sub-projects/ai-interactive-story.md](sub-projects/ai-interactive-story.md) |
+
+> 子项目跟最终目标的关系不一定是直线：短视频给目标引流；故事引擎是雨飞主导的独立产出，将来是否、以及如何接进咨询网站的"AI 接初接"**还没定**（见该子项目文件）。新增子项目就加一行 + 在 `sub-projects/` 建一个文件。
+
+## 阶段
 
 ```
-YoRHa-A2
-├── short-video    ← 引流（用 AI×人性 内容拉流量 / 国内流量为主 / 国外为 conversion-site 导流）
-└── conversion-site ← 转化（独立网站 + AI 咨询 / 国外付费为主 / 国内 backup）
+v0（现在） → v1（咨询网站第一版上线 + 第一单全链路跑通） → v2（metric 回流迭代）
 ```
 
-**护城河**：这个 AI↔人性 映射只有 user 能持续输出（LLM 思考模式 ≈ 人类思考模式 + user 两边都熟）。已被 subagent / 分手 抖音文案验证。
+各子项目自己的 v0 / v1 触发条件写在它们各自文件里。
 
-**当前阶段**：short-video framework v0 定 / conversion-site 还 concept。两 part **并行启动**。
+## Claude 在本项目的姿势
 
-完整 framing / why-now / 主导思想 / 战略地图 / Claude 姿势 → [SETUP.md](SETUP.md)。
+跟个人主宪法 content / chat 模式一致，**一句话**：内容选题 / 商业框架 / 网站架构上 Claude 是 listener + 工具人，不 attack（领域不熟，已 6 次试错全错）；纯技术架构（如故事引擎那个 repo）才主导。详见 [WORKING-MODE.md](WORKING-MODE.md) 的 Claude 姿势段。
 
-## 两 part 状态总览
+## Vault 工作区
 
-| Part | 角色 | 当前状态 | 详细状态板 |
-|---|---|---|---|
-| **short-video** | 引流 | framework v0 定稿，待 user 跑第一波 10 条文案 | [short-video/SHORT-VIDEO.md](short-video/SHORT-VIDEO.md) |
-| **conversion-site** | 转化 | concept 阶段，8 个核心问题待 user 专题想清楚 | [conversion-site/CONVERSION-SITE.md](conversion-site/CONVERSION-SITE.md) |
+重内容（framework 详细库 / drafts / 视觉素材 / 主理人灵感暂存）在 Obsidian `Vault/01 - Projects/YoRHa-A2/`，不放 git。claude-context 这边只存状态 + 决策 + 工作模式（轻量、跨机器、版本化）。
 
-两 part **并行启动**（user 决定）。
-
-## 两 part 关系图
-
-```
-短视频 (short-video)              转化站 (conversion-site)
-┌────────────┐                  ┌─────────────────┐
-│  国内轨     │  流量积累         │                 │
-│ (抖音先)   │  ── 不直接绑死 ──→ │  ← 不绑死       │
-│ Metric:流量│                  │                 │
-├────────────┤                  │  独立网站 + AI 咨询│
-│  国外轨     │  导流             │  国外付费为主    │
-│ (待定)     │  ─── 主要导给 ───→ │  国内 backup    │
-│ Metric:转化│                  │                 │
-└────────────┘                  └─────────────────┘
-```
-
-详细战略地图见 [SETUP.md §4](SETUP.md)。
-
-## 项目级 unique angle（两 part 都靠这个）
-
-**用 AI 的运作机制解释人性现象**。
-- LLM 思考模式 ≈ 人类思考模式（user 直觉 + 给别人讲课验证过）
-- 这个赛道 user 说"并没有人做"
-- 两 part 共用这个底层 framing：short-video 是表达层，conversion-site 是服务层
-
-完整主导思想 / 护城河论证 → [SETUP.md §2-3](SETUP.md)。
-
-## 项目级决策 log（顶级，跨 part）
+## 项目级决策 log（跨子项目）
 
 | 日期 | 决策 | 出处 |
 |---|---|---|
-| 2026-05-25 | YoRHa-A2 立项作为 frame shift 后第一个交付项目 | NAISC 后 frame shift 对话 |
+| 2026-05-25 | YoRHa-A2 立项，frame shift 后第一个交付项目 | 立项对话 |
 | 2026-05-25 | 主导思想 = 用 AI 机制解释人性 | 同 |
-| 2026-05-25 | 项目分两 part：short-video（引流） + conversion-site（转化） | 本对话 |
-| 2026-05-25 | 两 part 并行启动 | 本对话 |
-| 2026-05-25 | claude-context 端拓扑 = 子目录式（part 独立 sub-MD） | 本对话 |
-| 2026-05-25 | conversion-site 当前 concept，等 user 专题对话填 | 本对话 |
-| 2026-05-25 | Vault 端重组对称：framework / drafts / published 已挪到 `short-video/` 子目录；YoRHa-A2 根只保留 README + SETUP + 两 part 子目录 | 立项后第二轮重组（user 直接指示，覆盖之前"暂不挪"的决策）|
-| 2026-05-25 | Vault 端 README + SETUP + 各 part README 写满"想法 + 聊的东西"（不只是规约）| 同上 |
-| 2026-05-27 | 建独立 yorha-a2-team repo (private)，team 协作走本 repo（隔离主理人个人 harness）；Slack #yorha-a2-team channel 接 GitHub Slack App，push 自动通知全链路打通 | sync 决策 + setup |
-| 2026-05-27 | 团队 user 身份映射：toffemoon (GitHub) = Yuqin Chen (Slack) / Monika-12138 (GitHub) = liuzicheng357 (Slack) = Zicheng / team-logs 子目录命名保留 yufei + zicheng（项目内部约定） | 身份校准 |
+| 2026-05-25 | 最终目标 = 咨询网站；国内 metric = 流量、国外 metric = 转化 | 同 |
+| 2026-05-27 | 建独立 `yorha-a2-team` repo 做 team 协作 + Slack `#yorha-a2-team` 接 GitHub App | sync 决策 |
+| 2026-05-31 | 雨飞的 `ai-interactive-story` 以"卫星 repo"模式挂进团队（不用 submodule） | §8 + 卫星 mount 决策 |
+| 2026-06-02 | **结构重整**：从"两 part（短视频 + 咨询站）"改为"最终目标 = 咨询网站 + 多个子项目"；A2 文档从属个人主宪法、不再自称项目级宪法；claude-context 端 `SETUP.md`→`WORKING-MODE.md`，各产出挪进 `sub-projects/` | 本次对话 |
 
-**part-specific 决策**写在各自 part 的状态板，不重复到这里。
-
-## Claude 在本项目的职责
-
-跟项目级 content mode 一致。详见 [SETUP.md §8](SETUP.md)。
-
-一句话：**listener + 工具人，不在内容选题 / 商业框架 / 网站架构上 attack**（领域不熟，今天的对话已经 6 次试错全错）。
-
-## Vault 工作区（已对称重组）
-
-```
-Vault/01 - Projects/YoRHa-A2/
-├── README.md                    项目说明
-├── SETUP.md                     Vault 端工作规约
-├── short-video/
-│   ├── README.md                想法 + 聊的东西
-│   ├── framework/               v0 framework 4 文件
-│   ├── drafts/
-│   └── published/
-└── conversion-site/
-    └── README.md                想法 + 聊的东西
-```
-
-未来 conversion-site 长出自己的 framework / drafts 时，直接在 `conversion-site/` 下扩展（拓扑已对称）。
-
-## 下一步（顶级，pending user）
-
-- **short-video part**: 详见 [short-video/SHORT-VIDEO.md](short-video/SHORT-VIDEO.md) "下一步" 段
-- **conversion-site part**: 详见 [conversion-site/CONVERSION-SITE.md](conversion-site/CONVERSION-SITE.md) "专题对话要解决的核心问题"
-
-新增 part 或顶级 framing 变化 → 加进本文件决策 log。
+子项目内部决策写各自文件，不重复到这。

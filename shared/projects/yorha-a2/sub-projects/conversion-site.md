@@ -1,20 +1,20 @@
 ---
 project: YoRHa-A2
-part: conversion-site
+sub-project: conversion-site (= 最终目标)
 status: concept · 待专题
-last-updated: 2026-05-25
+last-updated: 2026-06-02
 upstream: ../YORHA-A2.md
-manifesto: ../SETUP.md
+manifesto: ../WORKING-MODE.md
 ---
 
-# YoRHa-A2 · conversion-site part 状态板
+# YoRHa-A2 · conversion-site 状态板（最终目标）
 
-> **本 part 角色**：**转化**。把短视频引来的流量在自家网站上转化成付费用户 / 资源 / 关系。
+> **本子项目角色**：**最终目标 · 转化**。把短视频引来的流量在自家网站上转化成付费用户 / 资源 / 关系。这是整个 YoRHa-A2 要交付的结果。
 > **当前状态**：concept 阶段，具体形态等专题对话。
 >
-> 项目级宪法 / 主旨：[../SETUP.md](../SETUP.md)
-> 顶级状态板：[../YORHA-A2.md](../YORHA-A2.md)
-> 短视频 part：[../short-video/SHORT-VIDEO.md](../short-video/SHORT-VIDEO.md)
+> 工作模式 / 主旨：[../WORKING-MODE.md](../WORKING-MODE.md)
+> 项目 hub：[../YORHA-A2.md](../YORHA-A2.md)
+> 引流子项目：[short-video.md](short-video.md)
 
 ---
 
@@ -92,7 +92,7 @@ AI 接初接（chat 形态，把用户问题/想法说清楚）
 
 ## 当前 Claude 在本 part 的姿势
 
-跟项目级一致（详见 [../SETUP.md §8](../SETUP.md)）：
+跟项目级一致（详见 [../WORKING-MODE.md §8](../WORKING-MODE.md)）：
 
 - ✅ 维护本状态板，user 想清楚什么填什么
 - ✅ 在 user 专题对话时按 chat 模式 listener + 校准

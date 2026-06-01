@@ -1,22 +1,22 @@
 ---
 project: YoRHa-A2
-type: setup + manifesto
-last-updated: 2026-05-25
-read-order: 1 (本文件) → 2 (YORHA-A2.md 顶级 hub) → 3 (各 part 状态板：short-video/SHORT-VIDEO.md + conversion-site/CONVERSION-SITE.md) → 4 (Vault/01 - Projects/YoRHa-A2/short-video/framework/*)
-parts:
-  - short-video (引流)
-  - conversion-site (转化)
+type: 团队工作模式手册（从属 ../../CLAUDE.md 个人主宪法）
+last-updated: 2026-06-02
+read-order: 1 (YORHA-A2.md hub) → 2 (本文件 工作模式) → 3 (sub-projects/* 各子项目状态板) → 4 (Vault/01 - Projects/YoRHa-A2/short-video/framework/*)
+goal: conversion-site (咨询网站)
+sub-projects: sub-projects/{conversion-site,short-video,ai-interactive-story}.md
 ---
 
-# YoRHa-A2 · SETUP（宪法 + 操作手册）
+# YoRHa-A2 · 团队工作模式（阶段性项目 · 从属个人主宪法）
 
-> **本文件目的**：一个新进来的 Claude / 队友 / 未来的我，读完这一份就懂 70% 的 YoRHa-A2 —— 为什么做、做什么、怎么参与。
+> **本文件目的**：一个新进来的 Claude / 队友 / 未来的我，读完这一份就懂 YoRHa-A2 这个阶段性项目怎么运转 —— 为什么做、目标是什么、三人怎么结合、怎么参与。
 >
-> **本文件是项目级宪法**，跨两个 part 共用。剩下 30% 看：
-> - [YORHA-A2.md](YORHA-A2.md) 顶级状态板（两 part 总览）
-> - [short-video/SHORT-VIDEO.md](short-video/SHORT-VIDEO.md) 短视频 part 状态板
-> - [conversion-site/CONVERSION-SITE.md](conversion-site/CONVERSION-SITE.md) 转化站 part 状态板
-> - Obsidian Vault 里的 4 个 framework 文件（`Vault/01 - Projects/YoRHa-A2/short-video/framework/`，当前归属 short-video part）
+> **本文件不是宪法**，是 YoRHa-A2 这个**阶段性团队项目的工作模式手册**，从属于[个人主宪法 `shared/CLAUDE.md`](../../CLAUDE.md)。剩下的看：
+> - [YORHA-A2.md](YORHA-A2.md) 项目 hub（最终目标 + 子项目花名册 + 决策 log）
+> - [sub-projects/](sub-projects/) 各子项目状态板（conversion-site = 最终目标 / short-video 引流 / ai-interactive-story 故事引擎[雨飞]）
+> - Obsidian Vault 的 framework / drafts / 灵感暂存（重内容，不放 git）
+>
+> **claude-context 这份 ↔ 团队 repo 的分工**：本文件是**主理人视角的轻量工作模式索引**；真正的 team 协作空间（决策、team-log、PR 流、三人日常）在独立的 [`yorha-a2-team`](https://github.com/yorhagengyue/yorha-a2-team) repo（见 [CLAUDE.md §0.6.1](../../CLAUDE.md)）。重的协作记录留 team repo，别两头写重复。
 
 ---
 
@@ -26,12 +26,15 @@ parts:
 
 YoRHa-A2 是用户 NAISC 决赛后 **frame shift** 的第一个交付项目。**核心命题：用 AI 的运作机制解释人性现象**。这是只有用户能持续输出的内容（LLM 思考模式 ≈ 人类思考模式 + 用户两边都熟）。
 
-**项目分两 part**（2026-05-25 立项决策）：
+**结构（2026-06-02 重整）**：最终目标 = **咨询网站（conversion-site）**——访客经 AI 接初接 → 真人接深度 → 收费。到那之前路上做**若干子项目**：
 
-- **short-video** = 引流。AI×人性 内容放到平台。国内追流量、国外为 conversion-site 导流。
-- **conversion-site** = 转化。独立网站 + AI 咨询服务。国外付费为主、国内 backup。
+- **short-video** = 引流。AI×人性 内容放平台。国内追流量、国外为咨询网站导流。
+- **ai-interactive-story** = AI 互动故事引擎（雨飞主导的独立 repo 子项目）。
+- 以后还会长出新子项目。
 
-**两 part 并行启动**。当前阶段：short-video framework v0 定 / conversion-site 还 concept。
+子项目花名册 + 各自状态见 [YORHA-A2.md](YORHA-A2.md) hub。当前：short-video framework v0 定 / conversion-site 还 concept（8 问待答）/ 故事引擎核心闭环已成。
+
+> 下面 §4 / §6 / §7 等正文还保留了不少"两 part"时期的叙述，主旨 / 护城河 / voice 仍然有效，但 part 框架已被本节的"目标 + 子项目"取代——读时以本节和 hub 为准。
 
 ## 1. 为什么是这个项目（Why now）
 
@@ -128,7 +131,7 @@ v0 (今天) → v1 (跑 10 条出来，voice/shape 稳定) → v2 (有 metric �
 
 **Part 2 conversion-site**：
 - [ ] User 开"conversion-site 专题对话"，回答 8 个核心问题
-  （详见 [conversion-site/CONVERSION-SITE.md](conversion-site/CONVERSION-SITE.md) "专题对话要解决的核心问题"）
+  （详见 [sub-projects/conversion-site.md](sub-projects/conversion-site.md) "专题对话要解决的核心问题"）
 - [ ] 网站技术栈 / domain / AI chat backend 选择
 - [ ] 收费模型 + 服务页文案
 
@@ -202,16 +205,16 @@ v0 (今天) → v1 (跑 10 条出来，voice/shape 稳定) → v2 (有 metric �
 
 ## 9. 仓库 / 文件夹拓扑
 
-**claude-context 端**（跨机器宪法 / 状态 / 决策，**轻量**）：
+**claude-context 端**（状态 / 决策 / 工作模式，**轻量**）：
 
 ```
 shared/projects/yorha-a2/
-├── SETUP.md                       ← 本文件（项目级宪法 + 规约 + 路径协议）
-├── YORHA-A2.md                    ← 顶级 hub（两 part 总览 + 项目级决策 log）
-├── short-video/
-│   └── SHORT-VIDEO.md             ← 短视频 part 状态板 + part 决策 log
-└── conversion-site/
-    └── CONVERSION-SITE.md         ← 转化站 part 状态板 + 8 个待解决问题
+├── YORHA-A2.md                    ← 项目 hub（最终目标 + 子项目花名册 + 决策 log）
+├── WORKING-MODE.md                ← 本文件（团队工作模式手册，从属个人主宪法）
+└── sub-projects/
+    ├── conversion-site.md         ← 最终目标 · 咨询网站状态板 + 8 个待解决问题
+    ├── short-video.md             ← 引流子项目状态板
+    └── ai-interactive-story.md    ← 故事引擎子项目（雨飞 · 指向其独立 repo）
 ```
 
 **Obsidian Vault 端**（**重内容**：framework + drafts + published + conversion-site 工作区；**已对称重组**）：
@@ -272,7 +275,7 @@ Vault/01 - Projects/YoRHa-A2/
 |---|---|
 | Vault framework/*.md | 文本指向 `claude-context: shared/projects/yorha-a2/YORHA-A2.md` + 同伴用 Obsidian 双链 `[[concept-library]]` 等 |
 | Obsidian drafts/*.md | `[[../README\|工作区索引]]` 或 `[[YORHA-A2]]` |
-| CLAUDE.md §5 行 | `→ [YORHA-A2.md](projects/yorha-a2/YORHA-A2.md) / [SETUP.md](projects/yorha-a2/SETUP.md)` |
+| CLAUDE.md §5 行 | `→ [YORHA-A2.md](projects/yorha-a2/YORHA-A2.md) / [WORKING-MODE.md](projects/yorha-a2/WORKING-MODE.md)` |
 | Obsidian content mode (02 - Areas) | `→ shared/projects/yorha-a2/` + `Vault/01 - Projects/YoRHa-A2/short-video/framework/` |
 
 外部入口 / 主索引：
@@ -323,21 +326,21 @@ v0 (今天) → v1 (10 条出来) → v2 (metric 数据回流)
 
 ### 通用路径
 
-1. **读这一份 SETUP.md** —— 项目级宪法，你正在做
-2. **读 [YORHA-A2.md](YORHA-A2.md)** —— 顶级 hub，两 part 总览 + 项目级决策 log
+1. **读 [YORHA-A2.md](YORHA-A2.md)** —— 项目 hub，最终目标 + 子项目花名册 + 决策 log
+2. **读这一份 WORKING-MODE.md** —— 团队工作模式（主旨 / 护城河 / 谁负责啥 / Claude 姿势），你正在做
 
 ### 然后按你要做的 part 分支：
 
 #### 进 short-video 路径
 
-3. **读 [short-video/SHORT-VIDEO.md](short-video/SHORT-VIDEO.md)** —— part 状态 + 决策 log
+3. **读 [sub-projects/short-video.md](sub-projects/short-video.md)** —— 引流子项目状态 + 决策 log
 4. **读 `Vault/01 - Projects/YoRHa-A2/short-video/framework/concept-library.md`** —— AI 概念库 v0 + 配对历史
 5. **读 `Vault/01 - Projects/YoRHa-A2/short-video/framework/voice.md`** —— 最关键，决定能不能 review 文案
 6. **（可选）读 `Vault/01 - Projects/YoRHa-A2/short-video/framework/story-shapes.md`** —— v0 默认 shape + 候选 arc
 
 #### 进 conversion-site 路径
 
-3. **读 [conversion-site/CONVERSION-SITE.md](conversion-site/CONVERSION-SITE.md)** —— part 状态 + 8 个待解决核心问题
+3. **读 [sub-projects/conversion-site.md](sub-projects/conversion-site.md)** —— 最终目标状态 + 8 个待解决核心问题
 4. **（如已开始填）读 `Vault/01 - Projects/YoRHa-A2/conversion-site/`** —— 工作区
 
 ### 跨 part 上下文（强烈建议读）

@@ -1,18 +1,18 @@
 ---
 project: YoRHa-A2
-part: short-video
+sub-project: short-video
 status: framework v0 · 待跑第一波
-last-updated: 2026-05-25
+last-updated: 2026-06-02
 upstream: ../YORHA-A2.md
-manifesto: ../SETUP.md
+manifesto: ../WORKING-MODE.md
 ---
 
-# YoRHa-A2 · short-video part 状态板
+# YoRHa-A2 · short-video 子项目状态板
 
-> **本 part 角色**：**引流**。把"用 AI 解释人性"的内容打出去吸流量 / 粉丝 / 互动。**不直接转化** —— 转化在另一 part（[../conversion-site/CONVERSION-SITE.md](../conversion-site/CONVERSION-SITE.md)）。
+> **本子项目角色**：**引流**。把"用 AI 解释人性"的内容打出去吸流量 / 粉丝 / 互动。**不直接转化** —— 转化是最终目标 [conversion-site.md](conversion-site.md) 的事。
 >
-> 项目级宪法 / 主旨：[../SETUP.md](../SETUP.md)
-> 顶级状态板：[../YORHA-A2.md](../YORHA-A2.md)
+> 工作模式 / 主旨：[../WORKING-MODE.md](../WORKING-MODE.md)
+> 项目 hub：[../YORHA-A2.md](../YORHA-A2.md)
 
 ---
 
