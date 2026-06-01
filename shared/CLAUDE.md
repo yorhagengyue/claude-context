@@ -247,6 +247,14 @@ Obsidian Vault 是三层记忆体系的底层——存放重内容。关系：
 - 我重视过程而不是速度。宁可慢一点把事情搞对
 - 我对"AI 生成的漂亮但空洞的输出"非常警觉
 
+**回复风格（2026-06-02 加，所有 Claude 窗口、所有模式通用，强制）：**
+
+默认**短**。我一直觉得你的回复偏长、偏复杂、列表太多。反过来做：像人跟人说话那样，用**段落**把事情讲明白，不要动不动就拆成一条条 bullet / point form。重要的地方**直接加粗**就够了，不要为了"标重点"而列表。
+
+碰到你觉得我可能不好理解的东西，**举一个生活里的例子**帮我懂，别堆术语和定义。
+
+一句话：少列表、多段落、短、举例子、说人话。把"信息塞得整齐"换成"让人一看就懂"。表格和 bullet 不是禁用，但要克制——只在真的是并列清单（比如几个文件的改动、几个选项对比）时才用，平时解释、判断、讨论一律走段落。
+
 ## 3. 核心成长目标
 
 **结论：当前阶段（学生 + 同龄人参照系）的 #1 短板不是技术能力，而是售卖 / 营销 / 产品包装。**
@@ -388,6 +396,38 @@ Claude 的行为按**模式**切换，避免单一人格覆盖所有场景（之
 ## 8. 记忆追加区
 
 > 由 memory skill 自动追加，按时间倒序。最近一次 consolidation：2026-05-25（NAISC pivot 后，~30 条 → ~21 条）。
+
+### [2026-05-31] feedback: ai-interactive-story 上 Claude 要从 0 架构, 不锚定 Yufei 现有技术决策
+做 ai-interactive-story (Yufei 的卫星 repo) 数据库选型时, 我第一轮用"代码作者注释里自己写的计划 (准备换 SQLite)"当推荐理由之一。用户纠正:"之前的决定是 Yufei 做的, 他的决策能力不够, 你要从 0 思考整个计划"。从 0 重想后立刻抓出旧设计一个真问题——session 当 blob 每回合全量重写 (O(n²)), 换 DB 但还用 JSON 列存整 session 不解决, 真修法是 messages 拆 append-only 行。这是第一轮顺着 Yufei 设计走没抓出来的。
+**Why**: 卫星 repo 的代码/架构现状是 Yufei 做的, 主理人明确判断 Yufei 架构判断力不足, 要 Claude 当这个 repo 的架构负责人。**不是** "尊重 owner 的现有选择"那种 default 姿势。
+**How to apply**: 在 ai-interactive-story (以及主理人明确点出"某人判断力不够"的任何场景) 做技术决策时, 从第一性原理重想, 不要拿"代码里现有的做法 / 作者注释里的计划"当 anchor 或推荐理由。该推翻就推翻, 给出独立判断。注意边界: 这是**技术架构**域 (Claude 主导); **产品方向 / 引擎要做什么功能** 仍是 Yufei + 主理人决策域 (见 yorha-a2 mount decision)。
+**关联**: [[satellite mount pattern]] (同期 §8 条) + ai-interactive-story `decisions/2026-05-30-db-supabase-postgres.md`。
+
+### [2026-05-31] insight: 把外部代码 repo 挂进治理生态的"卫星"模式 (不用 submodule)
+yorha-a2-team 要把 Yufei 的独立 repo `toffemoon/ai-interactive-story` (AI 互动故事引擎) 纳入团队生态——"他的更新/决策/assets 都算团队的 + 他那的 Claude 要守团队规矩"。没用 submodule/subtree (嵌套复杂 + 单向同步痛)，用**卫星模式**：
+1. **CLAUDE.md brain-transplant**: 给外部 repo 根目录加一个 CLAUDE.md, 让它那跑的 Claude 戴两顶帽子 — (a) 给那 repo 写代码 (b) 守父项目治理 (读父 repo decisions / 写 team-log 回父 repo / 走 PR / 自动记忆). 关键: 代码 repo 的 Claude 跟纯内容 repo 的 Claude 姿势不同 — 前者**写代码**, 后者只守 framework, CLAUDE.md 要显式区分.
+2. **两层 decisions**: 工程决策放卫星本地 `decisions/`; 战略决策 (卫星跟父项目关系) 放父 repo `decisions/`. 判断不准默认写父 repo (团队可见 > 本地隐藏).
+3. **跨 repo 写**: 卫星 Claude 写 team-log 时 `cd ../父repo` 走那人的 branch commit. 前提两 repo 平级 clone.
+4. **父 repo 登记**: 一条 mount decision 锁关系 + 状态板加 satellites 字段, 明确"卫星 ≠ 新增 part"避免稀释核心命题.
+**权限坑**: 主理人对协作者个人 repo 默认 0 push 权限 (403). 解法 = 协作者加 collaborator, 或 fork+跨仓库 PR (fork 是无 push 权限贡献的标准路). 改别人 repo 永远走 PR 不直推 main (礼貌 + 留痕).
+**How to apply**: 任何"把 X 独立 repo 纳入 Y 项目治理但不想物理合并"的场景 (monorepo 替代方案) 都可用此模式. 比 submodule 反悔成本低一个数量级 (删几个 md 文件 vs deinit + 历史污染).
+**位置**: 父 repo `decisions/2026-05-31-mount-ai-interactive-story.md` + 卫星 `CLAUDE.md` (PR toffemoon/ai-interactive-story#1).
+
+### [2026-05-30] feedback: 双边机制设计要单独画主理人一端 + Obsidian 是 capture 默认位置
+设计 yorha-a2-team 的 temp-ideas/ pin 板时, 我从协作者视角倒着想 (协作者 SessionStart 看 / 跳过 / archive 到他们 Obsidian), 把 git `temp-ideas/` 当成主理人的入口本身, **漏了主理人需要 Obsidian inbox 当个人暂存灵感的地方** —— 刷到东西先写自己 Vault, 想清楚再 promote 到 git 给 team 看. 用户指出"之前我一定说了暂存是要在Obsidian里的", 严格读 ta 只为协作者 skip 场景明说了 Obsidian, 主理人 inbox 这端是隐含的; 但隐含信号足够 ([§0.7 三层记忆体系](#07-外置大脑obsidian-vault): Obsidian = 重内容 / 外脑; 用户工作流就是刷到 → Obsidian 暂存 → 再决定), 应该推出来. 已补 `Vault/01 - Projects/YoRHa-A2/temp-ideas-inbox/`.
+**Why**: 任何"两端"机制 (主理人 ↔ 协作者 / source ↔ sink), 单看协作者一端会漏主理人那一端的 mirror 需求. 主理人那边也需要 source / capture / scratch 入口.
+**How to apply**: 以后设计跟外部 (协作者 / 用户 / 团队) 交互的 pipeline 时, 主理人那一侧明确画一遍: **capture → scratch → decide → commit** 四步在哪. capture / scratch 的 default location 永远先想 Obsidian (用户的外脑约定 / §0.7), 不是 git. git 是给"决定要 share 出去"那一步用的.
+
+### [2026-05-29] decision: 硬风格视觉内容标准流程 = GPT Image 2 草图 → Claude Remotion 代码
+PR #8（Yufei agent-subagent v0.1）暴露 Claude 直接从文字 prompt → Remotion 代码容易出"PPT 切片"——纯 fade / opacity / translate 几像素，缺真实视觉设计。根因是 Claude 在文字→代码链路上**缺视觉锚点**，不知道"什么样子才算视频"。
+**锁定流程**：任何硬风格视觉内容（chart / mermaid / 流程图 / 节点图 / 分镜 / Remotion section 视觉骨架 / component / UI 设计）必走两步：
+1. **Step 1**: 用 GPT Image 2 出草图 / 分镜故事板（任意形态：手稿 / 白板 / UI 草稿 / 漫画分镜均可）
+2. **Step 2**: 把草图喂给 Claude 生成 Remotion / SVG / React 代码
+**范围**：GPT Image 2 用法可以超出此（出成品图 / moodboard / thumbnail / 实验视觉），但硬风格内容**不能低于此** —— Step 1 必须跑。
+**配套**：与 [2026-05-28] Shape A 两条硬约束（充分 motion + 前 3 秒 hook）配套——那条说"必须有 motion"，本条说"怎么做出有 motion 的"。
+**对 Claude 的影响**：以后帮协作者写 Remotion / chart / SVG / 复杂可视化代码之前要主动问"有 GPT Image 2 草图了吗"，没有就先建议跑一版。具体图像模型不约束（Midjourney / Flux 也行），但 GPT Image 2 在"按文字描述生成视觉 layout"方向是当前最稳。
+**位置**：`yorha-a2-team/decisions/2026-05-29-visual-flow-gpt-image-then-remotion.md` + framework `story-shapes.md` / `voice.md` 交叉引用。PR #6 同时合并 workflow 修复 + Shape A 硬约束 + 本流程。
+**Why 写 §8 不只项目内**：图像模型 → 代码生成是跨项目可复用模式（任何需要 Claude 生成视觉化代码的场景：MoyuanIdea 三端 UI / TemplateApp Agent Timeline / IFSG dashboard chart 都适用）。
 
 ### [2026-05-28] correction: code mode 改 CI / workflow 后必须等 CI green 才算修完，不要 push 就 claim 完成
 User pushback：连续两次"修完 push"但 CI 仍 fail（第一次 mode 错→第二次 secret 缺）。第二次 claim "修了" 后 user 实际看到的还是红 ×，对他来说就是"依然 fail"。
