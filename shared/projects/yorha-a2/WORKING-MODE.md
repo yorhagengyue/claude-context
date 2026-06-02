@@ -20,6 +20,20 @@ sub-projects: sub-projects/{conversion-site,short-video,ai-interactive-story}.md
 
 ---
 
+## 内容存放规约 —— 每个空间放什么（2026-06-02 用户拍板）
+
+| 空间 | 放什么 | 性质 |
+|---|---|---|
+| **Excalidraw `Main`** | **所有内容的正式存档**：把整个系统极度细节地画出来（架构 / 设计 / 各部分怎么写作创作），要完整表达、可对外 | 重 · 终稿 |
+| **Excalidraw `地狱三头犬`** | 平时随手记的 idea / 草稿（如「新用户渐进式体验」） | 轻 · 草稿 |
+| **`claude-context`**（本 repo） | 耿越个人主宪法 + 跨机器记忆 / 项目速报 / 工作模式（轻量指针、版本化） | 轻 · 个人 |
+| **`yorha-a2-team`** | 团队协作 source-of-truth：`decisions/` + `team-logs/` + framework + `<name>-assets/`（走 PR） | 团队权威 |
+| **`ai-interactive-story`** | 雨飞主导的引擎代码（独立 repo · 卫星模式） | 代码 |
+
+流转：idea 先在**地狱三头犬**萌芽 → 想清楚后，正式版画进 **Excalidraw `Main`**（完整系统图）、决策写进 **yorha-a2-team/decisions**、代码进**引擎 repo**、轻量状态进 **claude-context**（capture→scratch→decide→commit，见 [CLAUDE.md §8 2026-05-30](../../CLAUDE.md)）。
+
+---
+
 # Part I · 主旨与主导思想（**宪法层**）
 
 ## 0. 30 秒读懂
