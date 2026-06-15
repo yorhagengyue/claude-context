@@ -25,14 +25,15 @@ sub-projects: sub-projects/{conversion-site,short-video,ai-interactive-story}.md
 | 空间 | 放什么 | 性质 |
 |---|---|---|
 | **Linear**（团队工作台） | 任务 / UI 问题（带截图）/ 客户需求更新 / 进度看板 —— 成熟、低成本、一目了然。**截图/反馈发 issue 或评论,别发 project update（Claude 经 MCP 读不到 project update）** | 团队协作 · 可视 |
-| **Obsidian + `temp-ideas/`** | 随手 idea / 草稿 / 灵感暂存（原 Excalidraw `地狱三头犬` 的角色）；正式系统存档并入各 repo 的 `decisions/`+`docs/` | 轻 · 草稿 |
+| **Linear「灵感 · 暂存」** | 随手 idea / 草稿 / 灵感暂存（原 Excalidraw `地狱三头犬` + Obsidian 的暂存角色搬来）；正式系统存档并入各 repo `decisions/`+`docs/` | 轻 · 草稿 |
+| **Obsidian** | 退成**备用记录 / 存档**(不再主力暂存) | 备份 |
 | **`claude-context`**（本 repo） | 耿越个人主宪法 + 跨机器记忆 / 项目速报 / 工作模式（轻量指针、版本化） | 轻 · 个人 |
 | **`yorha-a2-team`** | 团队协作 source-of-truth：`decisions/` + `team-logs/` + framework + `<name>-assets/`（走 PR） | 团队权威 |
 | **`ai-interactive-story`** | 雨飞主导的引擎代码（独立 repo · 卫星模式） | 代码 |
 
-流转：idea 先在 **Obsidian / `temp-ideas`** 萌芽 → 想清楚后，任务 / 问题进 **Linear**、决策写进 **yorha-a2-team/decisions**、正式系统存档落 **decisions/ + docs/**、代码进**引擎 repo**、轻量状态进 **claude-context**（capture→scratch→decide→commit，见 [CLAUDE.md §8 2026-05-30](../../CLAUDE.md)）。
+流转：idea 先在 **Linear「灵感 · 暂存」** 萌芽 → 想清楚后，任务 / 问题进 **Linear**、决策写进 **yorha-a2-team/decisions**、正式系统存档落 **decisions/ + docs/**、代码进**引擎 repo**、轻量状态进 **claude-context**（capture→scratch→decide→commit，见 [CLAUDE.md §8 2026-05-30](../../CLAUDE.md)）。
 
-> **2026-06-15 更新**：**舍弃 Excalidraw、暂缓 LibTV**（当下都不需要）。原 Excalidraw `Main`（正式存档）角色并入各 repo 的 `decisions/`+`docs/` 与 Obsidian；原 `地狱三头犬`（草稿）并入 Obsidian + `temp-ideas/`；团队改用 **Linear** 做可视化任务 / UI 问题（截图）/ 客户需求看板。见 yorha-a2-team `decisions/2026-06-15-tooling-linear.md`。
+> **2026-06-15 更新**：**舍弃 Excalidraw、暂缓 LibTV**（当下都不需要）。原 Excalidraw `Main`（正式存档）角色并入各 repo 的 `decisions/`+`docs/` 与 Obsidian；原 `地狱三头犬`（草稿）并入 **Linear「灵感 · 暂存」**；**Obsidian 退为备用记录 / 存档**；团队改用 **Linear** 做任务 / UI 问题（截图）/ 客户需求 / 进度 + 灵感暂存。**分支改 per-issue(A):1 issue = 1 PR,PR `Fixes YOR-NN` 自动挂回 issue。** 全部 decisions 另在 Linear「决策索引」文档同步。见 yorha-a2-team `decisions/2026-06-15-tooling-linear.md`。
 
 ---
 
