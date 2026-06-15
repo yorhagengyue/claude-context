@@ -24,13 +24,15 @@ sub-projects: sub-projects/{conversion-site,short-video,ai-interactive-story}.md
 
 | 空间 | 放什么 | 性质 |
 |---|---|---|
-| **Excalidraw `Main`** | **所有内容的正式存档**：把整个系统极度细节地画出来（架构 / 设计 / 各部分怎么写作创作），要完整表达、可对外 | 重 · 终稿 |
-| **Excalidraw `地狱三头犬`** | 平时随手记的 idea / 草稿（如「新用户渐进式体验」） | 轻 · 草稿 |
+| **Linear**（团队工作台） | 任务 / UI 问题（带截图）/ 客户需求更新 / 进度看板 —— 成熟、低成本、一目了然 | 团队协作 · 可视 |
+| **Obsidian + `temp-ideas/`** | 随手 idea / 草稿 / 灵感暂存（原 Excalidraw `地狱三头犬` 的角色）；正式系统存档并入各 repo 的 `decisions/`+`docs/` | 轻 · 草稿 |
 | **`claude-context`**（本 repo） | 耿越个人主宪法 + 跨机器记忆 / 项目速报 / 工作模式（轻量指针、版本化） | 轻 · 个人 |
 | **`yorha-a2-team`** | 团队协作 source-of-truth：`decisions/` + `team-logs/` + framework + `<name>-assets/`（走 PR） | 团队权威 |
 | **`ai-interactive-story`** | 雨飞主导的引擎代码（独立 repo · 卫星模式） | 代码 |
 
-流转：idea 先在**地狱三头犬**萌芽 → 想清楚后，正式版画进 **Excalidraw `Main`**（完整系统图）、决策写进 **yorha-a2-team/decisions**、代码进**引擎 repo**、轻量状态进 **claude-context**（capture→scratch→decide→commit，见 [CLAUDE.md §8 2026-05-30](../../CLAUDE.md)）。
+流转：idea 先在 **Obsidian / `temp-ideas`** 萌芽 → 想清楚后，任务 / 问题进 **Linear**、决策写进 **yorha-a2-team/decisions**、正式系统存档落 **decisions/ + docs/**、代码进**引擎 repo**、轻量状态进 **claude-context**（capture→scratch→decide→commit，见 [CLAUDE.md §8 2026-05-30](../../CLAUDE.md)）。
+
+> **2026-06-15 更新**：**舍弃 Excalidraw、暂缓 LibTV**（当下都不需要）。原 Excalidraw `Main`（正式存档）角色并入各 repo 的 `decisions/`+`docs/` 与 Obsidian；原 `地狱三头犬`（草稿）并入 Obsidian + `temp-ideas/`；团队改用 **Linear** 做可视化任务 / UI 问题（截图）/ 客户需求看板。见 yorha-a2-team `decisions/2026-06-15-tooling-linear.md`。
 
 ---
 
