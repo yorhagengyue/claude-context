@@ -24,7 +24,7 @@ sub-projects: sub-projects/{conversion-site,short-video,ai-interactive-story}.md
 
 | 空间 | 放什么 | 性质 |
 |---|---|---|
-| **Linear**（团队工作台） | 任务 / UI 问题（带截图）/ 客户需求更新 / 进度看板 —— 成熟、低成本、一目了然 | 团队协作 · 可视 |
+| **Linear**（团队工作台） | 任务 / UI 问题（带截图）/ 客户需求更新 / 进度看板 —— 成熟、低成本、一目了然。**截图/反馈发 issue 或评论,别发 project update（Claude 经 MCP 读不到 project update）** | 团队协作 · 可视 |
 | **Obsidian + `temp-ideas/`** | 随手 idea / 草稿 / 灵感暂存（原 Excalidraw `地狱三头犬` 的角色）；正式系统存档并入各 repo 的 `decisions/`+`docs/` | 轻 · 草稿 |
 | **`claude-context`**（本 repo） | 耿越个人主宪法 + 跨机器记忆 / 项目速报 / 工作模式（轻量指针、版本化） | 轻 · 个人 |
 | **`yorha-a2-team`** | 团队协作 source-of-truth：`decisions/` + `team-logs/` + framework + `<name>-assets/`（走 PR） | 团队权威 |
