@@ -32,14 +32,14 @@ fi
 echo ""
 echo "[2/7] 配置 Git..."
 git config --global user.name "yorhagengyue"
-git config --global user.email "tommychen030607@gmail.com"
+git config --global user.email "gengyue081@gmail.com"
 git config --global init.defaultBranch main
 git config --global pull.rebase false
 
 # SSH key
 if [ ! -f ~/.ssh/id_ed25519 ]; then
     echo "生成 SSH key..."
-    ssh-keygen -t ed25519 -C "tommychen030607@gmail.com" -f ~/.ssh/id_ed25519 -N ""
+    ssh-keygen -t ed25519 -C "gengyue081@gmail.com" -f ~/.ssh/id_ed25519 -N ""
     eval "$(ssh-agent -s)"
     ssh-add ~/.ssh/id_ed25519
     echo ""
