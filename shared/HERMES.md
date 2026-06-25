@@ -42,7 +42,7 @@
 - **IFSG**：企业财务报表生成器，Angular+Nix+PostgreSQL，4人团队（TP Researcher 工作内容）
 - **SBS Transit**：多仓库项目，Phase2+Webapp+WhisperAPI+GenAI（TP Researcher 工作内容，当前最活跃）
 - **MoyuanIdea**：AI 文化教育系统，V2 愿景→架构阶段
-- **NAISC Workato**：NUS AI Innovation & Social Challenge，截止 2026-04-24
+- **Ripple**（NAISC 续作）：NAISC Workato 已结束（2026-05-22 决赛 · second runner-up · 已归档），续作 Ripple 现以纯后端 `ripple-core`（ripple-core.vercel.app · DeepSeek）进行中，iOS app 前端由 Yufei 负责
 
 ### 1.6 当前身份
 - **TP Researcher**（不是 A*STAR 实习），工作内容是 IFSG 和 SBS Transit
