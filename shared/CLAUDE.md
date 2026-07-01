@@ -402,8 +402,14 @@ Claude 的行为按**模式**切换，避免单一人格覆盖所有场景（之
 App Store Guideline 2.1 要求登录墙 app 给审核员一个能进、有数据的 demo 账号;纯邮箱 OTP 的 app 审核员收不到验证码邮件 → 会被拒。**无密码登录本身不是拒因**(Apple 支持 OTP + Apple 登录),缺的是审核员可用的进入路径。
 **解法(Supabase 原生,app 一行不改)**:在 `auth.users` 上加 `BEFORE UPDATE` 触发器,只对某个固定的**全小写** demo 邮箱,把 GoTrue 写进 `recovery_token` 的 OTP 改写成固定码的哈希。审核员走现有"邮箱→验证码"界面 + 固定码登录;其他用户照旧随机码(已验证:普通账号用该固定码返回 403)。
 **踩坑(全部实测确认)**:(1) 存 OTP 的列 = `recovery_token`(已确认用户走 signInWithOTP 时),格式 = `hex(sha224(email ‖ otp))` —— 用 admin `generate_link` 拿明文码反查公式确认,别信博客(几篇都 403 打不开也没必要);(2) 触发器里**别用 `extensions.digest`**(pgcrypto)—— GoTrue 的角色 `supabase_auth_admin` 对 extensions schema **无 USAGE 权限** → UPDATE 直接 **500**;改用 Postgres 11+ 核心 `sha224()`(在 pg_catalog、人人可用,哈希值与 pgcrypto 一致);(3) demo 邮箱必须全小写(Supabase 规范化 email、SQL 大小写敏感);(4) `@test.com` 这种收不了信的域名 signInWithOTP 仍返回 200(发信失败是异步的),不挡审核员进验证码界面。
-**Ripple 实现**:demo=`ripplehealth@test.com`、码=`526811`;一体化脚本 `ripple-core/scripts/setup_demo_account.py`(建号+装触发器+清并灌满每屏数据+端到端自测 signInWithOTP→verifyOTP);审核备注在 `ripple-ios/docs/APP-STORE-SUBMISSION.md`。过审后可 `drop trigger ripple_demo_fixed_otp_trg` 移除后门。
+**Ripple 实现**:demo=`ripplehealth@test.com`、码=`526811`;一体化脚本 `ripple-core/scripts/setup_demo_account.py`(建号+装触发器+清并灌满每屏数据+端到端自测 signInWithOTP→verifyOTP);审核备注在 `ripple-ios/docs/APP-STORE-SUBMISSION.md`(已标 **DONE & verified**,别再当待办)。**双用途(2026-07-02 主理人确认)= 上架审核 + 团队日常测试** → 固定-OTP 触发器**不"过审即删",常驻 prod** 当已知凭据测试账号。安全权衡(诚实标注):`email + 526811` 是**公开可知固定凭据**,谁知道谁能进;靠 `user_id` 隔离碰不到别人数据、风险不高,但**此账号只能灌 fake 种子数据、绝不接真实/敏感健康数据**。真要拆后门再 `drop trigger ripple_demo_fixed_otp_trg on auth.users` + `drop function public.ripple_demo_fixed_otp()`。
 **复用**:任何 Supabase + 邮箱 OTP + 上架 App Store 的项目都适用。方法论 = 别猜内部格式,用 admin API 拿真数据反推 + 端到端测通了才算数(呼应 [2026-05-31] 从 0 架构、[2026-05-28] CI 必须 green 才算修完)。
+**v2 升级(2026-07-02 S-loop,主理人指令"demo 不得再触发验证码发送")**:触发器改为 demo 行**任何 UPDATE 都重钉** fixed-hash + 刷 `recovery_sent_at`(GoTrue verify 成功后清 token 的那次 UPDATE 会被同一触发器立刻重钉→**token 永久有效**);pg_cron `ripple-demo-otp-pin`(每小时 :11)touch 该行保鲜 sent_at;iOS `SupabaseManager.sendOTP` 对 demo 邮箱 **no-op**。净效果:demo 登录**零邮件发送**——审核员重试也不会撞 Supabase 的 per-address 邮件速率限制(那是真实拒审风险,实测我自己连打 5 次 /otp 后 UITest 就被限了)。验证:不发 /otp 连续两次 verify(526811) 均拿到 session。
+
+### [2026-07-02] insight: iCloud 同步目录里的 Xcode 工程会随机 codesign 失败("detritus not allowed")
+Ripple S-loop 实测:repo 在 iCloud 同步的 `~/Desktop` 下,fileprovider 会**持续、异步**给文件/目录打 `com.apple.FinderInfo`/`com.apple.fileprovider.*` xattr——包括**构建进行中的 DerivedData 产物**。codesign 见到这些 xattr 直接拒签(`resource fork, Finder information, or similar detritus not allowed`),且**时好时坏**(取决于 iCloud 同步时机),源码 `xattr -cr` 只能撑几秒。
+**根治两件套**:(1) XcodeGen `postBuildScripts` 给每个 target 加 CodeSign 前的 `xattr -cr "$CODESIGNING_FOLDER_PATH" || true`(防源侧 xattr 被 copy 进 bundle);(2) **DerivedData 挪出 iCloud 盘**(`-derivedDataPath ~/Library/Developer/Xcode/DerivedData/<name>`)——test-runner 这类没有 script hook 的 wrapper bundle 只有这招能救。
+**适用**:任何放在 iCloud/Dropbox 同步目录的 Xcode 工程(真机归档同样会踩)。诊断一句话:`xattr -lr <built.app> | grep -c FinderInfo`。
 
 ### [2026-07-02] project: Ripple App Store 上架准备 + LLM 切 OpenAI 独家(数据不进中国)
 Ripple v1 完成后进入**上架准备**。本轮做完的:
