@@ -306,7 +306,7 @@ Obsidian Vault 是三层记忆体系的底层——存放重内容。关系：
 | **SBS Transit** | 进行中（最活跃） | SBS Transit 多仓库项目，Phase2+Webapp+WhisperAPI+GenAI | → vault: SBS Transit - Overview |
 | **Hermes** | 主力 agent 系统 | 替代 YoRHa/Moltbot，集成 Gmail/Calendar/GitHub/Obsidian | → vault: Hermes - Overview |
 | **心涟 (Peer)** | **已降级 · 暂不维护（2026-06）** | Hermes 多 profile (dad/xirui) 微信 operator console，[ripple-wellness.vercel.app/peer/u/dad](https://ripple-wellness.vercel.app/peer/u/dad)。跟旧 web `ripple` 同栈，主理人 2026-06 指示**暂不投入、不是重点** | → [HANDOFF.md](projects/xinlian/HANDOFF.md) |
-| **Ripple (core + iOS)** | 后端 live · **iOS v1「调查中心」重做完成(2026-07-01 自驱 loop)** · 原生 Apple 登录已接 | NAISC 后重写的多租户 wellness agent。后端 `ripple-core`（Hono+Vercel+Supabase，[ripple-core.vercel.app](https://ripple-core.vercel.app)，结构化 explain + 答案缓存 + investigation agent + softAuth 安全默认、~147 测试全绿）。原生 iOS `ripple-ios`（SwiftUI/iOS26/XcodeGen）**已从旧"仪表盘"彻底重做成愿景「调查中心 / shows-its-work」**(session-only cron 自驱 loop R0→R22+,G1-G4 四门):日历 Home + 长按 Explain Sheet(唯一 AI 入口,充能环+打字机)+ 调查三态 + anomaly 通知 + facts/intake + 设置读写;**联动**=分析关联 events+lifestyle facts;legacy chatbot/dashboard 全删。**原生 Apple 登录已接**(e5f9764,⏸ 待核对 Supabase Authorized Client IDs 含 `com.ripplehealth.ios`)。旧 web 前端 `ripple`(含 peer)已**暂停用**。⚠️ 真源 = `ripple-core/docs/LOOP-PROGRESS.md`+`PLAN-V1-FRONTEND.md`+ ripple **SKILL**；凭据整 loop 后需轮换 | → `ripple-core/docs/LOOP-PROGRESS.md` · `PLAN-V1-FRONTEND.md` · `ripple-core/.cursor/skills/ripple/SKILL.md` · `~/Desktop/ripple-core` · `~/Desktop/ripple-ios` |
+| **Ripple (core + iOS)** | 后端 live · **iOS v1 完成 + App Store 上架准备中(2026-07-02)** · LLM=OpenAI `gpt-5.4-mini` 独家(不进中国)· 法务页已托管 | NAISC 后重写的多租户 wellness agent。后端 `ripple-core`（Hono+Vercel+Supabase，[ripple-core.vercel.app](https://ripple-core.vercel.app)，结构化 explain + 答案缓存 + investigation agent + softAuth 安全默认、~147 测试全绿）。原生 iOS `ripple-ios`（SwiftUI/iOS26/XcodeGen）**已从旧"仪表盘"彻底重做成愿景「调查中心 / shows-its-work」**(session-only cron 自驱 loop R0→R22+,G1-G4 四门):日历 Home + 长按 Explain Sheet(唯一 AI 入口,充能环+打字机)+ 调查三态 + anomaly 通知 + facts/intake + 设置读写;**联动**=分析关联 events+lifestyle facts;legacy chatbot/dashboard 全删。**原生 Apple 登录已接**(e5f9764,⏸ 待核对 Supabase Authorized Client IDs 含 `com.ripplehealth.ios`)。旧 web 前端 `ripple`(含 peer)已**暂停用**。⚠️ 真源 = `ripple-core/docs/LOOP-PROGRESS.md`+`PLAN-V1-FRONTEND.md`+ ripple **SKILL**；**上架待办 = `ripple-ios/docs/APP-STORE-SUBMISSION.md`**;法务页 `https://ripple-legal.vercel.app`(源 `~/Desktop/ripple-legal/`);凭据(含 OpenAI key)需轮换 | → `ripple-core/docs/LOOP-PROGRESS.md` · `PLAN-V1-FRONTEND.md` · `ripple-ios/docs/APP-STORE-SUBMISSION.md` · ripple SKILL · `~/Desktop/ripple-core` · `~/Desktop/ripple-ios` |
 | **YoRHa-A2** | 阶段性团队项目 · 进行中（2026-06-02 结构重整） | 耿越 + 雨飞 + Zicheng 三人协作项目；**最终目标 = 咨询网站（conversion-site）**，路上做多个子项目（短视频引流 / ai-interactive-story 故事引擎[雨飞] / …）；护城河 = 用 AI 机制解释人性 | → [YORHA-A2.md](projects/yorha-a2/YORHA-A2.md) hub · [WORKING-MODE.md](projects/yorha-a2/WORKING-MODE.md) 工作模式 |
 | **Slay the Spire 2 AI** | 半成品 | PPO + 遗传超参数进化，离自主打游戏还有距离 | GitHub/slay_the_spire |
 
@@ -398,6 +398,14 @@ Claude 的行为按**模式**切换，避免单一人格覆盖所有场景（之
 
 > 由 memory skill 自动追加，按时间倒序。最近一次 consolidation：2026-05-25（NAISC pivot 后，~30 条 → ~21 条）。
 
+### [2026-07-02] project: Ripple App Store 上架准备 + LLM 切 OpenAI 独家(数据不进中国)
+Ripple v1 完成后进入**上架准备**。本轮做完的:
+- **LLM 换厂**:DeepSeek(中国公司,数据驻留问题)→ 一度 Azure OpenAI(SEA)→ **最终定 OpenAI 官方 `gpt-5.4-mini`**(美国,数据不进中国)。**上线只用 OpenAI 一家**(azure/kimi 全从 registry 删)。踩坑:GPT-5.x 系不认 `max_tokens`、要 `max_completion_tokens`(temperature 0.2 + JSON 模式认)。npm test 145/145 真打 gpt-5.4-mini 全绿、已部署、live 验(provider:"openai" 现生成)。⚠️ **OpenAI key 暴露在聊天,上线前轮换**。
+- **App Store 阻塞项(代码侧全做完 + 验证)**:app 图标(1024 无 alpha,涟漪环+心跳,`docs/brand/ripple-appicon.svg`)+ `PrivacyInfo.xcprivacy` 隐私清单 + 版本统一(1.0.0/1)+ **一次性 AI/健康数据同意弹窗 + 医疗免责**(`AIConsentView`,ExplainSheet 首次前门控)+ `/v1/account/export` 补全(全用户数据,隐藏层不导)+ 法务链接接活。
+- **法务页已托管上线**:`https://ripple-legal.vercel.app`(privacy/terms/support,公开 200,内容含 OpenAI/美国/不进中国),源码 `~/Desktop/ripple-legal/`(未入 git,改完 `vercel deploy --prod` 重发)。in-app `Legal.swift` 已指过去。
+- **App 记录**:名字 "Ripple" 被占,商店名建议 "Ripple Baseline"(设备上仍显示 Ripple);Bundle `com.ripplehealth.ios`,SKU `ripplehealth-ios`。
+**⏸ 只有主理人能做的(全在 `ripple-ios/docs/APP-STORE-SUBMISSION.md`)**:轮换所有暴露凭据、填 ASC 元数据+隐私营养标签(健康/邮箱/用户ID/使用=Linked/App Functionality/不追踪)、Apple 登录端到端真机验、预置 demo 账号、升 Supabase Pro+监控、拍截图、Xcode 归档提交、UI 设计精修(`UI-POLISH-TODO.md`)。App 发布在付费 team `6745G7RTY5` 下(归属主理人已不担心)。
+
 ### [2026-07-01] feedback: UI 美学微调交人做 —— 我只做功能/接线,不擅自 fine-tune 视觉
 主理人 2026-07-01(Ripple iOS):"大量 UI 需要微调…我不希望你直接改,因为你根本理解不了 UI。你记下来,后续让人去微调。"
 **Why**:我能把每屏接通后端 + 编译 + 截图验证(功能对),但**间距/字阶/配色对比/留白/动效/整体视觉 craft 需要设计师的眼**——我拍脑袋定的功能性视觉(如 Ripple logo 深色底看不清→我垫了米色砖)只是"能看",不是"好看"。硬让我 fine-tune 视觉会产出"能跑但难看/不对味"的东西。
@@ -415,7 +423,7 @@ Claude 的行为按**模式**切换，避免单一人格覆盖所有场景（之
 **联动(主理人核心指令)**:分析一个读数会关联用户其他记录内容 —— events("今天要跑步")+ lifestyle facts("周二跑步"),glance explain + investigation 两条 AI 路径都做了;敏感 facts(病症/用药)有内容门绝不 surface。
 **后端 ripple-core**:结构化 `POST /v1/explain`(答案缓存 explain_cache)+ investigation agent 确定性预取计划进证据 + softAuth 安全默认(修过 P0 匿名暴露)。npm test ~147 全绿、部署 ripple-core.vercel.app。
 **原生 Apple 登录(2026-07-01 接线, ios commit e5f9764)**:SignInWithAppleButton + nonce + `signInWithIdToken`;Supabase apple provider 已启用、原生流程 live 可用。⏸ **待主理人核对**:Supabase Apple provider 的 Authorized Client IDs 要含 Bundle ID `com.ripplehealth.ios`(付费 team `6745G7RTY5`)。真机 Apple ID 授权那步需主理人点。
-**真源**:`ripple-core/docs/LOOP-PROGRESS.md`(逐轮 R0-R22+)+ `PLAN-V1-FRONTEND.md`(动态计划/账本)+ `ripple-core/.cursor/skills/ripple/SKILL.md`。⚠️ 凭据(Supabase/DeepSeek/PAT)整 loop 跑完需轮换(暴露在聊天)。
+**真源**:`ripple-core/docs/LOOP-PROGRESS.md`(逐轮 R0-R22+)+ `PLAN-V1-FRONTEND.md`(动态计划/账本)+ `ripple-core/.cursor/skills/ripple/SKILL.md`。⚠️ 凭据(Supabase/**OpenAI**/PAT)需轮换(暴露在聊天)。【2026-07-02 更新:LLM 已从 DeepSeek 切 OpenAI 独家,见 §8 顶部上架条】
 
 ### [2026-07-01] feedback: 跑任何自驱 loop —— 每轮先取真实时钟时间 + 检查节奏,没查时间不许说"健康"
 主理人指令(2026-07-01)：以后任何 autonomous loop,**每次执行开头必须先 `date` 拿真实 wall-clock 时间**,写进该轮日志(标题带时间戳)。
