@@ -482,6 +482,7 @@ PR #8（Yufei agent-subagent v0.1）暴露 Claude 直接从文字 prompt → Rem
 **对 Claude 的影响**：以后帮协作者写 Remotion / chart / SVG / 复杂可视化代码之前要主动问"有 GPT Image 2 草图了吗"，没有就先建议跑一版。具体图像模型不约束（Midjourney / Flux 也行），但 GPT Image 2 在"按文字描述生成视觉 layout"方向是当前最稳。
 **位置**：`yorha-a2-team/decisions/2026-05-29-visual-flow-gpt-image-then-remotion.md` + framework `story-shapes.md` / `voice.md` 交叉引用。PR #6 同时合并 workflow 修复 + Shape A 硬约束 + 本流程。
 **Why 写 §8 不只项目内**：图像模型 → 代码生成是跨项目可复用模式（任何需要 Claude 生成视觉化代码的场景：MoyuanIdea 三端 UI / TemplateApp Agent Timeline / IFSG dashboard chart 都适用）。
+**范围修正(2026-07-02,主理人)**:有**成熟项目设计 skill/design system 的项目不适用此流程**——Ripple UI 工作被主理人明确指示"不用 GPT,按我给你的 skill 做":ripple SKILL(§5 A-bis + dark/teal/线条感 + DESIGN-NOTES tokens)本身就是视觉锚点,直接照它写代码。本流程真正的适用场景 = **缺视觉锚点**的从零创作(如 YoRHa 短视频 Remotion);有 skill/设计系统的项目,skill 即锚点。
 
 ### [2026-05-28] correction: code mode 改 CI / workflow 后必须等 CI green 才算修完，不要 push 就 claim 完成
 User pushback：连续两次"修完 push"但 CI 仍 fail（第一次 mode 错→第二次 secret 缺）。第二次 claim "修了" 后 user 实际看到的还是红 ×，对他来说就是"依然 fail"。
