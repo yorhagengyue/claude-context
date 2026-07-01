@@ -398,6 +398,13 @@ Claude 的行为按**模式**切换，避免单一人格覆盖所有场景（之
 
 > 由 memory skill 自动追加，按时间倒序。最近一次 consolidation：2026-05-25（NAISC pivot 后，~30 条 → ~21 条）。
 
+### [2026-07-02] insight: Supabase + 邮箱 OTP 的 App Store 审核 demo 账号 = 固定-OTP 触发器(app 零改动)
+App Store Guideline 2.1 要求登录墙 app 给审核员一个能进、有数据的 demo 账号;纯邮箱 OTP 的 app 审核员收不到验证码邮件 → 会被拒。**无密码登录本身不是拒因**(Apple 支持 OTP + Apple 登录),缺的是审核员可用的进入路径。
+**解法(Supabase 原生,app 一行不改)**:在 `auth.users` 上加 `BEFORE UPDATE` 触发器,只对某个固定的**全小写** demo 邮箱,把 GoTrue 写进 `recovery_token` 的 OTP 改写成固定码的哈希。审核员走现有"邮箱→验证码"界面 + 固定码登录;其他用户照旧随机码(已验证:普通账号用该固定码返回 403)。
+**踩坑(全部实测确认)**:(1) 存 OTP 的列 = `recovery_token`(已确认用户走 signInWithOTP 时),格式 = `hex(sha224(email ‖ otp))` —— 用 admin `generate_link` 拿明文码反查公式确认,别信博客(几篇都 403 打不开也没必要);(2) 触发器里**别用 `extensions.digest`**(pgcrypto)—— GoTrue 的角色 `supabase_auth_admin` 对 extensions schema **无 USAGE 权限** → UPDATE 直接 **500**;改用 Postgres 11+ 核心 `sha224()`(在 pg_catalog、人人可用,哈希值与 pgcrypto 一致);(3) demo 邮箱必须全小写(Supabase 规范化 email、SQL 大小写敏感);(4) `@test.com` 这种收不了信的域名 signInWithOTP 仍返回 200(发信失败是异步的),不挡审核员进验证码界面。
+**Ripple 实现**:demo=`ripplehealth@test.com`、码=`526811`;一体化脚本 `ripple-core/scripts/setup_demo_account.py`(建号+装触发器+清并灌满每屏数据+端到端自测 signInWithOTP→verifyOTP);审核备注在 `ripple-ios/docs/APP-STORE-SUBMISSION.md`。过审后可 `drop trigger ripple_demo_fixed_otp_trg` 移除后门。
+**复用**:任何 Supabase + 邮箱 OTP + 上架 App Store 的项目都适用。方法论 = 别猜内部格式,用 admin API 拿真数据反推 + 端到端测通了才算数(呼应 [2026-05-31] 从 0 架构、[2026-05-28] CI 必须 green 才算修完)。
+
 ### [2026-07-02] project: Ripple App Store 上架准备 + LLM 切 OpenAI 独家(数据不进中国)
 Ripple v1 完成后进入**上架准备**。本轮做完的:
 - **LLM 换厂**:DeepSeek(中国公司,数据驻留问题)→ 一度 Azure OpenAI(SEA)→ **最终定 OpenAI 官方 `gpt-5.4-mini`**(美国,数据不进中国)。**上线只用 OpenAI 一家**(azure/kimi 全从 registry 删)。踩坑:GPT-5.x 系不认 `max_tokens`、要 `max_completion_tokens`(temperature 0.2 + JSON 模式认)。npm test 145/145 真打 gpt-5.4-mini 全绿、已部署、live 验(provider:"openai" 现生成)。⚠️ **OpenAI key 暴露在聊天,上线前轮换**。
