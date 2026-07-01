@@ -429,6 +429,7 @@ Ripple v1 完成后进入**上架准备**。本轮做完的:
 主理人 2026-07-01 纠正:"你开始忘记记忆了 存好 记得 push"。跑 Ripple v1 前端替换 loop 一整天(R0→R22+),所有进展都进了 `ripple-core/docs/LOOP-PROGRESS.md` + `PLAN-V1-FRONTEND.md`,但**跨机耐久记忆(claude-context §5/§8)一整天没更新** → §5 Ripple 条目严重过时(还写"iOS 旧仪表盘设计待重做",实际早已重做完)。
 **Why**:loop 档是项目内的过程记录、跨机不可见;claude-context 才是我的外脑跨机层。长 loop 时若只写 loop 档,别的机器 / 未来 session 打开 CLAUDE.md 看到的是过时状态。**How to apply**:任何长时自驱 loop,除了每轮写 loop 档外,**遇到重大节点(功能完成 / 方向变 / 里程碑)顺手把一句话状态 sediment 回 claude-context 对应 §5 行 + 必要时 §8**,不要攒到主理人提醒。claude-context 的 `.git` 曾**损坏不可读**(文件可读写、git 命令认不出仓库),整段时间靠主理人手动 push;**2026-07-01 已修**:重新 `gh repo clone` 一份、把 CLAUDE.md 记忆搬过去、删掉坏的旧 checkout、新 clone 扶正为正式 `~/Desktop/claude-context`。现在 git 正常、**我能自己 commit+push**(fetch/push 已验通)。
 **关联**:同日 [2026-07-01] loop 时间戳 feedback、§5 Ripple 行本轮已更新。
+**2026-07-02 追加(S-loop 主理人指令"工作期间要积极更新记忆和文档 可以参考历史loop文档")**:升级为**边做边写**,不等"重大节点"——每轮工作中 ① loop 档按 R-loop 成熟格式记(`⏱时间戳+gap检查 / Goal / 方法-DoD / Verification gate 全绿才 claim / 诚实边界 / ⏸follow-up / Plan delta / Next`,样例见 LOOP-PROGRESS.md R21);② 顺手修沿路发现的**文档漂移**(过期注释/stale TODO/合同文档),不留到"以后";③ sediment-worthy 内容当轮写 §8 并 push,不攒批。
 
 ### [2026-07-01] project: Ripple v1 前端替换 loop 终局态 + 原生 Apple 登录
 **iOS 前端已从旧"仪表盘"彻底重做成愿景的「调查中心 / shows-its-work」**(session-only cron 自驱 loop,R0→R22+,每轮 `date` 戳时间 + G1 编译/G2 DTO 解码真 JSON/G3 打 live 后端/G4 深链截图 四门,验证未过不 claim)。
