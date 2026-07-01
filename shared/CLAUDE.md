@@ -305,7 +305,8 @@ Obsidian Vault 是三层记忆体系的底层——存放重内容。关系：
 | **TemplateApp** | 🚨 Pivot 为 agentic AI 论文项目 (2026-05-23) | Frontend 9 屏已 scaffold；Python LangGraph agent service + Node gateway 待建；Linda 邮件要 publishable paper，含 Live Data Binding + LLM-as-Judge 创新点 | → [TEMPLATEAPP.md](projects/templateapp/TEMPLATEAPP.md) / [HANDOFF.md](projects/templateapp/HANDOFF.md) |
 | **SBS Transit** | 进行中（最活跃） | SBS Transit 多仓库项目，Phase2+Webapp+WhisperAPI+GenAI | → vault: SBS Transit - Overview |
 | **Hermes** | 主力 agent 系统 | 替代 YoRHa/Moltbot，集成 Gmail/Calendar/GitHub/Obsidian | → vault: Hermes - Overview |
-| **心涟 (Peer)** | 前端已上线 · ingest 改造待启动 | Hermes 多 profile (dad/xirui) 微信 operator console，[ripple-wellness.vercel.app/peer/u/dad](https://ripple-wellness.vercel.app/peer/u/dad) | → [HANDOFF.md](projects/xinlian/HANDOFF.md) |
+| **心涟 (Peer)** | **已降级 · 暂不维护（2026-06）** | Hermes 多 profile (dad/xirui) 微信 operator console，[ripple-wellness.vercel.app/peer/u/dad](https://ripple-wellness.vercel.app/peer/u/dad)。跟旧 web `ripple` 同栈，主理人 2026-06 指示**暂不投入、不是重点** | → [HANDOFF.md](projects/xinlian/HANDOFF.md) |
+| **Ripple (core + iOS)** | 后端 live · **iOS v1「调查中心」重做完成(2026-07-01 自驱 loop)** · 原生 Apple 登录已接 | NAISC 后重写的多租户 wellness agent。后端 `ripple-core`（Hono+Vercel+Supabase，[ripple-core.vercel.app](https://ripple-core.vercel.app)，结构化 explain + 答案缓存 + investigation agent + softAuth 安全默认、~147 测试全绿）。原生 iOS `ripple-ios`（SwiftUI/iOS26/XcodeGen）**已从旧"仪表盘"彻底重做成愿景「调查中心 / shows-its-work」**(session-only cron 自驱 loop R0→R22+,G1-G4 四门):日历 Home + 长按 Explain Sheet(唯一 AI 入口,充能环+打字机)+ 调查三态 + anomaly 通知 + facts/intake + 设置读写;**联动**=分析关联 events+lifestyle facts;legacy chatbot/dashboard 全删。**原生 Apple 登录已接**(e5f9764,⏸ 待核对 Supabase Authorized Client IDs 含 `com.ripplehealth.ios`)。旧 web 前端 `ripple`(含 peer)已**暂停用**。⚠️ 真源 = `ripple-core/docs/LOOP-PROGRESS.md`+`PLAN-V1-FRONTEND.md`+ ripple **SKILL**；凭据整 loop 后需轮换 | → `ripple-core/docs/LOOP-PROGRESS.md` · `PLAN-V1-FRONTEND.md` · `ripple-core/.cursor/skills/ripple/SKILL.md` · `~/Desktop/ripple-core` · `~/Desktop/ripple-ios` |
 | **YoRHa-A2** | 阶段性团队项目 · 进行中（2026-06-02 结构重整） | 耿越 + 雨飞 + Zicheng 三人协作项目；**最终目标 = 咨询网站（conversion-site）**，路上做多个子项目（短视频引流 / ai-interactive-story 故事引擎[雨飞] / …）；护城河 = 用 AI 机制解释人性 | → [YORHA-A2.md](projects/yorha-a2/YORHA-A2.md) hub · [WORKING-MODE.md](projects/yorha-a2/WORKING-MODE.md) 工作模式 |
 | **Slay the Spire 2 AI** | 半成品 | PPO + 遗传超参数进化，离自主打游戏还有距离 | GitHub/slay_the_spire |
 
@@ -396,6 +397,36 @@ Claude 的行为按**模式**切换，避免单一人格覆盖所有场景（之
 ## 8. 记忆追加区
 
 > 由 memory skill 自动追加，按时间倒序。最近一次 consolidation：2026-05-25（NAISC pivot 后，~30 条 → ~21 条）。
+
+### [2026-07-01] feedback: UI 美学微调交人做 —— 我只做功能/接线,不擅自 fine-tune 视觉
+主理人 2026-07-01(Ripple iOS):"大量 UI 需要微调…我不希望你直接改,因为你根本理解不了 UI。你记下来,后续让人去微调。"
+**Why**:我能把每屏接通后端 + 编译 + 截图验证(功能对),但**间距/字阶/配色对比/留白/动效/整体视觉 craft 需要设计师的眼**——我拍脑袋定的功能性视觉(如 Ripple logo 深色底看不清→我垫了米色砖)只是"能看",不是"好看"。硬让我 fine-tune 视觉会产出"能跑但难看/不对味"的东西。
+**How to apply**:UI 类工作,我的边界 = **功能、数据接线、状态逻辑、可访问性接线、把视觉决策点列成清单**;**视觉美学微调 = 记 TODO 交人**,不主动改。遇到纯对比度/能否看清这种**功能性**视觉 bug 可以做(并标注"功能性决定、待设计复核");遇到"更好看/更精致/间距字体配色"这种**美学**调整 → 写进 handoff TODO,不动手。Ripple 的清单 = `ripple-ios/docs/UI-POLISH-TODO.md`(按屏 + cross-cutting,commit b2a28ae)。
+**范围**:先按 Ripple 定,但本质是通用工作边界(任何我做的前端,视觉精修默认交人;除非主理人明确让我调某个具体视觉)。
+
+### [2026-07-01] feedback: 长自驱 loop 里别只往 loop 档写 —— 阶段性把重大项目状态 sediment 回 claude-context
+主理人 2026-07-01 纠正:"你开始忘记记忆了 存好 记得 push"。跑 Ripple v1 前端替换 loop 一整天(R0→R22+),所有进展都进了 `ripple-core/docs/LOOP-PROGRESS.md` + `PLAN-V1-FRONTEND.md`,但**跨机耐久记忆(claude-context §5/§8)一整天没更新** → §5 Ripple 条目严重过时(还写"iOS 旧仪表盘设计待重做",实际早已重做完)。
+**Why**:loop 档是项目内的过程记录、跨机不可见;claude-context 才是我的外脑跨机层。长 loop 时若只写 loop 档,别的机器 / 未来 session 打开 CLAUDE.md 看到的是过时状态。**How to apply**:任何长时自驱 loop,除了每轮写 loop 档外,**遇到重大节点(功能完成 / 方向变 / 里程碑)顺手把一句话状态 sediment 回 claude-context 对应 §5 行 + 必要时 §8**,不要攒到主理人提醒。claude-context 的 `.git` 在当前 sandbox 环境**不可访问**(文件可读写、git 命令读不到 .git),所以我改文件、**主理人手动 push**(见 §0.4 命令)。
+**关联**:同日 [2026-07-01] loop 时间戳 feedback、§5 Ripple 行本轮已更新。
+
+### [2026-07-01] project: Ripple v1 前端替换 loop 终局态 + 原生 Apple 登录
+**iOS 前端已从旧"仪表盘"彻底重做成愿景的「调查中心 / shows-its-work」**(session-only cron 自驱 loop,R0→R22+,每轮 `date` 戳时间 + G1 编译/G2 DTO 解码真 JSON/G3 打 live 后端/G4 深链截图 四门,验证未过不 claim)。
+**已建成的纯 v1 面**:日历 Home(月历格,取代旧 vitals dashboard)+ 环境式**长按 Explain Sheet**(充能环 + 打字机 verdict,唯一 AI 入口,无 chatbot)+ 调查引擎三态(Live/Question/Resolved,展示工作)+ anomaly 驱动通知箱 + 个人 facts/intake + 设置读写。legacy chatbot/dashboard/metric-detail/订阅/成就全删,app 40 swift 文件纯 v1。
+**联动(主理人核心指令)**:分析一个读数会关联用户其他记录内容 —— events("今天要跑步")+ lifestyle facts("周二跑步"),glance explain + investigation 两条 AI 路径都做了;敏感 facts(病症/用药)有内容门绝不 surface。
+**后端 ripple-core**:结构化 `POST /v1/explain`(答案缓存 explain_cache)+ investigation agent 确定性预取计划进证据 + softAuth 安全默认(修过 P0 匿名暴露)。npm test ~147 全绿、部署 ripple-core.vercel.app。
+**原生 Apple 登录(2026-07-01 接线, ios commit e5f9764)**:SignInWithAppleButton + nonce + `signInWithIdToken`;Supabase apple provider 已启用、原生流程 live 可用。⏸ **待主理人核对**:Supabase Apple provider 的 Authorized Client IDs 要含 Bundle ID `com.ripplehealth.ios`(付费 team `6745G7RTY5`)。真机 Apple ID 授权那步需主理人点。
+**真源**:`ripple-core/docs/LOOP-PROGRESS.md`(逐轮 R0-R22+)+ `PLAN-V1-FRONTEND.md`(动态计划/账本)+ `ripple-core/.cursor/skills/ripple/SKILL.md`。⚠️ 凭据(Supabase/DeepSeek/PAT)整 loop 跑完需轮换(暴露在聊天)。
+
+### [2026-07-01] feedback: 跑任何自驱 loop —— 每轮先取真实时钟时间 + 检查节奏,没查时间不许说"健康"
+主理人指令(2026-07-01)：以后任何 autonomous loop,**每次执行开头必须先 `date` 拿真实 wall-clock 时间**,写进该轮日志(标题带时间戳)。
+**Why**：Ripple v1 loop 我曾断言"loop 健康",实际只看了 cron 还在 + repo 干净,**没看真实触发时间** —— 真相是 session-only cron 在机器休眠期间不触发也不补跑,loop 已经**空转了约 8 小时**(R3 05:22 → 我查时已 13:14,中间十几次触发一次没发生)。"cron 存在" ≠ "loop 在推进"。
+**How to apply**：(1) 每轮开头 `date`,记进 LOOP-PROGRESS 该轮日志;(2) 跟上一轮时间戳比,**若 gap > 2× 预期间隔 → 明说 loop 曾 stall + 为什么**,不要瞒;(3) 任何"loop 健康吗/进展如何"的问题,**先查真实时间和实际 commit 时间戳**再答,绝不只凭"cron 还在/repo 干净"就说健康;(4) session-only cron 的致命前提 = 会话/机器不休眠,答健康时要连这个前提一起说。要真正无人值守过夜 → cloud schedule(`/schedule`),不是 session-only cron。
+**范围**:跨项目通用(任何 loop / cron / 长任务)。Ripple loop 已把此规则写进 cron prompt + LOOP-PROGRESS 纪律,每轮 stamp 时间。
+
+### [2026-06-27] insight: iOS HealthKit 签名坑 — `com.apple.developer.healthkit.access` 空数组也会触发"临床记录"能力、免费 team 签不了
+ripple-ios 配真机签名踩到：entitlements 里只要**存在** `com.apple.developer.healthkit.access`（**哪怕是空数组 `<array/>`**），Xcode automatic signing 就当成在申请 "HealthKit Access (Verifiable Health Records)" = 临床健康记录（FHIR/EHR）能力 → 免费/个人 team 直接签不了（报 `Personal development teams do not support the HealthKit Access (Verifiable Health Records) capability`），付费账号也要单独申请。
+**标准 HealthKit**（读心率/HRV/呼吸率/血氧/睡眠/步数/活动能量等 quantity & category 类型）只需 `com.apple.developer.healthkit: true` **一项**，**不要**加 `.access`。删掉后免费个人团队也能签真机标准 HealthKit（xcodebuild 实测：删前报 capability 不支持，删后那条错误消失，只剩良性的 `no devices`）。
+**How to apply**：任何 iOS HealthKit 项目，entitlements 默认只放 `com.apple.developer.healthkit: true`；只有真要读 Apple Health 里的临床病历（clinical records）才加 `.access: [health-records]` + 付费账号 + 额外申请。配套坑：(a) development profile 必须绑定 ≥1 台已注册真机，无设备时 xcodebuild 报 `Your team has no devices` 是良性的，连上 iPhone 自动注册即消失；(b) bundle id 全局唯一，被占用必须换（本次 `app.ripple.ios`→`app.ripplehealth.ios`）；(c) 免费个人团队证书 7 天过期，到期重新 build 安装即可。
 
 ### [2026-05-31] feedback: ai-interactive-story 上 Claude 要从 0 架构, 不锚定 Yufei 现有技术决策
 做 ai-interactive-story (Yufei 的卫星 repo) 数据库选型时, 我第一轮用"代码作者注释里自己写的计划 (准备换 SQLite)"当推荐理由之一。用户纠正:"之前的决定是 Yufei 做的, 他的决策能力不够, 你要从 0 思考整个计划"。从 0 重想后立刻抓出旧设计一个真问题——session 当 blob 每回合全量重写 (O(n²)), 换 DB 但还用 JSON 列存整 session 不解决, 真修法是 messages 拆 append-only 行。这是第一轮顺着 Yufei 设计走没抓出来的。
