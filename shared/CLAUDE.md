@@ -406,7 +406,7 @@ Claude 的行为按**模式**切换，避免单一人格覆盖所有场景（之
 
 ### [2026-07-01] feedback: 长自驱 loop 里别只往 loop 档写 —— 阶段性把重大项目状态 sediment 回 claude-context
 主理人 2026-07-01 纠正:"你开始忘记记忆了 存好 记得 push"。跑 Ripple v1 前端替换 loop 一整天(R0→R22+),所有进展都进了 `ripple-core/docs/LOOP-PROGRESS.md` + `PLAN-V1-FRONTEND.md`,但**跨机耐久记忆(claude-context §5/§8)一整天没更新** → §5 Ripple 条目严重过时(还写"iOS 旧仪表盘设计待重做",实际早已重做完)。
-**Why**:loop 档是项目内的过程记录、跨机不可见;claude-context 才是我的外脑跨机层。长 loop 时若只写 loop 档,别的机器 / 未来 session 打开 CLAUDE.md 看到的是过时状态。**How to apply**:任何长时自驱 loop,除了每轮写 loop 档外,**遇到重大节点(功能完成 / 方向变 / 里程碑)顺手把一句话状态 sediment 回 claude-context 对应 §5 行 + 必要时 §8**,不要攒到主理人提醒。claude-context 的 `.git` 在当前 sandbox 环境**不可访问**(文件可读写、git 命令读不到 .git),所以我改文件、**主理人手动 push**(见 §0.4 命令)。
+**Why**:loop 档是项目内的过程记录、跨机不可见;claude-context 才是我的外脑跨机层。长 loop 时若只写 loop 档,别的机器 / 未来 session 打开 CLAUDE.md 看到的是过时状态。**How to apply**:任何长时自驱 loop,除了每轮写 loop 档外,**遇到重大节点(功能完成 / 方向变 / 里程碑)顺手把一句话状态 sediment 回 claude-context 对应 §5 行 + 必要时 §8**,不要攒到主理人提醒。claude-context 的 `.git` 曾**损坏不可读**(文件可读写、git 命令认不出仓库),整段时间靠主理人手动 push;**2026-07-01 已修**:重新 `gh repo clone` 一份、把 CLAUDE.md 记忆搬过去、删掉坏的旧 checkout、新 clone 扶正为正式 `~/Desktop/claude-context`。现在 git 正常、**我能自己 commit+push**(fetch/push 已验通)。
 **关联**:同日 [2026-07-01] loop 时间戳 feedback、§5 Ripple 行本轮已更新。
 
 ### [2026-07-01] project: Ripple v1 前端替换 loop 终局态 + 原生 Apple 登录
