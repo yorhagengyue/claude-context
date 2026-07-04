@@ -69,8 +69,9 @@ claude-context/
 │   ├── credentials.md     ← 凭据
 │   ├── cowork/            ← Claude Code 设置
 │   ├── skills/            ← 自建 skills (memory, douyin-transcribe)
-│   ├── mcp/               ← MCP 配置
-│   └── projects/moyuan/   ← 项目速报
+│   ├── mcp/               ← MCP 配置（暂无）
+│   ├── assets/            ← 跨项目复用资产（wellness-rule-library 等 4 个）
+│   └── projects/          ← 项目速报（moyuan / templateapp / xinlian / yorha-a2）
 ├── machines/
 │   ├── mac-mini/          ← 主力 (setup.sh + local.md 完整)
 │   ├── macbook/           ← setup.sh + local.md
