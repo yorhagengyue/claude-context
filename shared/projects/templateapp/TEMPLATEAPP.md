@@ -1,5 +1,7 @@
 # TEMPLATEAPP.md — TemplateApp 项目速报
 
+> ⚠️ **存档快照 · 内容截至 2026-05-24 · 非现状。** TemplateApp 现已 **Codex 驱动**（`AGENTS.md`）、repo **`github.com/yorhagengyue/template`** 已建（2026-06-08 import）、验收 = **5-gate 全绿**（G-framework / G-tier / G-live-judge / G-source / G-human，现只 G-framework 真绿）。权威现状见 repo 的 **`docs/onboarding/`**（8 篇）+ claude-context **MEMORY** 的 `templateapp-paper-and-product`。本文件仅作 pivot 决策与文件地图存档；其中身份（"Tommy Chen" 为旧误写）、路径（macOS `~/...`、"YoRHa's Brain" 旧 vault）均为旧值。
+
 > **上位文件**：[CLAUDE.md](../../CLAUDE.md) §5 项目索引
 > **本地路径**：`~/Desktop/intern/templateapp/`
 > **仓库**：本地（未建远程，pending Esther authorization）
