@@ -1,9 +1,11 @@
 ---
 project: 心涟 (Peer) — Hermes WeChat Operator Console
-status: 前端 UI + ingest 改造 plumbing 已完成 · 用户侧 5 步收尾（bucket / migration / launchctl × 2 / 验证）
+status: 已退役(2026-07) · 随旧 web ripple 退役,数据导出 ~/ripple-peer-archive/,不再维护(历史 handoff)
 last-updated: 2026-05-26 (晚)
 session-handoff: true
 ---
+
+> ⚠️ **已退役(2026-07)。** 心涟/peer 随旧 web `ripple` 退役,console 数据已导出到 `~/ripple-peer-archive/`,主理人指示不再维护。以下为**历史 handoff 记录**,内含**已失效**的 `ripple-wellness.vercel.app` URL 与未收尾步骤,勿据此操作。
 
 ## 🚨 立即必做（5 步收尾，否则前端 lightbox 弹的还是 "Object not found"）
 
