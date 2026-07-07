@@ -49,7 +49,7 @@ YoRHa-A2 是用户 NAISC 决赛后 **frame shift** 的第一个交付项目。**
 - **ai-interactive-story** = AI 互动故事引擎（雨飞主导的独立 repo 子项目）。
 - 以后还会长出新子项目。
 
-子项目花名册 + 各自状态见 [YORHA-A2.md](YORHA-A2.md) hub。当前：short-video framework v0 定 / conversion-site 还 concept（8 问待答）/ 故事引擎核心闭环已成。
+子项目花名册 + 各自状态见 [YORHA-A2.md](YORHA-A2.md) hub。当前：**故事引擎 = 主线**（前后端共存 · 前端 2026-07-08 已 cutover 到 frontend-next · 找 OC 用户 + 打磨 UX）/ short-video framework v0 定 / conversion-site 还 concept（8 问待答）。
 
 > 下面 §4 / §6 / §7 等正文还保留了不少"两 part"时期的叙述，主旨 / 护城河 / voice 仍然有效，但 part 框架已被本节的"目标 + 子项目"取代——读时以本节和 hub 为准。
 

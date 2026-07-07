@@ -1,8 +1,8 @@
 ---
 project: YoRHa-A2
 type: stage-project hub
-status: 阶段性团队项目 · 进行中
-last-updated: 2026-06-02
+status: 阶段性团队项目 · 进行中（当前主线 = ai-interactive-story）
+last-updated: 2026-07-08
 parent: ../../CLAUDE.md (个人主宪法)
 working-mode: WORKING-MODE.md
 goal: conversion-site (咨询网站)
@@ -23,7 +23,7 @@ sub-projects:
 
 **最终目标**：做出一个**咨询网站（conversion-site）**——访客经 AI 接初接、真人接深度、最后收费。这是整个项目要交付的那个结果。
 
-**怎么到那**：不是一步到位，而是路上做**若干子项目**，每个既是独立产出、也为最终目标积累能力 / 流量 / 资产。当前的子项目：短视频（引流）、AI 互动故事引擎（雨飞负责）。后面还会长出新的。
+**怎么到那**：不是一步到位，而是路上做**若干子项目**，每个既是独立产出、也为最终目标积累能力 / 流量 / 资产。**当前主线子项目 = AI 互动故事引擎**（找 OC 用户 + 打磨 UX）；短视频（引流）在侧。后面还会长出新的。
 
 **护城河**：用 AI 的运作机制解释人性现象——这个映射只有耿越能持续输出（既懂 AI 工程又懂人性，已被抖音 subagent / 分手 文案验证）。完整论证在 [WORKING-MODE.md](WORKING-MODE.md)。
 
@@ -33,9 +33,9 @@ sub-projects:
 |---|---|---|---|---|
 | **conversion-site** | 最终目标 · 咨询网站 | 耿越 | concept（8 个核心问题待答） | [sub-projects/conversion-site.md](sub-projects/conversion-site.md) |
 | **short-video** | 引流 | 耿越 | framework v0 · 待跑第一波 | [sub-projects/short-video.md](sub-projects/short-video.md) |
-| **ai-interactive-story** | AI 互动故事引擎（独立 repo） | **雨飞** | 纯后端 API · 核心闭环已成 | [sub-projects/ai-interactive-story.md](sub-projects/ai-interactive-story.md) |
+| **ai-interactive-story** | AI 互动故事引擎（独立 repo）· **当前主线** | 雨飞(内容/前端) + Gengyue(引擎核心) | 前后端共存 · 前端已 cutover 到 frontend-next(2026-07-08) | [sub-projects/ai-interactive-story.md](sub-projects/ai-interactive-story.md) |
 
-> 子项目跟最终目标的关系不一定是直线：短视频给目标引流；故事引擎是雨飞主导的独立产出，将来是否、以及如何接进咨询网站的"AI 接初接"**还没定**（见该子项目文件）。新增子项目就加一行 + 在 `sub-projects/` 建一个文件。
+> 子项目跟最终目标的关系不一定是直线：短视频给目标引流；**故事引擎现在是团队主线**（2026-06-17 战略排序更新），当前焦点 = 找 OC 用户 + 打磨 UX；将来如何接进咨询网站的"AI 接初接"是后话、不阻塞引擎主线（见该子项目文件）。新增子项目就加一行 + 在 `sub-projects/` 建一个文件。
 
 ## 阶段
 

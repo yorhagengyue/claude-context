@@ -2,42 +2,43 @@
 project: YoRHa-A2
 sub-project: ai-interactive-story
 type: 子项目速报
-owner: Yufei (雨飞)
+owner: 内容/前端 = Yufei (雨飞) · 引擎核心 = Gengyue (架构最终权)
 repo: https://github.com/toffemoon/ai-interactive-story (独立 repo · 卫星模式挂进 yorha-a2-team)
 local: ~/Desktop/ai-interactive-story
-status: 纯后端 API · 核心闭环已成
-last-updated: 2026-06-02
+status: 前后端共存 · 前端已 cutover 到 frontend-next · YoRHa-A2 当前主线
+last-updated: 2026-07-08
 upstream: ../YORHA-A2.md
 working-mode: ../WORKING-MODE.md
 ---
 
 # 子项目 · ai-interactive-story（AI 互动故事引擎）
 
-> **一句话**：雨飞主导的 AI 互动故事引擎，纯后端 API。多角色卡 / 世界书 / 故事书 / 玩家卡 → 可玩的互动故事回合（叙事 + 角色发言 + 玩家选项 + 状态更新）。
+> **一句话**：AI 互动故事引擎。多角色卡 / 世界书 / 故事书 / 玩家卡 → 可玩的互动故事回合（叙事 + 角色发言 + 玩家选项 + 状态更新）。**是 YoRHa-A2 当前的主线产出**（2026-06-17 战略排序更新）。
 >
-> **owner**：雨飞。代码、引擎架构、产品功能由他主导（主理人判断雨飞架构判断力不足时，Claude 在该 repo 内当技术架构负责人、从 0 思考——见 §8 [2026-05-31] feedback）。它跟团队 / 最终目标的战略归属由主理人拍板。
+> **owner**：内容 / 故事 / 前端 / 素材 / 部署 = 雨飞；**引擎核心逻辑（记忆 / 状态机 / 召回 / abstention / story 引擎）= Gengyue**，设计 + 合 main 都归他（2026-06-04 拍板，见 repo `decisions/2026-06-04-architecture-ownership.md`）。主理人判断雨飞架构判断力不足时，Claude 在该 repo 当技术架构负责人、从 0 思考（见 shared/CLAUDE.md §8 [2026-05-31]）。
 >
-> **repo 是独立的**：用"卫星模式"挂进团队（见 §8 satellite mount + repo 内 `CLAUDE.md`），不并进 claude-context。
+> **repo 是独立的**：用"卫星模式"挂进团队，不并进 claude-context。
 
-## 现状（2026-06-02）
+## 现状（2026-07-08）
 
-- **形态**：纯后端 FastAPI。原带 Vite/React 前端，因角色卡 spine 立绘渲染陷入排查黑洞（开发预览工具没 WebGL、验不了），2026-06-01 整个删掉，改纯后端；前端交调用方按 `/openapi.json` 自行实现。
-- **技术栈**：Python 3.12 + FastAPI + DeepSeek（OpenAI 兼容）+ Supabase Postgres + pgvector + `bge-small-zh-v1.5` 向量记忆。
-- **进度**：建卡 / 识别、卡库、故事预设、故事回合引擎（状态机 + 世界时钟 + 一致性自检 + 流式 SSE）、记忆两模式——核心闭环已成。
-- **已知坑**：Supabase 免费实例闲置会被 pause，导致运行期连接卡住；`.env` 有 DeepSeek key + DB 连接串，永不读出 / 写进任何文件。
+- **形态：前后端共存**（不是纯后端）。⚠️ 2026-06-02 的"纯后端 pivot"**已撤销** —— 当初因 spine 动态立绘渲染排查陷黑洞想删前端，实际删的是 **spine 立绘、不是前端**；Yufei 简版前端 + 后端 API 在 main 共存。
+- **前端已 cutover（2026-07-08）**：主前端从旧零构建单文件 `frontend/`（React + `@babel/standalone`）**切到 `frontend-next`**（Vite + React + HashRouter），旧 `frontend/` 已删除；`src/api.py` serve `frontend-next/dist`（dist 提交进 git，main 自包含可部署）。同期收敛了 57 条前端修复分支（56 合入 + onboarding 看板 yor-205 + 发布清单 yor-192），补了 Story 服务器存档续玩 + 实时 tail 轮询。全貌见 repo `decisions/2026-07-07-frontend-next-cutover.md`。
+- **技术栈**：Python 3.12 + FastAPI + **DeepSeek**（OpenAI 兼容，改 `.env` 换 provider）+ 模型适配层（DeepSeek/Claude）+ Supabase Postgres + pgvector + 本地 `bge-small-zh-v1.5` 向量记忆；前端 Vite + React。
+- **进度**：建卡/识别、卡库、故事预设、故事回合引擎（状态机 + 世界时钟 + 一致性自检 + Phase 1 记忆护栏 + 流式 SSE）、记忆两模式（standard/deep）、导演 / 运营台、账户系统 + 成本熔断（prod `AUTH_ENABLED=1` / `COST_GUARD_ENABLED=1`）—— 核心闭环 + 前端 cutover 均已成，prod 有上百局真实使用。
+- **两个 Supabase**：prod `hhrqxllcamdxqcoepwgx`（Render 用 / Supabase MCP 连的）vs test `yldfnbmpzkzjzjoyvfhb`（本地 `.env`；免费实例闲置会 **auto-pause**，连不上报 `tenant/user not found`，用 Management API restore 或控制台唤醒）。
+- **任务追踪**：走团队 **Linear**（YoRHa workspace）；每 issue 一条 `<name>/yor-NN` 分支 → PR `Fixes YOR-NN` 挂回。
+- **已知坑**：Supabase 免费实例 auto-pause；`.env` 有 DeepSeek key + DB 连接串，永不读出 / 写进任何文件。
 
-## 跟最终目标（咨询网站）的关系 —— 未定
+## 跟最终目标（咨询网站）的关系
 
-引擎现在是**多角色互动故事游戏**；咨询网站要的"AI 接初接"是**咨询 intake 聊天**（把访客需求聊清 → 筛合格 lead → 交接真人）。两者产品形态差很大，重叠面窄（基本只有单角色对话 + 记忆 + 持久化那条）。
-
-所以**故事引擎当前是雨飞主导的相对独立子项目，不等于"咨询网站的 AI 接初接实现"**。将来是否、以及如何把它（或其中的对话 / 记忆能力）接进咨询网站，等咨询网站那 8 个核心问题想清楚后再定；在那之前引擎按自己的路线走。
+**ai-story 现在是 YoRHa-A2 的主线**（2026-06-17 战略排序更新，**别再用旧的"待定 / 未定"framing**）。团队当前唯一焦点（2026-06-27「188B Rangoon Rd」战略会）= 找 OC 用户 + 打磨 UX，量化用 token 三指标（人数 / 总 token / 人均）。咨询网站（conversion-site）是**终点不是起点** —— 路上先把故事引擎做好、积累能力 / 用户 / 资产；将来把对话 / 记忆能力接进咨询网站的"AI 接初接"是后话，不阻塞引擎主线。
 
 ## 治理（卫星模式）
 
 - 工程决策放引擎 repo 自己的 `decisions/`；它跟团队 / 最终目标的战略关系放 team repo `yorha-a2-team/decisions/`。
-- 引擎 repo 根有自己的 `CLAUDE.md`（双帽子：给 repo 写代码 + 守团队治理）。
-- ⚠️ 那份 CLAUDE.md 假设父 repo clone 在 `~/Desktop/yorha-a2-team`。本机若没 clone，"写 team-log 回父 repo"那条会空转——要么 clone 下来，要么改它指到实际位置。
+- 引擎 repo 根有自己的 `CLAUDE.md`（双帽子：给 repo 写代码 + 守团队治理），假设父 repo clone 在 `~/Desktop/yorha-a2-team`。
+- ⚠️ **引擎核心改动（记忆 / 状态机 / 召回 / abstention / story 引擎）必须经 Gengyue 审 + 压测才合 main**；内容 / 前端 / 素材 / 部署改动 Yufei 可自行迭代。
 
 ## 详情
 
-引擎自己的架构 / 路线在它的 repo 内（`README.md` + `decisions/` + `docs/`）。本文件只是 YoRHa-A2 视角的子项目指针，不重复引擎内部细节。
+引擎架构 / 路线在它的 repo 内（`README.md` + `decisions/` + `docs/`）。本文件只是 YoRHa-A2 视角的子项目指针，不重复引擎内部细节。前端 cutover + 分支收敛全貌见 `decisions/2026-07-07-frontend-next-cutover.md`。
