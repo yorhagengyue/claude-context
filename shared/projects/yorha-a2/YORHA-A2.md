@@ -35,7 +35,7 @@ sub-projects:
 | **short-video** | 引流 | 耿越 | framework v0 · 待跑第一波 | [sub-projects/short-video.md](sub-projects/short-video.md) |
 | **ai-interactive-story** | AI 互动故事引擎（独立 repo）· **当前主线** | 雨飞(内容/前端) + Gengyue(引擎核心) | 前后端共存 · 前端已 cutover 到 frontend-next(2026-07-08) | [sub-projects/ai-interactive-story.md](sub-projects/ai-interactive-story.md) |
 
-> 子项目跟最终目标的关系不一定是直线：短视频给目标引流；**故事引擎现在是团队主线**（2026-06-17 战略排序更新），当前焦点 = 找 OC 用户 + 打磨 UX；将来如何接进咨询网站的"AI 接初接"是后话、不阻塞引擎主线（见该子项目文件）。新增子项目就加一行 + 在 `sub-projects/` 建一个文件。
+> 子项目跟最终目标的关系不一定是直线：短视频给目标引流；**故事引擎现在是团队主线**（2026-06-17 战略排序更新），当前焦点 = 找 OC 用户 + 打磨 UX。**⚠️ 2026-07-08 重大转向:故事引擎的终极目标正式命名为 [Inception](sub-projects/inception/INCEPTION.md) —— 把任何书变成可进入、多玩家共建、可 fork 的活世界;当前引擎只是通往它的中间站(底层只 Gengyue 本人做,未来若分歧再拆两份)。** 将来如何接进咨询网站是后话。新增子项目就加一行 + 在 `sub-projects/` 建一个文件。
 
 ## 阶段
 

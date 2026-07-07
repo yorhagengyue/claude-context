@@ -29,9 +29,11 @@ working-mode: ../WORKING-MODE.md
 - **任务追踪**：走团队 **Linear**（YoRHa workspace）；每 issue 一条 `<name>/yor-NN` 分支 → PR `Fixes YOR-NN` 挂回。
 - **已知坑**：Supabase 免费实例 auto-pause；`.env` 有 DeepSeek key + DB 连接串，永不读出 / 写进任何文件。
 
-## 跟最终目标（咨询网站）的关系
+## 定位:通往 Inception 的当前阶段(2026-07-08 转向)
 
-**ai-story 现在是 YoRHa-A2 的主线**（2026-06-17 战略排序更新，**别再用旧的"待定 / 未定"framing**）。团队当前唯一焦点（2026-06-27「188B Rangoon Rd」战略会）= 找 OC 用户 + 打磨 UX，量化用 token 三指标（人数 / 总 token / 人均）。咨询网站（conversion-site）是**终点不是起点** —— 路上先把故事引擎做好、积累能力 / 用户 / 资产；将来把对话 / 记忆能力接进咨询网站的"AI 接初接"是后话，不阻塞引擎主线。
+⚠️ **重大转向(2026-07-08 Gengyue 拍板)**:这个引擎的**终极目标正式命名为 [Inception](inception/INCEPTION.md)** —— 把任何书的世界观推演成一个**可进入、多玩家共建、可 fork 的活世界**(每个 NPC 是独立 subagent 投影)。**当前 ai-story 引擎(单人 + 一段对话的故事生成)是通往 inception 的"中间站、手段",不是终点、远没到"做完"**;定位从"AI 互动故事引擎(工具)"升级为"可进入的世界(inception)"。设计见 [inception/DESIGN-v1.md](inception/DESIGN-v1.md);**底层只 Gengyue 本人做**,未来若分歧再拆两份、当下不拆。
+
+**跟 YoRHa-A2 团队最终目标(咨询网站 conversion-site)的关系**:ai-story 仍是 YoRHa-A2 当前主线(2026-06-27 战略会:找 OC 用户 + 打磨 UX + token 三指标);conversion-site 是团队级终点;inception 是这条引擎线自己的北极星。将来把对话 / 记忆能力接进 conversion-site 的"AI 接初接"是后话,不阻塞。
 
 ## 治理（卫星模式）
 
