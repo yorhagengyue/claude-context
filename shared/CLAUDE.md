@@ -307,6 +307,7 @@ Obsidian Vault 是三层记忆体系的底层——存放重内容。关系：
 | **Hermes** | 主力 agent 系统 | 替代 YoRHa/Moltbot，集成 Gmail/Calendar/GitHub/Obsidian | → vault: Hermes - Overview |
 | **Ripple (core + iOS)** | **🔁 二拒(2026-07-13)三条已修 + 主理人令全手册系统审计(8 维 Workflow,17 确认 0 误报,16 项全修)→ build 1.0 (4) 已上传(2026-07-14),待主理人 ASC 选 (4) + 粘回复稿 #2 重提交** · 后端 live · LLM=OpenAI `gpt-5.4-mini` 独家(数据不进中国) | NAISC 后重写的多租户 wellness agent。后端 `ripple-core`（Hono 单 Vercel 函数 + Supabase `ubuamehrsvyrbnoxtavk`，[ripple-core.vercel.app](https://ripple-core.vercel.app)：三层 investigation agent + 53 条规则 + 结构化 explain/答案缓存 + Web Push/APNs 双通道 + softAuth 安全默认，迁移到 0022、npm 145/145）。原生 iOS `ripple-ios`（SwiftUI，min iOS 18.0，bundle `com.ripplehealth.ios`）：日历 Home + 长按 Explain Sheet 作为**唯一 AI 入口**(无 chatbot/dashboard)，HealthKit 前台回填已完成，仅 A3 后台增量同步(YOR-109)未建。TestFlight 已跳过;Sign in with Apple 已接入并 2026-07-05 真机验证通过(该风险已消)。iOS owner = Gengyue；凭据 2026-07-02 全轮换。旧 web 前端 `ripple`(yorhagengyue/ripple, ripple-wellness.vercel.app)已**退役**(peer console 导出到 `~/ripple-peer-archive/`)。<br>synced 2026-07-14(S22 二拒修复 + S23 全手册审计:intake 补同意门+ai_consent_at 服务端镜像+cron 按同意跑 LLM/location 工具摘除/illness 护栏 PROMPT v8/死控件与假配置全清;遗留=SIWA token 撤销待 owner .p8。拒因 pattern 见 §8 07-09 条)· 真源 = `ripple-core/docs/LOOP-PROGRESS.md` + `ripple-ios/docs/APP-STORE-SUBMISSION.md`(API 契约见 `ripple-core/docs/CONTRACT.md`) | → `ripple-core/docs/LOOP-PROGRESS.md` · `ripple-core/docs/CONTRACT.md` · `ripple-ios/docs/APP-STORE-SUBMISSION.md` · `~/Desktop/ripple-core` · `~/Desktop/ripple-ios` |
 | **YoRHa-A2** | 阶段性团队项目 · 进行中;**当前唯一焦点(2026-06-27 战略会「188B Rangoon Rd」)= 找 OC 用户 + 打磨 UX**,量化用 token 三指标(人数/总 token/token每人),成就系统/开发者模式已否/暂缓 | 三线分工:耿越(引擎/后端/战略,引擎核心最终权)+ 雨飞(前端 + 找人)+ Zicheng(短视频);**最终目标 = 咨询网站(conversion-site,仍 concept)**,路上做子项目(ai-interactive-story 引擎[现主线] / 短视频引流);护城河 = 用 AI 机制解释人性。**⚠️ 2026-07-08 引擎线终极目标正式命名 [Inception](projects/yorha-a2/sub-projects/inception/INCEPTION.md) —— 把任何书变可进入 / 多玩家共建 / 可 fork 的活世界(每个 NPC 独立 subagent),当前引擎只是通往它的中间站,底层只 Gengyue 本人做。** 真源 = yorha-a2-team/decisions + 2026-06-27 战略会 note。<br>synced 2026-07-08 | → [YORHA-A2.md](projects/yorha-a2/YORHA-A2.md) hub · [WORKING-MODE.md](projects/yorha-a2/WORKING-MODE.md) 工作模式 |
+| **ai-video(视频创作线)** | 🔄 **2026-07-15 完全重启**(旧"AI 代创作"产物已全删) | 做电影感 AI 短片(mxshell 路线)。**Claude 角色红线见 §8 [2026-07-15] 条**:只做搜资源/教传统影视知识+技术支持,不得从 0 写提示词,libtv 等 agent/MCP 只读为主,规则文档入目录须 owner 确认。工作台=Windows `D:\ai\`(工具/成本/VIP 规避见项目文档,仍有效) | → [AI_VIDEO.md](projects/ai-video/AI_VIDEO.md) · 机器档案 [windows/local.md](../machines/windows/local.md) |
 | **Slay the Spire 2 AI** | 半成品 | PPO + 遗传超参数进化，离自主打游戏还有距离 | GitHub/slay_the_spire |
 
 ### 已归档项目
@@ -397,6 +398,15 @@ Claude 的行为按**模式**切换，避免单一人格覆盖所有场景（之
 ## 8. 记忆追加区
 
 > 由 memory skill 自动追加，按时间倒序。最近一次 consolidation：2026-05-25（NAISC pivot 后，~30 条 → ~21 条）。
+
+### [2026-07-15] project+feedback: ai-video 完全重启 —— Claude 在视频线的角色红线
+旧思路(AI 主导流水线、自写 prompt 出片——残影/龙族/剑来三项目那套)被 owner 判定是错的,`D:\ai` 下 projects/experiments/keyframes/tmp 已按令**全删不备份**(保留 ComfyUI/模型/脚本/.env/simple-ui/whisper-env;blobs+manifests=ollama 模型库勿删)。新角色定义(适用所有机器的 Claude):
+1. 只做两件事:**①搜集资源、教 owner 传统的电影/漫画/影视知识**(不主动开课,owner 实践遇到问题才问)**②技术支持**(环境/脚本/API/排错)。
+2. **不得从 0 写提示词**——只有多轮交流之后、或 owner 明确指示/确认下才动笔。
+3. **libtv 及将来一切 agent/MCP:只能以读为主**,做技术支持而不是替 owner 创作。这是核心原则。
+4. 任何要写进视频相关目录的**规则文档,先经 owner 确认**再落盘;输出一律**简洁大白话**。
+5. 平时常驻姿态 = **阅读 owner 的作品 + 记录 + 思考**,owner 需要时会说。资料/笔记存 Obsidian 对应位置 + yorha-a2 的 assets(与该 repo assets 规则相似)。
+⚠️ **给 Mac 侧 Claude 的核实项**:被删的 canlying/chapter_1_remnant/chapter.md =《走廊的回声》第一章「残影」文本,frontmatter 自称 authoritative=vault(50-Areas 结构,疑似 Mac vault)——Windows 本机全盘已无该小说任何副本,请核实 Mac 上小说仍在;若 Mac 也无,该章文本已随删除丢失(owner 已知情,不着急)。
 
 ### [2026-07-09] insight: 健康类 app App Store 首提交四拒因 pattern(Ripple 实测,全部一轮修掉)
 Ripple v1.0 (1) 2026-07-08 被拒,四条拒因对任何 wellness/health app 都是高概率坑,提交前自查:
