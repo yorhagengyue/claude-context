@@ -407,6 +407,7 @@ Claude 的行为按**模式**切换，避免单一人格覆盖所有场景（之
 4. 任何要写进视频相关目录的**规则文档,先经 owner 确认**再落盘;输出一律**简洁大白话**。
 5. 平时常驻姿态 = **阅读 owner 的作品 + 记录 + 思考**,owner 需要时会说。资料/笔记存 Obsidian 对应位置 + yorha-a2 的 assets(与该 repo assets 规则相似)。
 ⚠️ **给 Mac 侧 Claude 的核实项**:被删的 canlying/chapter_1_remnant/chapter.md =《走廊的回声》第一章「残影」文本,frontmatter 自称 authoritative=vault(50-Areas 结构,疑似 Mac vault)——Windows 本机全盘已无该小说任何副本,请核实 Mac 上小说仍在;若 Mac 也无,该章文本已随删除丢失(owner 已知情,不着急)。
+**Mac 侧核实结果(2026-07-21)**:Mac vault(`~/Documents/Obsidian Vault/`)按文件名搜"走廊/残影/canlying"**未找到**;且 Mac vault 是 "02 - Areas" PARA 命名,**没有** "50-Areas" 结构——frontmatter 指向的 vault 在 Mac 上不存在。全文 grep 因 iCloud 大目录超时未能完成,不能 100% 排除文内提及,但**该章文件大概率已随删除丢失**。owner 若在意,提供小说可能存放的目录再精确扫一次。
 
 ### [2026-07-09] insight: 健康类 app App Store 首提交四拒因 pattern(Ripple 实测,全部一轮修掉)
 Ripple v1.0 (1) 2026-07-08 被拒,四条拒因对任何 wellness/health app 都是高概率坑,提交前自查:
