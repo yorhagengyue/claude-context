@@ -71,11 +71,11 @@ claude-context/
 │   ├── skills/            ← 自建 skills (memory, douyin-transcribe)
 │   ├── mcp/               ← MCP 配置（暂无）
 │   ├── assets/            ← 跨项目复用资产（wellness-rule-library 等 4 个）
-│   └── projects/          ← 项目速报（moyuan / templateapp / xinlian / yorha-a2）
+│   └── projects/          ← 项目速报（moyuan / templateapp / xinlian / yorha-a2 / ai-video）
 ├── machines/
 │   ├── mac-mini/          ← 主力 (setup.sh + local.md 完整)
 │   ├── macbook/           ← setup.sh + local.md
-│   └── windows/           ← 不使用
+│   └── windows/           ← AI 视频本地工作站（2026-05-18 起，见 windows/local.md）
 └── archive/               ← 记忆归档
 ```
 
