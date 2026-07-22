@@ -42,7 +42,7 @@
 - **IFSG**：企业财务报表生成器，Angular+Nix+PostgreSQL，4人团队（TP Researcher 工作内容）
 - **SBS Transit**：多仓库项目，Phase2+Webapp+WhisperAPI+GenAI（TP Researcher 工作内容，当前最活跃）
 - **MoyuanIdea**：AI 文化教育系统，V2 愿景→架构阶段
-- **Ripple**（NAISC 续作）：NAISC Workato 已结束（2026-05-22 决赛 · second runner-up · 已归档）。续作 Ripple：后端 `ripple-core`（ripple-core.vercel.app · **LLM=OpenAI `gpt-5.4-mini` 独家**，2026-07-02 从 DeepSeek 切走）+ 原生 iOS `ripple-ios` v1 已重做完成（SwiftUI），**v1.0 (1) 已于 2026-07-02 提交 App Store 审核**（自动发布，等 24-48h；唯一未真机验证 = Sign in with Apple。详见 claude-context §8 / `ripple-ios/docs/APP-STORE-SUBMISSION.md`）
+- **Ripple**（NAISC 续作）：NAISC Workato 已结束（2026-05-22 决赛 · second runner-up · 已归档）。续作 Ripple：后端 `ripple-core`（ripple-core.vercel.app · **LLM=OpenAI `gpt-5.4-mini` 独家**）+ 原生 iOS `ripple-ios`（SwiftUI）——**"Ripple Health AI" v1.0 已于 2026-07-14 上架 App Store**（三提两拒后过审，Apple ID 6786394791；详见 `ripple-ios/docs/APP-STORE-SUBMISSION.md`）+ **官网 `toffemoon/ripple-site` = active web**（营销站，App Store 下载 CTA；旧 web 与 B1 功能型 SPA 均已弃，2026-07-21 定案）
 
 ### 1.6 当前身份
 - **TP Researcher**（不是 A*STAR 实习），工作内容是 IFSG 和 SBS Transit
