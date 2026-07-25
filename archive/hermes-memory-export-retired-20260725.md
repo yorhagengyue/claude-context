@@ -1,4 +1,16 @@
-# HERMES.md — Hermes Agent 记忆导出
+# HERMES.md — Hermes Agent 记忆导出（**已退役 · 历史存档**）
+
+> # ⛔ 已退役（2026-07-25）
+>
+> owner 决定：**撤掉独立的 Hermes 记忆层，Hermes 改读 `claude-context`（本仓 `shared/CLAUDE.md`）**。
+> 本文件自 `shared/HERMES.md` 移入 `archive/`，**只作历史存档，不再维护、不要据此操作**。
+>
+> - **仍在活的事实已抢救到** `shared/CLAUDE.md` §8 的 `[2026-07-25]` 条（dad/xirui profile、两个 paused cron、dad 子系统 2026-05-25 升级要点）。
+> - **本文件内容大面积过期**：§1.5「活跃项目」把 IFSG / SBS Transit / MoyuanIdea 列为活跃（SBS 已定 2026-07-31 截止、MoyuanIdea 04-03 后零更新）；§1.4 的 Codex 主力工具口径亦已被 §8 [2026-05-25] 纠正；§9 心涟 peer console 随心涟退役作古。
+> - **§4「编辑 §1 要同步回 `~/.hermes/config.yaml`」的约定一并作废。**
+> - ⏸ owner 需在 **Mac** 侧改 `~/.hermes/config.yaml`，把 user profile 注入源指向 clone 的 `claude-context/shared/CLAUDE.md`。
+
+---
 
 > **用途**：Hermes（非 Claude Code）的记忆系统快照，供用户审阅和编辑。
 > **来源**：Hermes user profile + memory store

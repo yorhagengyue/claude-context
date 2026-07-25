@@ -193,13 +193,14 @@ OpenAI Codex CLI 跟 Claude / Hermes **完全隔离，三家无共享记忆层**
 
 ---
 
-Obsidian Vault 是三层记忆体系的底层——存放重内容。关系：
+Obsidian Vault 是**两层**记忆体系的底层——存放重内容。关系：
 
 | 层级 | 存储位置 | 内容类型 |
 |------|----------|----------|
 | CLAUDE.md §8 / sub-MD | claude-context 仓库 | 轻量指针、决策摘要、纠正 |
-| Hermes memory | `~/.hermes/`（含 `$OBSIDIAN_VAULT_PATH` 环境变量） | 轻量指针、偏好 |
 | **Obsidian Vault** | `Vault/`（默认 `~/Documents/Obsidian Vault/`，跨机器变量） | 详细笔记、项目记录、framework 详细库、时间线、知识沉淀 |
+
+> ⛔ **原第三层「Hermes memory」已于 2026-07-25 撤销**（见 §8 同日条）：owner 定「Hermes 的记忆文件不需要了，让他去用 Claude 的记忆」，`shared/HERMES.md` 已归档到 `archive/hermes-memory-export-retired-20260725.md`，Hermes 改读本仓 `shared/CLAUDE.md`。⚠️ 注意 Claude Code 的 per-machine auto-memory（`~/.claude/projects/<slug>/memory/`）**是本机私有、不跨机、不进 git**，Hermes 读不到它——跨工具共享的唯一载体是本仓。
 
 当内容超过几句话、不适合写入 §8 或 sub-MD 时，写入 Obsidian，然后在此处留指针：`→ vault: 笔记名`
 
@@ -228,7 +229,7 @@ Obsidian Vault 是三层记忆体系的底层——存放重内容。关系：
 - **学校**：Temasek Polytechnic（淡马锡理工），IT 专业，Y2 → Y3，即将进入实习
 - **主力开发工具**：
   - OpenAI Codex CLI（model: `gpt-5.3-codex`，配 migration notice 指向 `gpt-5.4` 但未实际切换）— **中间状态**：某些项目还用、某些不用了；NAISC 后冷却 5+ 周（详见 §3 + §0.6.2）
-  - Hermes Agent（主力 agent 系统，替代 YoRHa/Moltbot；多 profile：主用户 + dad + xirui，见 [HERMES.md](HERMES.md)）
+  - Hermes Agent（主力 agent 系统，替代 YoRHa/Moltbot；多 profile：主用户 + dad + xirui）—— **2026-07-25 起不再有独立记忆层**，改读本文件；历史快照见 [archive/hermes-memory-export-retired-20260725.md](../archive/hermes-memory-export-retired-20260725.md)，仍在活的事实见 §8 [2026-07-25] 条
   - Claude Code CLI（5 模式系统 chat/code/architecture-review/content/memory，见 §9；自动记忆 default-on 见 §0.3.1）
 - **系统**：macOS，主力浏览器 OpenAI Atlas（Chrome 内核）
 
@@ -404,7 +405,7 @@ Claude 的行为按**模式**切换，避免单一人格覆盖所有场景（之
 ### 9.4 与 §3 / §0.7 的关系
 
 - §3 用模式表概括了 Claude 在工作流中的定位
-- §0.7 是三层记忆体系，`memory` 模式负责维护这三层
+- §0.7 是两层记忆体系（2026-07-25 起，原 Hermes 层已撤），`memory` 模式负责维护这两层
 - §9 是模式系统的入口；详细定义在 Obsidian
 
 ### 9.5 维护
@@ -416,6 +417,19 @@ Claude 的行为按**模式**切换，避免单一人格覆盖所有场景（之
 ## 8. 记忆追加区
 
 > 由 memory skill 自动追加，按时间倒序。最近一次 consolidation：2026-05-25（NAISC pivot 后，~30 条 → ~21 条）。
+
+### [2026-07-25] decision: HERMES.md 退役 —— 撤掉独立的 Hermes 记忆层，Hermes 改读 claude-context
+**owner 原话**：「hermes 的记忆文件是不需要的，让他去使用 claude 的记忆」。`shared/HERMES.md`（2026-04-13 建的 Hermes 记忆快照）**即日退役**，已移到 [`archive/hermes-memory-export-retired-20260725.md`](../archive/hermes-memory-export-retired-20260725.md)；README / SETUP（Step 5.5）/ §0.7 三层记忆表 / §1 工具链链接均已改。**三层记忆体系降为两层**：claude-context（轻量指针/决策）→ Obsidian Vault（重内容）。
+
+**⚠️ 落点澄清（很关键，别记错）**：Hermes 跑在 **macOS**（`/Users/gengyue`、`~/.hermes/`），**读不到任何一台机器上 Claude Code 的 per-machine auto-memory**（`~/.claude/projects/<slug>/memory/`，那是本机私有、不跨机、不进 git）。所以「用 Claude 的记忆」唯一可落地的指向 = **本仓 `claude-context`**（git 同步，Mac 上 clone 即可读）。任何让 Hermes 去读 `.claude/.../memory/` 的方案都是错的。
+
+**⏸ owner 在 Mac 侧要做的（Windows 这台机器够不到）**：改 `~/.hermes/config.yaml` 的 user profile 注入源，指向 clone 下来的 `claude-context/shared/CLAUDE.md`；HERMES.md §4 原本约定的「编辑 §1 要同步回 config.yaml」随本次退役一并作废。
+
+**从 HERMES.md 抢救出来的仍在活的事实**（原文件 §5/§6/§7，别随文件一起当历史丢掉）：
+- **Hermes 多 profile**：`~/.hermes/profiles/` 下 `dad`（父亲健康追踪 + 微信沟通，gateway plist `ai.hermes.gateway-dad`）与 `xirui`（`ai.hermes.gateway-xirui`），各有独立 SOUL.md / memories / sessions / state.db。**dad 子系统仍活跃**。
+- **两个 cron 仍处 paused**，等 prompt 按 Journal v1 新机制重写（原 follow-up task #9）：`9bb0519ba199`（AI Daily Report，原 `0 8 * * *`）、`06d0452064bb`（Mac Mini Work Log，原 `0 6 * * *`）。备份 `~/.hermes/cron/jobs.json.bak.20260525`。
+- **dad 子系统 2026-05-25 升级**：`fallback_model` 因 provider 不支持指定 model 改为 `null`（配真 fallback 前必须先验证 provider 支持）；SOUL.md 有「数据落点 routing」段；Obsidian `Dad Health/` 里 `HEALTH-LOG.md` = READ-ONLY 快照、`Profile/04-异常追踪.md` = LIVE 台账。
+- 原 §9（心涟 peer console）随 [心涟已退役](projects/xinlian/HANDOFF.md) 一并作古，不再抢救。
 
 ### [2026-07-15] project+feedback: ai-video 完全重启 —— Claude 在视频线的角色红线
 旧思路(AI 主导流水线、自写 prompt 出片——残影/龙族/剑来三项目那套)被 owner 判定是错的,`D:\ai` 下 projects/experiments/keyframes/tmp 已按令**全删不备份**(保留 ComfyUI/模型/脚本/.env/simple-ui/whisper-env;blobs+manifests=ollama 模型库勿删)。新角色定义(适用所有机器的 Claude):
