@@ -399,6 +399,13 @@ Claude 的行为按**模式**切换，避免单一人格覆盖所有场景（之
 
 > 由 memory skill 自动追加，按时间倒序。最近一次 consolidation：2026-05-25（NAISC pivot 后，~30 条 → ~21 条）。
 
+### [2026-07-28] insight: macOS 上 Claude 清磁盘的两个硬限制(废纸篓 TCC + iCloud 桌面)
+本机清理时实测,以后任何"清空间"任务先按这两条设预期,别把"我删了 X G"当成"释放了 X G":
+1. **`~/.Trash` 被 TCC 保护,shell 进不去**:`mv 文件 ~/.Trash/` **能成功**(写允许),但 `ls`/`du`/`rm -rf ~/.Trash/*` 全部 `Operation not permitted` —— 而且 `rm` 是**静默失败**(配 `2>/dev/null` 时毫无迹象),会让我误以为清空了。`osascript -e 'tell application "Finder" to empty trash'` 也不行:AppleEvent 超时 -1712(Finder 在等确认框/没自动化权限)。**结论 = 清空废纸篓只能主理人在 Finder 里手动做(⌘⇧⌫)**,除非给终端开完全磁盘访问。所以"移进废纸篓"≠"释放空间",只是把占用从原位置挪到废纸篓。
+2. **桌面在 iCloud 同步**:很多目录是 evicted 占位符(`ls` 显示原始字节数、`du` 显示 0B 或反过来),(a) `mv` 到废纸篓会触发**全量下载**再搬运 → 1.1G 的目录能把 mv 卡到 5 分钟超时,`rm -rf` 反而秒删(只删占位符);(b) 我为了统计跑的 `du -sh` 遍历本身可能触发 materialization,**把本地占用越查越大**;(c) 桌面的删除会**同步到其它设备**,不是只清本机 —— 涉及桌面删除时要跟主理人说这一句。
+3. **缓存会立刻长回来**:清了 6.1G 的 `~/Library/Caches`(Atlas/Chrome/pip/Homebrew/playwright 等),几分钟内运行中的 app 就重建了约 1.8G。缓存清理适合"救急腾几个 G",不是持久收益。
+**How to apply**:接"清理磁盘"类任务时,收尾**必须用 `df -h /System/Volumes/Data` 报真实前后值**,而不是把删掉的体积加总当战果;差值对不上就照实说差在哪(废纸篓 / 缓存重建 / iCloud 占位符)。呼应 [2026-07-01] "没查真实状态不许说健康"、[2026-05-28] "CI green 才算修完"—— 同一条原则:**以可观测的最终状态为准,不以我做了多少动作为准**。
+
 ### [2026-07-15] project+feedback: ai-video 完全重启 —— Claude 在视频线的角色红线
 旧思路(AI 主导流水线、自写 prompt 出片——残影/龙族/剑来三项目那套)被 owner 判定是错的,`D:\ai` 下 projects/experiments/keyframes/tmp 已按令**全删不备份**(保留 ComfyUI/模型/脚本/.env/simple-ui/whisper-env;blobs+manifests=ollama 模型库勿删)。新角色定义(适用所有机器的 Claude):
 1. 只做两件事:**①搜集资源、教 owner 传统的电影/漫画/影视知识**(不主动开课,owner 实践遇到问题才问)**②技术支持**(环境/脚本/API/排错)。
