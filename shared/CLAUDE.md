@@ -193,13 +193,14 @@ OpenAI Codex CLI 跟 Claude / Hermes **完全隔离，三家无共享记忆层**
 
 ---
 
-Obsidian Vault 是三层记忆体系的底层——存放重内容。关系：
+Obsidian Vault 是**两层**记忆体系的底层——存放重内容。关系：
 
 | 层级 | 存储位置 | 内容类型 |
 |------|----------|----------|
 | CLAUDE.md §8 / sub-MD | claude-context 仓库 | 轻量指针、决策摘要、纠正 |
-| Hermes memory | `~/.hermes/`（含 `$OBSIDIAN_VAULT_PATH` 环境变量） | 轻量指针、偏好 |
 | **Obsidian Vault** | `Vault/`（默认 `~/Documents/Obsidian Vault/`，跨机器变量） | 详细笔记、项目记录、framework 详细库、时间线、知识沉淀 |
+
+> ⛔ **原第三层「Hermes memory」已于 2026-07-25 撤销**（见 §8 同日条）：owner 定「Hermes 的记忆文件不需要了，让他去用 Claude 的记忆」，`shared/HERMES.md` 已归档到 `archive/hermes-memory-export-retired-20260725.md`，Hermes 改读本仓 `shared/CLAUDE.md`。⚠️ 注意 Claude Code 的 per-machine auto-memory（`~/.claude/projects/<slug>/memory/`）**是本机私有、不跨机、不进 git**，Hermes 读不到它——跨工具共享的唯一载体是本仓。
 
 当内容超过几句话、不适合写入 §8 或 sub-MD 时，写入 Obsidian，然后在此处留指针：`→ vault: 笔记名`
 
@@ -228,7 +229,7 @@ Obsidian Vault 是三层记忆体系的底层——存放重内容。关系：
 - **学校**：Temasek Polytechnic（淡马锡理工），IT 专业，Y2 → Y3，即将进入实习
 - **主力开发工具**：
   - OpenAI Codex CLI（model: `gpt-5.3-codex`，配 migration notice 指向 `gpt-5.4` 但未实际切换）— **中间状态**：某些项目还用、某些不用了；NAISC 后冷却 5+ 周（详见 §3 + §0.6.2）
-  - Hermes Agent（主力 agent 系统，替代 YoRHa/Moltbot；多 profile：主用户 + dad + xirui，见 [HERMES.md](HERMES.md)）
+  - Hermes Agent（主力 agent 系统，替代 YoRHa/Moltbot；多 profile：主用户 + dad + xirui）—— **2026-07-25 起不再有独立记忆层**，改读本文件；历史快照见 [archive/hermes-memory-export-retired-20260725.md](../archive/hermes-memory-export-retired-20260725.md)，仍在活的事实见 §8 [2026-07-25] 条
   - Claude Code CLI（5 模式系统 chat/code/architecture-review/content/memory，见 §9；自动记忆 default-on 见 §0.3.1）
 - **系统**：macOS，主力浏览器 OpenAI Atlas（Chrome 内核）
 
@@ -298,14 +299,32 @@ Obsidian Vault 是三层记忆体系的底层——存放重内容。关系：
 
 ## 5. 项目索引
 
+### 5.0 优先级速查（owner 2026-07-25 亲定）
+
+> 排先后一律以本表为准，**不要用逾期天数 / deadline 反推 owner 意图**。表里没有的项目 = 未指派，先问再动。
+
+| 标记 | 项目 |
+|---|---|
+| 🔴 **紧急** | **Ripple（大项目）** = `ripple-core`（后端）+ `ripple-ios`（App）+ `ripple-site`（官网）**三仓 2026-07-25 合并为一个项目**。待办：Supabase Pro+防火墙+监控〔逾期〕/ OpenAI 用量上限 / SIWA .p8 / A3 后台同步 / UI-POLISH / GTM 侧承诺的 onboarding flow + UX rework；**ripple-site 的"是否部署 / 绑域名"仍是悬着的 owner 决定** |
+| 🔴 **紧急** | **TP 实习 PPMR 月报**（2026-07-25 由「未指派」提级）—— 5 份双语全稿在活 vault `02 - Areas/Career/SIP PPMR Reports/`，**自 2026-07-06 未动**，卡在 owner 核对（主管名 / 官方 LO / Linda 16 项 / Jun gate），核完即可交 |
+| ⏳ **2026-07-31 截止** | **SBS Transit / Sarius** —— owner 2026-07-25 原话：**"731 后就跟我没关系了"**。该日之后不再是他的事，别排期别派活；只有 7-31 前的收尾 / 交接才算数 |
+| 🟢 **非紧急** | **TemplateApp** —— ⚠️ 非紧急 ≠ 无期限：免费 PG **≈2026-08-12 到期删库**是硬墙，Linda 论文的老师 label 亦仍逾期 |
+| 🔵 **长期** | **ai-video（视频创作线 / aitv-hollow-knight）**、**ai-interactive-story（引擎）** |
+| ⬜ **未指派** | Inception · conversion-site · short-video · MoyuanIdea（04-03 后零更新，疑似休眠但从未正式宣告） |
+
+> 注：**Ripple 是一个项目不是三个**——"先做 iOS 还是先做官网"这类问题不成立；三仓同属一条紧急线，内部先后按依赖与 GTM 需要排。
+
+### 5.1 全量索引
+
 | 项目 | 状态 | 一句话 | 详情 |
 |------|------|--------|------|
 | **MoyuanIdea** | 愿景→架构 | AI-native 文化教育系统，三端，正在做技术架构决策 | → [MOYUAN.md](projects/moyuan/MOYUAN.md) |
 | **IFSG** | 进行中 | 企业级财务报表生成器，Angular+Nix+PostgreSQL，4人团队 | 仓库私有 |
 | **TemplateApp** | 🚨 Pivot 为 agentic AI 论文项目 (2026-05-23) | Frontend 9 屏已 scaffold；Python LangGraph agent service + Node gateway 待建；Linda 邮件要 publishable paper，含 Live Data Binding + LLM-as-Judge 创新点 | → [TEMPLATEAPP.md](projects/templateapp/TEMPLATEAPP.md) / [HANDOFF.md](projects/templateapp/HANDOFF.md) |
-| **SBS Transit** | 进行中（最活跃） | SBS Transit 多仓库项目，Phase2+Webapp+WhisperAPI+GenAI | → vault: SBS Transit - Overview |
+| **SBS Transit / Sarius** | ⏳ **2026-07-31 截止**(§5.0)——owner 2026-07-25 原话「731 后就跟我没关系了」；此前的「进行中(最活跃)」为**过时口径** | SBS Transit 多仓库项目，Phase2+Webapp+WhisperAPI+GenAI。7-31 后不再排期、不再派活；只有该日前的收尾 / 交接才算数 | → vault: SBS Transit - Overview |
+| **TP 实习 PPMR 月报** | 🔴 **紧急**(§5.0，2026-07-25 提级) · **待交** | TP Researcher 实习(可报告窗口 2026-02→06)要交的 5 份 Plan/Perform/Monitor/Reflect 月报。**双语全稿 draft 已写完，自 2026-07-06 未动**；卡在 owner 核对(主管名 / 官方 LO / Linda 16 项 / Jun gate)，核完即可交。覆盖项目线 = Sarius/SBS · IFSG · Hyperion · TemplateApp(NAISC / 个人项目不算实习) | → 活 vault `02 - Areas/Career/SIP PPMR Reports/`(5 份 + Index) |
 | **Hermes** | 主力 agent 系统 | 替代 YoRHa/Moltbot，集成 Gmail/Calendar/GitHub/Obsidian | → vault: Hermes - Overview |
-| **Ripple (core + iOS)** | **✅ 已上架 App Store(2026-07-14 过审自动发布,第三次提交成功;商店名 "Ripple Health AI",免费,iOS 18.0+,Apple ID 6786394791)** · 后端 live · LLM=OpenAI `gpt-5.4-mini` 独家(数据不进中国) · post-launch 待办:Supabase Pro+防火墙+监控(已公开,逾期)/OpenAI 用量上限/SIWA token 撤销待 .p8 | NAISC 后重写的多租户 wellness agent。后端 `ripple-core`（Hono 单 Vercel 函数 + Supabase `ubuamehrsvyrbnoxtavk`，[ripple-core.vercel.app](https://ripple-core.vercel.app)：三层 investigation agent + 53 条规则 + 结构化 explain/答案缓存 + Web Push/APNs 双通道 + softAuth 安全默认，迁移到 0022、npm 145/145）。原生 iOS `ripple-ios`（SwiftUI，min iOS 18.0，bundle `com.ripplehealth.ios`）：日历 Home + 长按 Explain Sheet 作为**唯一 AI 入口**(无 chatbot/dashboard)，HealthKit 前台回填已完成，仅 A3 后台增量同步(YOR-109)未建。TestFlight 已跳过;Sign in with Apple 已接入并 2026-07-05 真机验证通过(该风险已消)。iOS owner = Gengyue；凭据 2026-07-02 全轮换。旧 web 前端 `ripple`(yorhagengyue/ripple, ripple-wellness.vercel.app)已**退役**(peer console 导出到 `~/ripple-peer-archive/`)。<br>synced 2026-07-21(上架确认:iTunes Lookup 实证 07-14 16:46 UTC 发布,repo 停在 build 4 上传、上架后一周无 commit;后端 /v1/ready 200、legal /privacy 200。历史:S21-S23 三轮拒-修全过,拒因 pattern 见 §8 07-09 条)· 真源 = `ripple-core/docs/LOOP-PROGRESS.md` + `ripple-ios/docs/APP-STORE-SUBMISSION.md`(API 契约见 `ripple-core/docs/CONTRACT.md`) | → `ripple-core/docs/LOOP-PROGRESS.md` · `ripple-core/docs/CONTRACT.md` · `ripple-ios/docs/APP-STORE-SUBMISSION.md` · `~/Desktop/ripple-core` · `~/Desktop/ripple-ios` |
+| **Ripple (core + iOS + site)**<br>🔴 **紧急**(§5.0) | **⭐ 一个大项目**:`ripple-core` + `ripple-ios` + `ripple-site` **三仓 2026-07-25 经 owner 合并,不再分开排期** · **✅ 已上架 App Store(2026-07-14 过审自动发布,第三次提交成功;商店名 "Ripple Health AI",免费,iOS 18.0+,Apple ID 6786394791)** · 后端 live · LLM=OpenAI `gpt-5.4-mini` 独家(数据不进中国) · post-launch 待办:Supabase Pro+防火墙+监控(已公开,逾期)/OpenAI 用量上限/SIWA token 撤销待 .p8 | NAISC 后重写的多租户 wellness agent。后端 `ripple-core`（Hono 单 Vercel 函数 + Supabase `ubuamehrsvyrbnoxtavk`，[ripple-core.vercel.app](https://ripple-core.vercel.app)：三层 investigation agent + 53 条规则 + 结构化 explain/答案缓存 + Web Push/APNs 双通道 + softAuth 安全默认，迁移到 0022、npm 145/145）。原生 iOS `ripple-ios`（SwiftUI，min iOS 18.0，bundle `com.ripplehealth.ios`）：日历 Home + 长按 Explain Sheet 作为**唯一 AI 入口**(无 chatbot/dashboard)，HealthKit 前台回填已完成，仅 A3 后台增量同步(YOR-109)未建。TestFlight 已跳过;Sign in with Apple 已接入并 2026-07-05 真机验证通过(该风险已消)。iOS owner = Gengyue；凭据 2026-07-02 全轮换。旧 web 前端 `ripple`(yorhagengyue/ripple, ripple-wellness.vercel.app)已**退役**(peer console 导出到 `~/ripple-peer-archive/`)。**Active web = 营销官网 [`toffemoon/ripple-site`](https://github.com/toffemoon/ripple-site)**(2026-07-21 定案:React 18+Vite+Tailwind 4 单页,App Store 下载 CTA 直链 id6786394791;track-B B1 功能型 SPA 舍弃——Linear YOR-123~131 Canceled、YOR-132/133 由官网完成标 Done、YOR-134/135 留 Backlog)。<br>synced 2026-07-21(上架确认:iTunes Lookup 实证 07-14 16:46 UTC 发布,repo 停在 build 4 上传、上架后一周无 commit;后端 /v1/ready 200、legal /privacy 200。历史:S21-S23 三轮拒-修全过,拒因 pattern 见 §8 07-09 条)· 真源 = `ripple-core/docs/LOOP-PROGRESS.md` + `ripple-ios/docs/APP-STORE-SUBMISSION.md`(API 契约见 `ripple-core/docs/CONTRACT.md`) | → `ripple-core/docs/LOOP-PROGRESS.md` · `ripple-core/docs/CONTRACT.md` · `ripple-ios/docs/APP-STORE-SUBMISSION.md` · `~/Desktop/ripple-core` · `~/Desktop/ripple-ios` |
 | **YoRHa-A2** | 阶段性团队项目 · 进行中;**当前唯一焦点(2026-06-27 战略会「188B Rangoon Rd」)= 找 OC 用户 + 打磨 UX**,量化用 token 三指标(人数/总 token/token每人),成就系统/开发者模式已否/暂缓 | 三线分工:耿越(引擎/后端/战略,引擎核心最终权)+ 雨飞(前端 + 找人)+ Zicheng(短视频);**最终目标 = 咨询网站(conversion-site,仍 concept)**,路上做子项目(ai-interactive-story 引擎[现主线] / 短视频引流);护城河 = 用 AI 机制解释人性。**⚠️ 2026-07-08 引擎线终极目标正式命名 [Inception](projects/yorha-a2/sub-projects/inception/INCEPTION.md) —— 把任何书变可进入 / 多玩家共建 / 可 fork 的活世界(每个 NPC 独立 subagent),当前引擎只是通往它的中间站,底层只 Gengyue 本人做。** 真源 = yorha-a2-team/decisions + 2026-06-27 战略会 note。<br>synced 2026-07-08 | → [YORHA-A2.md](projects/yorha-a2/YORHA-A2.md) hub · [WORKING-MODE.md](projects/yorha-a2/WORKING-MODE.md) 工作模式 |
 | **ai-video(视频创作线)** | 🔄 **2026-07-15 完全重启**(旧"AI 代创作"产物已全删) | 做电影感 AI 短片(mxshell 路线)。**Claude 角色红线见 §8 [2026-07-15] 条**:只做搜资源/教传统影视知识+技术支持,不得从 0 写提示词,libtv 等 agent/MCP 只读为主,规则文档入目录须 owner 确认。工作台=Windows `D:\ai\`(工具/成本/VIP 规避见项目文档,仍有效)。**首个正式项目 = [aitv-hollow-knight](https://github.com/yorhagengyue/aitv-hollow-knight)(空洞骑士,私有 repo,2026-07-15 建)** | → [AI_VIDEO.md](projects/ai-video/AI_VIDEO.md) · 机器档案 [windows/local.md](../machines/windows/local.md) |
 | **Slay the Spire 2 AI** | 半成品 | PPO + 遗传超参数进化，离自主打游戏还有距离 | GitHub/slay_the_spire |
@@ -386,7 +405,7 @@ Claude 的行为按**模式**切换，避免单一人格覆盖所有场景（之
 ### 9.4 与 §3 / §0.7 的关系
 
 - §3 用模式表概括了 Claude 在工作流中的定位
-- §0.7 是三层记忆体系，`memory` 模式负责维护这三层
+- §0.7 是两层记忆体系（2026-07-25 起，原 Hermes 层已撤），`memory` 模式负责维护这两层
 - §9 是模式系统的入口；详细定义在 Obsidian
 
 ### 9.5 维护
@@ -405,6 +424,18 @@ Claude 的行为按**模式**切换，避免单一人格覆盖所有场景（之
 2. **桌面在 iCloud 同步**:很多目录是 evicted 占位符(`ls` 显示原始字节数、`du` 显示 0B 或反过来),(a) `mv` 到废纸篓会触发**全量下载**再搬运 → 1.1G 的目录能把 mv 卡到 5 分钟超时,`rm -rf` 反而秒删(只删占位符);(b) 我为了统计跑的 `du -sh` 遍历本身可能触发 materialization,**把本地占用越查越大**;(c) 桌面的删除会**同步到其它设备**,不是只清本机 —— 涉及桌面删除时要跟主理人说这一句。
 3. **缓存会立刻长回来**:清了 6.1G 的 `~/Library/Caches`(Atlas/Chrome/pip/Homebrew/playwright 等),几分钟内运行中的 app 就重建了约 1.8G。缓存清理适合"救急腾几个 G",不是持久收益。
 **How to apply**:接"清理磁盘"类任务时,收尾**必须用 `df -h /System/Volumes/Data` 报真实前后值**,而不是把删掉的体积加总当战果;差值对不上就照实说差在哪(废纸篓 / 缓存重建 / iCloud 占位符)。呼应 [2026-07-01] "没查真实状态不许说健康"、[2026-05-28] "CI green 才算修完"—— 同一条原则:**以可观测的最终状态为准,不以我做了多少动作为准**。
+### [2026-07-25] decision: HERMES.md 退役 —— 撤掉独立的 Hermes 记忆层，Hermes 改读 claude-context
+**owner 原话**：「hermes 的记忆文件是不需要的，让他去使用 claude 的记忆」。`shared/HERMES.md`（2026-04-13 建的 Hermes 记忆快照）**即日退役**，已移到 [`archive/hermes-memory-export-retired-20260725.md`](../archive/hermes-memory-export-retired-20260725.md)；README / SETUP（Step 5.5）/ §0.7 三层记忆表 / §1 工具链链接均已改。**三层记忆体系降为两层**：claude-context（轻量指针/决策）→ Obsidian Vault（重内容）。
+
+**⚠️ 落点澄清（很关键，别记错）**：Hermes 跑在 **macOS**（`/Users/gengyue`、`~/.hermes/`），**读不到任何一台机器上 Claude Code 的 per-machine auto-memory**（`~/.claude/projects/<slug>/memory/`，那是本机私有、不跨机、不进 git）。所以「用 Claude 的记忆」唯一可落地的指向 = **本仓 `claude-context`**（git 同步，Mac 上 clone 即可读）。任何让 Hermes 去读 `.claude/.../memory/` 的方案都是错的。
+
+**⏸ owner 在 Mac 侧要做的（Windows 这台机器够不到）**：改 `~/.hermes/config.yaml` 的 user profile 注入源，指向 clone 下来的 `claude-context/shared/CLAUDE.md`；HERMES.md §4 原本约定的「编辑 §1 要同步回 config.yaml」随本次退役一并作废。
+
+**从 HERMES.md 抢救出来的仍在活的事实**（原文件 §5/§6/§7，别随文件一起当历史丢掉）：
+- **Hermes 多 profile**：`~/.hermes/profiles/` 下 `dad`（父亲健康追踪 + 微信沟通，gateway plist `ai.hermes.gateway-dad`）与 `xirui`（`ai.hermes.gateway-xirui`），各有独立 SOUL.md / memories / sessions / state.db。**dad 子系统仍活跃**。
+- **两个 cron 仍处 paused**，等 prompt 按 Journal v1 新机制重写（原 follow-up task #9）：`9bb0519ba199`（AI Daily Report，原 `0 8 * * *`）、`06d0452064bb`（Mac Mini Work Log，原 `0 6 * * *`）。备份 `~/.hermes/cron/jobs.json.bak.20260525`。
+- **dad 子系统 2026-05-25 升级**：`fallback_model` 因 provider 不支持指定 model 改为 `null`（配真 fallback 前必须先验证 provider 支持）；SOUL.md 有「数据落点 routing」段；Obsidian `Dad Health/` 里 `HEALTH-LOG.md` = READ-ONLY 快照、`Profile/04-异常追踪.md` = LIVE 台账。
+- 原 §9（心涟 peer console）随 [心涟已退役](projects/xinlian/HANDOFF.md) 一并作古，不再抢救。
 
 ### [2026-07-15] project+feedback: ai-video 完全重启 —— Claude 在视频线的角色红线
 旧思路(AI 主导流水线、自写 prompt 出片——残影/龙族/剑来三项目那套)被 owner 判定是错的,`D:\ai` 下 projects/experiments/keyframes/tmp 已按令**全删不备份**(保留 ComfyUI/模型/脚本/.env/simple-ui/whisper-env;blobs+manifests=ollama 模型库勿删)。新角色定义(适用所有机器的 Claude):
