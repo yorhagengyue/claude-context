@@ -421,7 +421,9 @@ Claude 的行为按**模式**切换，避免单一人格覆盖所有场景（之
 ### [2026-07-31] insight: SwiftUI/XCUITest 三条反复踩的坑(手势仲裁 / identifier 挂容器 / 测试空过)
 Ripple build5 L1 一轮内连踩三条,都是**通用**的,以后写 iOS 直接当检查表:
 1. **按压状态必须来自视图已经在仲裁的那个识别器,不能另铺一个。** 我为了给日历格子加"按下反馈",叠了 `.simultaneousGesture(DragGesture(minimumDistance: 0))` —— UITests 从 20/20 掉到 18 个失败:那个 0 距离拖拽把**点击和长按一起吃掉**,整个日历既不能进当日页也不能长按问 AI。正解是复用已有 `.onLongPressGesture(...) onPressingChanged:` 上报按压。**更打脸的前置教训:动手前先查现成的** —— `.explainable` 本来就有触摸即刻的 haptic+缩放+充能环,我等于为了加一个已存在的东西砸掉两条主交互(同族:S14「Button 的按压识别器会吞掉 press-and-hold」)。
-2. **accessibility identifier 挂容器会吞掉子元素,只挂叶子。** 把 id 放在 VStack 上,SwiftUI 会把整段合并成一个 accessibility 元素,里面的按钮/文字**全部查不到**。这是**第三次**踩:E2(`notice.section.*` 与行 id `notice.<id>` 前缀冲突)→ E5(`sources.section` 吞掉 `digest.disclaimer`)→ L1(`day.noticed` 吞掉 notice 行)。**规则:identifier 只挂叶子节点;要标记一段就挂在它的标题 Text 上。**
+2. **accessibility identifier 挂容器会吞掉子元素,只挂叶子。** 把 id 放在 VStack/ZStack 上,SwiftUI 会把整段合并成一个 accessibility 元素,里面的按钮/文字**全部查不到**。**同一晚踩了四次**:E2(`notice.section.*` 与行 id `notice.<id>` 前缀冲突)→ E5(`sources.section` 吞掉 `digest.disclaimer`)→ L1(`day.noticed` 吞掉 notice 行)→ L4(`notice.window` 挂在最外层 ZStack,吞掉整个卡片里的日期条和按钮)。
+   **为什么会反复踩**:"给这个屏起个名字"最自然的写法就是在最外层容器上加 id —— 直觉本身是错的。
+   **硬规则(以后写之前先问)**:① identifier **只挂没有子节点的东西**(Text / Image / Button);② 要标记"这一段存在",挂在它的**标题 Text** 上,不要挂容器;③ 要断言"里面有 N 个东西",给**每个子项**各自 id(如 `x.day.<date>`)再用 `BEGINSWITH` 数,不要给父容器一个 id 然后指望能查到里面;④ 加完 id **必须跑一次真实查询验证它可查**,因为渲染是正常的、只有查询会失败 —— 这也是它能连骗我四次的原因。
 3. **UITest 里 `if x.exists { 断言… }` 是空过陷阱。** 条件不成立时整段跳过、测试照样绿,等于写了一条永远不会失败的测试还以为它在保护契约 —— L1 正是靠它把上面第 2 条藏了两轮。**改成 `if !x.exists { print("⚠️ skipped: <契约名> 未被检验") } else { … }`,让"跳过"在日志里出声。**
 **How to apply**:呼应 [2026-07-30]「测试全绿≠做对了」—— 那条说的是"绿了也可能错",这条补的是"**绿了也可能根本没测**"。
 
