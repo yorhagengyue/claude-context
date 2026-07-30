@@ -418,6 +418,24 @@ Claude 的行为按**模式**切换，避免单一人格覆盖所有场景（之
 
 > 由 memory skill 自动追加，按时间倒序。最近一次 consolidation：2026-05-25（NAISC pivot 后，~30 条 → ~21 条）。
 
+### [2026-07-31] insight: SwiftUI/XCUITest 三条反复踩的坑(手势仲裁 / identifier 挂容器 / 测试空过)
+Ripple build5 L1 一轮内连踩三条,都是**通用**的,以后写 iOS 直接当检查表:
+1. **按压状态必须来自视图已经在仲裁的那个识别器,不能另铺一个。** 我为了给日历格子加"按下反馈",叠了 `.simultaneousGesture(DragGesture(minimumDistance: 0))` —— UITests 从 20/20 掉到 18 个失败:那个 0 距离拖拽把**点击和长按一起吃掉**,整个日历既不能进当日页也不能长按问 AI。正解是复用已有 `.onLongPressGesture(...) onPressingChanged:` 上报按压。**更打脸的前置教训:动手前先查现成的** —— `.explainable` 本来就有触摸即刻的 haptic+缩放+充能环,我等于为了加一个已存在的东西砸掉两条主交互(同族:S14「Button 的按压识别器会吞掉 press-and-hold」)。
+2. **accessibility identifier 挂容器会吞掉子元素,只挂叶子。** 把 id 放在 VStack 上,SwiftUI 会把整段合并成一个 accessibility 元素,里面的按钮/文字**全部查不到**。这是**第三次**踩:E2(`notice.section.*` 与行 id `notice.<id>` 前缀冲突)→ E5(`sources.section` 吞掉 `digest.disclaimer`)→ L1(`day.noticed` 吞掉 notice 行)。**规则:identifier 只挂叶子节点;要标记一段就挂在它的标题 Text 上。**
+3. **UITest 里 `if x.exists { 断言… }` 是空过陷阱。** 条件不成立时整段跳过、测试照样绿,等于写了一条永远不会失败的测试还以为它在保护契约 —— L1 正是靠它把上面第 2 条藏了两轮。**改成 `if !x.exists { print("⚠️ skipped: <契约名> 未被检验") } else { … }`,让"跳过"在日志里出声。**
+**How to apply**:呼应 [2026-07-30]「测试全绿≠做对了」—— 那条说的是"绿了也可能错",这条补的是"**绿了也可能根本没测**"。
+
+### [2026-07-31] insight: 标签错比算术错更难发现(Ripple deviation_pct)
+评审会当场喊出"1.2 和 3671.8 怎么可能只差 31.8%",判断是"算法上的问题"。实测下来**算法完全正确**:`deviation_pct` 是「最近 7 天均值 vs 30 天基线」,hrv 7 天均值 40.00 / 基线 46.19 = −13.40%,与存量值分毫不差。错的是**当日页把它摆在「那天 34」和「你的常态 46.19」下面、标成这两个数的差** —— 那是另一个比较(真实差 −26.4%)。同源第二处:`SignalGlance` 也拿这个 7 天数字判断**单日**的 above/below,于是"那天低于基线但一周趋势偏高"时,句子会在一个更小的数字旁边写 "above your usual"。
+**How to apply**:(1) **凡是两个数同屏,它们之间的百分比就地算**,绝不复用一个在别处、针对别的口径算好的存量字段;(2) 存量聚合字段(7 天均值、周同比之类)保留自己的职责,但**必须带上说明它在跟谁比的标签**;(3) 听到"这数不对,肯定是算法问题"时,**先把这个数的定义查出来再改算法** —— 很可能算法没错,是它被放错了地方。**算术错会自己暴露(结果离谱),标签错不会(每个数单看都对)。**
+
+### [2026-07-30] insight: 装 app 到新真机 —— `-allowProvisioningUpdates` **不会**注册新设备
+真机装 Ripple 时踩到两步,都不需要打扰主理人:
+1. **设备显示 `available (pairing)` 或 `unpaired`** = 信任提示没被接受。不用让主理人拔插重来,直接 `xcrun devicectl manage pair --device <udid> --timeout 60` **主动触发配对**,一次就成。
+2. **`-allowProvisioningUpdates` 只更新 profile,不注册新设备** —— 报错是 `Device "X" isn't registered in your developer account`。必须**再加 `-allowProvisioningDeviceRegistration`**(两个 flag 一起给),xcodebuild 才会把设备注册进开发者账号。加上之后直接 BUILD SUCCEEDED,不需要 ASC API key、不需要开 Xcode、不需要主理人上 developer.apple.com。
+另:`devicectl list devices` 的 Identifier(UUID 形式)与 `xcodebuild -showdestinations` 的 id(硬件 UDID)**是两个不同的值** —— 装用前者、构建用后者,弄混会报 "Unable to find a device matching the provided destination specifier"。
+**How to apply**:任何 "把 app 装到我另一台手机上" 的请求,按 pair → build(两个 provisioning flag)→ `devicectl device install app` 三步走。Debug 真机构建**七天过期**,要提前说。
+
 ### [2026-07-30] insight: 「测试全绿 ≠ 做对了」—— 一夜 D/E loop 的九个真 bug,没有一个是失败测试告诉我的
 Ripple D-loop(SSE/日期守卫/文案)+ E-loop(tab 分离/Notice/日历/当日页/AI 呈现语言)九段跑完,**每一个重要发现都来自看真东西,而不是跑测试**。列出来当以后的检查清单:
 - **看生产时序** → `api/index.ts` 里 `res.end(Buffer.from(await response.arrayBuffer()))` 把响应体**全部读完才发第一个字节** —— 整个 app 的每个 SSE 端点**从来没有真正流过**(14 个事件全在 11.12s 同时到达)。所有测试都绿,因为测试只断言"事件到了"。
