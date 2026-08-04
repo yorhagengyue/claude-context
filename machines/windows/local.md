@@ -1,7 +1,7 @@
 # Windows 机器笔记（yorha / win11 / RTX 5080）
 
 > **状态**：从 2026-05-18 起，**改为 AI 视频本地工作站**（之前是"不使用"）  
-> **替代**：[TODO.md](TODO.md)（旧状态，建议归档）  
+> **旧状态**：[archive/windows-todo-retired-20260804.md](../../archive/windows-todo-retired-20260804.md)（2026-08-04 归档）  
 > **关联**：[shared/projects/ai-video/AI_VIDEO.md](../../shared/projects/ai-video/AI_VIDEO.md)
 
 ---
@@ -30,13 +30,15 @@
 | 实验产物 | `D:\ai\experiments\<timestamp>_<source>\` |
 | 本地密钥 | `D:\ai\.env`（**永不入 git**，机器特有） |
 | 第三方 SDK | `D:\tools\pippit-skills-inspect\`（小云雀官方 Skill 包检视用）|
-| 本仓库 clone | `D:\repos\claude-context\`（即本文件所在仓库） |
+| 本仓库 clone | `C:\Users\gengy\Desktop\claude-context\`（即本文件所在仓库；2026-08-04 更正：旧记录 `D:\repos\claude-context\` 已不存在） |
+| 项目 repos | 各 repo 平铺在 `C:\Users\gengy\Desktop\` 根（claude-context / ripple-core / ripple-ios / yorha-a2-team / aitv-hollow-knight + ripple-site〔在 toffemoon 账号下〕，2026-08-04 补齐） |
+| Agent 入口 | `C:\Users\gengy\Desktop\AGENTS.md` — 指向 `shared/CLAUDE.md` 宪法（Kimi Code CLI 等读 AGENTS.md 的 agent 用，2026-08-04 建） |
 
 ---
 
 ## 已装
 
-- ✅ git + gh CLI（gh 已 `auth login` 为 yorhagengyue，2026-07-15 更正；旧记录"未 auth"作废）
+- ✅ git（HTTPS + 已存凭据，私有 repo 可 pull/clone，2026-08-04 实测）；⚠️ gh CLI 2026-08-04 在本机已找不到（PATH/where 均无），与 2026-07-15「已 auth」记录不符，需用 gh 时先重装
 - ✅ Python 3.13（系统默认） + miniforge3（env `comfy` = Python 3.12）
 - ✅ PyTorch 2.11.0+cu128 (Blackwell support)
 - ✅ ComfyUI 0.21.1 + 3 个 custom_nodes (Manager / WanVideoWrapper / GGUF)
@@ -67,6 +69,7 @@ Start-Process -FilePath "D:\tools\miniforge3\Scripts\conda.exe" `
 ## 已知本机问题
 
 - **C 盘空间紧**（76GB free）— 所有模型/cache/实验放 D 盘已规避
+- **网络**（2026-08-04 owner 确认）— 机器在中国、VPN 质量差：github.com 单次连接约半数 21s 超时、重试可过；git 操作建议一律带重试循环，大 clone 别指望一次过
 - **Blackwell 新架构** — sageattention / triton-windows 需要等社区跟上，目前用默认 attention，Wan 速度有 1.5-2× 的提升空间
 - **Python 3.13 不兼容大多数 ML 包** — 用 conda env `comfy` (3.12) 绕开
 - **HF xet 下载在该机疑似静默卡死** — 已绕过：用 curl 直接下 HF resolve URL
