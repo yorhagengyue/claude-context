@@ -2,7 +2,7 @@
 
 > **用途**：每次新会话开始时，Claude 自动读取本文件。这是整个 harness 系统的入口。
 > **维护**：§0 和 §1-7 由用户维护，§8 由 memory skill 自动追加。
-> **最后更新**：2026-08-04（实习线归档 + ripple-site 定案 + SBS 过线；此前 2026-05-25：NAISC 终局 + §3 frame shift + §9 模式系统 + §8 consolidation）
+> **最后更新**：2026-08-05（§8/§5 去重压缩 step 1：只删重复与过期内容，未做条目合并；TemplateApp PG 死线 owner 确认无需关注；此前 2026-08-04：实习线归档 + ripple-site 定案 + SBS 过线）
 
 ---
 
@@ -273,17 +273,9 @@ Obsidian Vault 是**两层**记忆体系的底层——存放重内容。关系�
 
 **Claude 在我工作流里的定位**
 
-我的主力代码生产工具是 OpenAI Codex（GPT-5.4）。Claude 不是第二个 Codex。Claude 的能力按**模式系统**（§9）调用：
+我的主力代码生产工具是 OpenAI Codex（GPT-5.4）。Claude 不是第二个 Codex。Claude 的能力按**模式系统**调用：`chat`（默认）/ `code` / `architecture-review` / `content` / `memory`——速查表、切换语法与详细定义见 §9。
 
-| 模式 | 用途 | 何时进入 |
-|---|---|---|
-| `chat`（默认） | 思考、复盘、对抗、决策对话；不动手 | 不指定时的默认 |
-| `code` | 真写代码 / 跑命令 / 多步实施 | 显式声明 |
-| `architecture-review` | 架构对抗审查 / 重构陪跑 / 攻击 AI 生成方案 | 显式声明（之前的默认行为，现下沉） |
-| `content` | 社交媒体写作 / 选题 / 平台调性（配合新方向） | 显式声明 |
-| `memory` | 整理记忆 / consolidate / 写 review log / 维护 sub-MD | 显式声明 |
-
-具体模式定义在 Obsidian Vault（路径见 §9）。用户切换模式：会话开头显式说"用 X 模式"；未声明时 Claude 根据消息内容识别，不确定则问一句。
+用户切换模式：会话开头显式说"用 X 模式"；未声明时 Claude 根据消息内容识别，不确定则问一句。
 
 **Claude 全模式通用准则**：诚实、不讨好、不替我做决定；不夸我的东西；可以质疑、最终决定权在我；不要在我还没理清问题的时候急着给解决方案；不要把产品愿景当成技术架构来讨论——如果我给的是愿景，先指出这一点。
 
@@ -305,7 +297,7 @@ Obsidian Vault 是**两层**记忆体系的底层——存放重内容。关系�
 
 | 标记 | 项目 |
 |---|---|
-| 🔴 **紧急** | **Ripple（大项目）** = `ripple-core`（后端）+ `ripple-ios`（App）+ `ripple-site`（官网）**三仓 2026-07-25 合并为一个项目**。待办：Supabase Pro+防火墙+监控〔逾期〕/ OpenAI 用量上限 / SIWA .p8 / A3 后台同步 / UI-POLISH / GTM 侧承诺的 onboarding flow + UX rework；**ripple-site 官方宣传站已定并上线：ripple-health-ai.com（2026-08-04 owner 定案，2026-08-05 部署完成并实证 200）+ ripple-site-puce.vercel.app** |
+| 🔴 **紧急** | **Ripple（大项目）** = `ripple-core`（后端）+ `ripple-ios`（App）+ `ripple-site`（官网）**三仓 2026-07-25 合并为一个项目**。待办：OpenAI 用量上限 / UI-POLISH / GTM 侧承诺的 onboarding flow + UX rework（已清：Supabase Pro 07-28、监控、SIWA .p8 07-29、A3 后台同步；Vercel 防火墙决定暂不做）；**ripple-site 官方宣传站已上线：ripple-health-ai.com（2026-08-05 实证 200）+ ripple-site-puce.vercel.app** |
 | 🔵 **长期** | **ai-video（视频创作线 / aitv-hollow-knight）**、**ai-interactive-story（引擎）** |
 | ⬜ **未指派** | Inception · conversion-site · short-video · MoyuanIdea（04-03 后零更新，疑似休眠但从未正式宣告） |
 
@@ -317,7 +309,7 @@ Obsidian Vault 是**两层**记忆体系的底层——存放重内容。关系�
 |------|------|--------|------|
 | **MoyuanIdea** | 愿景→架构 | AI-native 文化教育系统，三端，正在做技术架构决策 | → [MOYUAN.md](projects/moyuan/MOYUAN.md) |
 | **Hermes** | 主力 agent 系统 | 替代 YoRHa/Moltbot，集成 Gmail/Calendar/GitHub/Obsidian | → vault: Hermes - Overview |
-| **Ripple (core + iOS + site)**<br>🔴 **紧急**(§5.0) | **⭐ 一个大项目**:`ripple-core` + `ripple-ios` + `ripple-site` **三仓 2026-07-25 经 owner 合并,不再分开排期** · **✅ 已上架 App Store(2026-07-14 过审自动发布,第三次提交成功;商店名 "Ripple Health AI",免费,iOS 18.0+,Apple ID 6786394791)** · 后端 live · LLM=OpenAI `gpt-5.4-mini` 独家(数据不进中国) · post-launch:**Supabase Pro ✅ 2026-07-28 已升级**(每日备份实证)/OpenAI 用量上限=owner 自有门规/**Vercel 防火墙暂不做**(hobby 档,WAF 要 Vercel Pro $20/月;cost-guard 应用层限流已够)/**A-loop(07-28,A1-A7 七轮)已交付:A3 后台同步工程+监控(uptime workflow 实测绿+error_log+admin/errors)+SIWA 撤销全链(env 缺省 no-op 已上线)**;**B-loop(07-28 深夜,B1-B6 六轮)已交付「留存三件套」:W1 首日体验(first-read 端点+即时基线重算+空态三形态)/W2 晨间简报(每本地日一条+7-9 窗+无数据不发)/W3 第一方埋点+漏斗(首份快照:30 天真实注册 13→连表 3→解读 0→回访 0,**连表是最大漏水口**)**;**C-loop(07-29 凌晨,C1-C5)基线补强毕:onboarding 埋点+评分引导/引用验活+漏斗周报 workflow/功能性 a11y(VoiceOver 首次可用长按)/合规三件 DRAFT/错误态 sweep**;dev 构建已装 owner 真机(含全部新码);**两把 .p8 已通电(07-29:owner 生成,agent 配 production+三重验证——owner 真机实收测试推送与当天真晨报 apns:1,SIWA 探针 invalid_grant;私钥 ~/Documents/RippleKeys/)**;**D-loop + E-loop(07-29 深夜→07-30 06:35,九段全毕并验证)= owner 亲自点出的 UI/AI 呈现问题全面重做**:D1 文案人话化(裸 metric key 不再出现在人眼前)/D2 日期守卫(未来日与空日禁长按,不再为空白日烧 LLM)/**D3 调查真 SSE —— 途中发现全 app 最大的一个 bug:`api/index.ts` 把响应体全部读完才发第一个字节,每个 SSE 端点从来没有真正流过(14 事件全在 11.12s 同时到达;修后 created 1.45s→verdict 13.9s)**,并写了显式测试保证重连绝不重跑 agent(烧钱 bug)/D4 Explain 两段式(先证据后结论,删掉叙述已完成工作的假 ticker)/E1 底部 tab 分离(日历/Notice/Me)/E2 Notice 重设计(今天-昨天-本周-更早分组 + 绝对日期 + tap=朴素事实、hold=AI)/E3 日历重设计(短按进当日页、内联面板退休、标记改颜色+形状双通道解决色盲不可读)/E4 当日页基础信息在前 AI 为可选深入(新增本地零 LLM 概览句 + 「Ripple 在这天注意到的」段,修掉"日历红点说有事、点进去一个字不提"的断裂)/E5 AI 呈现语言统一(confidence 两套实现合一并先给话再给条、弃权与免责在所有结论面一致、图表先用话介绍再画)。**gate**:iOS 116/116 单测 + 20/20 UITests,core 173/173 + 部署 + 远程冒烟,并逐轮截图实看。**build5-loop(07-31 过夜,L1-L6 六段全毕并验证)= 07-30 评审会全部可执行项落地**:L1 清账(**那个「算法 bug」实为标签错**——`deviation_pct` 是「7 天均值 vs 30 天基线」,却被摆在「那天/常态」下当成两数之差;现改为**凡两数同屏就地算**)+ 差评可撤销 + **全 app 左滑返回**(根因:隐藏导航栏会连带关掉系统侧滑手势)+ investigation 返回不重跑 / **P1 四 tab:Home=今天、日历自立门户**(Home 与当日页共用同一组件;**今天成为一等空态**——Home=今天意味着每天清晨天然是空的)/ L2 Notice 行改「指标+箭头+变化+小趋势图」、文字下沉,**百分比由后端结构化返回而非解析自由文本**;图表**关键点直接标数值**(手机无 hover 可退守)/ L3 **日历色阶做成单色相×强度**(实测绿→红亮度**非单调**、中间档最亮,灰度下语义会反;**灰度截图验收通过**)+ **P5 后端长杆先起**(anomaly 区间**派生不建表**;区间分析扩展 `/v1/explain` 的 `range` 主体**而非新开端点**——少一整套合规面;**「重连绝不重跑 agent」写成显式测试**)+ 🔖 **`build5-fallback` tag(可独立送审)** / L4 长按 notice **弹出问题区间**(`matchedGeometryEffect`+`.ultraThinMaterial`+复用既有充能环)/ L5 **框选区间→AI 分析**+本周/本月预设 —— 这是「不做 chatbot 但能主动提问」的落地 / L6 合规自查(beta 零命中、权限按钮措辞、**11 条引用 curl 全 200**、**同意门按数据流排查**)。**gate**:iOS 122/122 单测 + 24/24 UITests,core 189/189 + 部署 + 远程冒烟,逐段截图实看。⏸ owner 仅剩:**build 5 发版决定**(A/B/C/D/E/**build5 全部改动**要它才到 App Store 用户;**先决定送 main 还是送 `build5-fallback`**,见 `ripple-ios/docs/BUILD5-OWNER-CHECKLIST.md`)+ **AI 表达理念未定**(解释原因/只给建议/用户可选,卡住 Notice 那句「一句话原因」)+ 官方 email + 真机余项(A3 过夜查库/VoiceOver/评分弹窗)+ **home 页构图决定** + **框选是否要做成裸手势**(现为显式模式,原因见 checklist §4)(E1+E3 把月历以下掏空了,agent 故意没发明新模块去填,已列 UI-POLISH 第一条) | NAISC 后重写的多租户 wellness agent。后端 `ripple-core`（Hono 单 Vercel 函数 + Supabase `ubuamehrsvyrbnoxtavk`，[ripple-core.vercel.app](https://ripple-core.vercel.app)：三层 investigation agent + 53 条规则 + 结构化 explain/答案缓存 + Web Push/APNs 双通道 + softAuth 安全默认，迁移到 0022、npm 145/145）。原生 iOS `ripple-ios`（SwiftUI，min iOS 18.0，bundle `com.ripplehealth.ios`）：日历 Home + 长按 Explain Sheet 作为**唯一 AI 入口**(无 chatbot/dashboard)，HealthKit 前台回填已完成;**A3 后台增量同步(YOR-109)工程 2026-07-28 A-loop 建成**(background-delivery entitlement 签名实证 + anchor 增量读 + 观察者×8/15min 节流/设备令牌上传 + 离线队列/BGProcessingTask sync-drain;单测 54/54+UITests 13/13,**仅真机端到端验证 ⏸ owner**)。TestFlight 已跳过;Sign in with Apple 已接入并 2026-07-05 真机验证通过(该风险已消)。iOS owner = Gengyue；凭据 2026-07-02 全轮换。旧 web 前端 `ripple`(yorhagengyue/ripple, ripple-wellness.vercel.app)已**退役**(peer console 导出到 `~/ripple-peer-archive/`)。**Active web = 营销官网 [`toffemoon/ripple-site`](https://github.com/toffemoon/ripple-site)**(2026-07-21 定案:React 18+Vite+Tailwind 4 单页,App Store 下载 CTA 直链 id6786394791;track-B B1 功能型 SPA 舍弃——Linear YOR-123~131 Canceled、YOR-132/133 由官网完成标 Done、YOR-134/135 留 Backlog)。<br>synced **2026-08-02 晚**(两条线:①**夜审+跟进修完 4 个生产缺陷**——摄取单位(HAE 千焦被当千卡存,4.18×,解析器从没读过 units 字段;修+`extra.unit_in` 落档+线上验证)/**累计指标日值 = 行求和的一个数量级级错误**(一天 11 行是「当日累计快照」不是切片,`mean×n` 把 05-23 显示成 142,193 步、真实 20,430;5 处调用点归一成 `cumulative.ts dailyValue()` 取 max,生产实测 20,430)/watchdog 逐用户隔离(账号在扫描中途被删→FK 23503 杀掉整晚 cron;skip 计数**返回在 summary 里**)/两条 5s 默认超时的假红(account-delete、cron/baseline→20s,附实测数据)。**大事纠正:owner 确认「Tommy的Apple Watch」7315 行是他自己的旧表**——我误判为他人数据并加的 90 天下限**已撤**(会挡他自己 7005 行历史);真缺陷是「一分钟 7315 行没人看得见」,N18 埋点已是正解。夜审报告两条最响结论就地划掉(见 §8 同日 correction)。②**主页构图定案落地(owner 拍板 Bevel 参照:借语法、拒 0-100 分)**——「LAST 7 DAYS」四张趋势卡(`MetricLabel.status` 词汇+SparkBars+新鲜度戳"61 · Sat",**高亮过的指标不再出卡**防一信号两答案;band-dot 押后到 worn-day 基线)+问候语+日期常驻(化解 K4 与 07-30 日期之争)。选卡纯逻辑 `HomeGlance.swift` 进测试目标(7 测)。门:core 237/237+部署+demo 身份线上探针,iOS 162/162+UITests+冷启动截图实看(四卡+排除+回退行全对)。⏸ owner 新增:历史快照收敛(1850 行中间快照→222 行日总量,删除类,方案在 MORNING-REPORT「Defect 3」)+空 Home 的结构性根因(n_30d==n_7d ⇒ deviation≡0)要 worn-day 基线设计。真源 LOOP-PROGRESS W/S-round + MORNING-REPORT 附录。**S-round(同晚,owner 报「一会没问题一会 Signal」)**:根因=**两个基线算法在打架**——夜间 cron 用日总量+25%/7% 阈值,而**每次打开 app 的 first-read 用旧算法**(原始行当样本、快照各算一条、kJ 混入、一刀切 7%),开 app 出 Signal、夜里 cron 又抹掉;0031 三函数统一定义并实证 `_user`/`_active` 产出相同行。0032 历史修复:1851 条当日累计快照坍缩成每日峰值行 + owner 33 条导出器能量行 kJ→kcal(按 source 圈定、证据门控;另一 HAE 用户无证据不动)。**新坑归档:iOS 设备名里是 U+00A0**——`source='耿越的Apple Watch'` 普通空格等号/LIKE 全落空,hex 才看得见。owner 账户 active_energy 基线 2856→1120 kcal、watch→normal,幻影 Signal 源头消灭;237/237。**app 端两源同晚做完(owner「两个都做」)**:①keep-prior——拉取失败≠数据为空,anomalies 失败保留上次证据行、角标只在拿到新数据时发布,week/回退探针同理;②回退门从「今天为空」改成「今天可答」(TodayGate:有瞬时体征信号才接管页面),0→1 条读数的清晨悬崖消灭,每天只翻一次页;连带把 K-loop 挂账的「回退藏掉今天计划」修掉——读数可以是周六的、PLANS 永远是今天的,文案跟着改「1 plan today」;③LiveSmokeTests 自愈 JWT(种过期令牌实证:自动换新+写回+15/15 绿),今天第三次假红从机制上终结。iOS 167/167+UITests 3/3+冷启动截图逐项实看)· 前次 synced 2026-08-02 早(**K-loop 五轮完成:主页真正变成状态页**。K1 `SignalGlance` 六个用户可见缺陷+拆文件让该位置可测(零覆盖根因=与 View 同文件、物理上进不了 logic-test target)/K2 删两个分区标题与卡片边框、**证据行过滤为 `metric ∈ offUsual`** 替代 E5 用标题做的灭火器、上限两条/K3 九行按状态劈分+去重、**删掉一条在过滤器之下不可能说真话的空态文案**/K4 排版层级倒转(状态词全页最大且白)、状态块零色相、回退行改中性灰、主页隐藏空 PLANS/K5 一秒涟漪转场(Reduce Motion 无静态替代品)+Notice 角标(**只数主页没渲染出来的 open case**)。整页 2.2 屏→1 屏,HRV 三次→两次。门:单测 146/0/1 + UITests 25/25 + 0 restart,每轮模拟器实看;跨午夜时真实触发 H2 回退并一次性验证全部改动。⏸ owner:**主页构图(底部约 55% 空,属视觉创作未自行填)**/日期降级是否接受(与 07-30「左上角看清 31 号」有张力)/涟漪观感/build5 发版。⚠️ 交下轮:**回退把今天的计划也一起藏了**(读数属过去、计划属未来,绑在同一次回退可能是错的)/notice delta 未必是触发量(种子数据不能当生产证据)/冷启动加载态单薄。真源 `ripple-core/docs/LOOP-PROGRESS.md` K1-K5 段)· **1.1.0 (7) 发版轮(2026-08-02 深夜)**:图表点击→详情页 hover 联动(点位放大+游标线+对应行高亮滚入,纯逻辑 nearestDataSlot/slotDay 进测试)、周卡片图表语言重做(体征=线+点+日历空档,数量=零基线柱;修掉 min-max 把 Usual 画成风暴 + 缺勤日被压缩两个真缺陷)、拖选跨机型修复(LongPress maximumDistance 10→60,13 Pro 只能单选的根因)、demo 账号限流全开(owner 令;DEMO_USER_ID 生产原是空串一并修,402→200 实证)、429 谜案结案(护栏下沉到缓存未命中才计数)。**Release 归档+上传一次过(Upload succeeded),三台真机(17PM/13P/15PM)全部 1.1.0 (7)**;门=单测 171/171+UITests 27/27+后端 240/240。⏸ owner:ASC 登录后手动送审(What’s New 已给)· **L10N loop(2026-08-04 凌晨,Z1-Z7 七轮全毕)= 中文版建成**:全 UI 简中(String Catalog 454 keys,默认跟随系统,Me→语言 可选 跟随系统/English/简体中文,下次启动生效)+ **AI 回答跟随语言**(personalize() 在 guidance 咽喉点一次覆盖 explain/investigation,watchdog/晨报单独接,prose 中文而 JSON keys/enum 保持英文,生产实证中文 verdict)+ 品牌词表(静水/一道涟漪/留意/平常,PLAN-L10N.md 可否决)。终门=单测 176/176+UITests 29/29(27 EN+2 zh 冒烟)+后端 242/242 已部署;1.1.0 (8) 三台真机全装。真源 ripple-ios/docs/PLAN-L10N.md + LOOP-PROGRESS Z 段。⏸ owner:zh 随下次送审(bump+归档同 CLI 流)+ ASC zh 商店元数据 + 品牌词否决窗· 前次 synced 2026-08-01(H-loop:**主页状态化 Step1+2 完成** —— 主页开头改为一个状态词 Steady/A bit off/Off your usual/Still waiting,**从下面信号列表已有的 status 数出来、结构上不可能与列表矛盾**;今天还没同步时**整页回退**到最近一份完整的日子并明写是哪天。129/129 单测 + 25/25 UITests。⏸ owner 两个决定:九行指标是否挪出主页、状态块的视觉。**另实证:A3 后台同步真机端到端成功**,但数据 10:30 才到、7-9 点晨报窗口拿到 0 条,晨报需改为按数据到达触发)· 前次 synced 2026-07-31(P6 现场 UI 迭代:range 回答改 modules+notes、荧光笔动画、Apple 分页轮播、Notice 行 Apple-Health 化、图表薄数据分档;并修掉一条**长按被数据重绘清掉**的真 bug —— 详见 §8 同日「手势不是状态」条与 `ripple-core/docs/LOOP-PROGRESS.md` P6 段)· 前次 synced 2026-07-28(**生产库实查**:31 注册 / 19 profile,注册集中在 6-21→**07-18 后零新增**,**过去 7 天 0 人登录**;有真 Apple Watch 数据的仅 2-3 人、数据停在 07-15/16;19 次调查末次 07-21;夜间 cron 仍在跑(llm_call 累计 1492、14 天 13.8 万 token)。→ **上架成功但零留存,瓶颈不在代码**,与 §5.0 GTM 侧 onboarding+UX rework 一致;A3 后台同步未建与零留存是同一个死循环(不开 app→无数据→无 anomaly→无通知→更不开)。**ripple-site 已转正官方宣传站(2026-08-04 owner 定):ripple-health-ai.com + ripple-site-puce.vercel.app,Cloudflare 侧仍在部署,repo=toffemoon/ripple-site**。用户数拆解:31 账号内含 9 个测试号(@example/@test/@ripple.app),**真人约 15**(Apple 7 人 **7/7 全登录成功**;邮箱 24 号里 2 个真 gmail 卡在验证码未验证 + 1 个把域名打成 `gmail.copm`)。**Supabase Pro 当日升级完成**(升级前实证 `backups:[]` 零备份 = 当时最硬的风险;升级后复查 7 份每日备份 COMPLETED、PITR 保持关闭不买 $100/月)。SMTP 已是自定义 Gmail(`gengyue081@gmail.com`,发件人 Ripple)——个人 Gmail 发陌生人验证码的 deliverability 是潜在隐患,未处理。两仓代码自 07-14 build 4 后无功能 commit。历史:07-21 上架实证(iTunes Lookup 07-14 16:46 UTC 发布);S21-S23 三轮拒-修全过,拒因 pattern 见 §8 07-09 条)· 真源 = `ripple-core/docs/LOOP-PROGRESS.md` + `ripple-ios/docs/APP-STORE-SUBMISSION.md`(API 契约见 `ripple-core/docs/CONTRACT.md`) | → `ripple-core/docs/LOOP-PROGRESS.md` · `ripple-core/docs/CONTRACT.md` · `ripple-ios/docs/APP-STORE-SUBMISSION.md` · `~/Desktop/ripple-core` · `~/Desktop/ripple-ios` |
+| **Ripple (core + iOS + site)**<br>🔴 **紧急**(§5.0) | **一个大项目三仓 2026-07-25 合并，不分开排期** · **✅ 已上架 App Store**（2026-07-14 过审自动发布；商店名 "Ripple Health AI"，免费，iOS 18.0+，Apple ID 6786394791；S21-S23 三轮拒-修全过，拒因 pattern 见 §8 07-09 条） · 后端 live · LLM=OpenAI `gpt-5.4-mini` 独家（数据不进中国） · Supabase Pro 已升（07-28，每日备份实证；PITR 不买） · Vercel 防火墙决定暂不做（hobby 档，cost-guard 应用层限流已够） · 两把 .p8 已通电（07-29，私钥 ~/Documents/RippleKeys/） · post-launch 已交付：A-loop（后台同步+监控+SIWA 撤销）/ B-loop（留存三件套：首日体验+晨间简报+第一方埋点漏斗，首份快照 **连表是最大漏水口**）/ C-loop（基线补强）/ D+E-loop（UI/AI 呈现全面重做，途中修掉 **SSE 从未真正流过**的全 app 最大 bug）/ build5-loop（评审会落地：标签错清账、全 app 左滑返回、四 tab 重构） · gate 文化：iOS 116/116 单测 + 20/20 UITests、core 173/173、逐轮截图实看 · **上架成功但零留存是头号问题**（07-28 生产实查：31 注册含 9 测试号、真人约 15，过去 7 天 0 人登录；瓶颈不在代码，与 §5.0 GTM 侧 onboarding+UX rework 互相印证） · SMTP 用个人 Gmail 发验证码，deliverability 隐患未处理 · 官网 ripple-health-ai.com 已上线（2026-08-05；repo=toffemoon/ripple-site） | 真源：`ripple-core/docs/LOOP-PROGRESS.md` · `ripple-core/docs/CONTRACT.md` · `ripple-ios/docs/APP-STORE-SUBMISSION.md` · `~/Desktop/ripple-core` · `~/Desktop/ripple-ios` |
 | **YoRHa-A2** | 阶段性团队项目 · 进行中;**当前唯一焦点(2026-06-27 战略会「188B Rangoon Rd」)= 找 OC 用户 + 打磨 UX**,量化用 token 三指标(人数/总 token/token每人),成就系统/开发者模式已否/暂缓 | 三线分工:耿越(引擎/后端/战略,引擎核心最终权)+ 雨飞(前端 + 找人)+ Zicheng(短视频);**最终目标 = 咨询网站(conversion-site,仍 concept)**,路上做子项目(ai-interactive-story 引擎[现主线] / 短视频引流);护城河 = 用 AI 机制解释人性。**⚠️ 2026-07-08 引擎线终极目标正式命名 [Inception](projects/yorha-a2/sub-projects/inception/INCEPTION.md) —— 把任何书变可进入 / 多玩家共建 / 可 fork 的活世界(每个 NPC 独立 subagent),当前引擎只是通往它的中间站,底层只 Gengyue 本人做。** 真源 = yorha-a2-team/decisions + 2026-06-27 战略会 note。<br>synced 2026-07-08 | → [YORHA-A2.md](projects/yorha-a2/YORHA-A2.md) hub · [WORKING-MODE.md](projects/yorha-a2/WORKING-MODE.md) 工作模式 |
 | **ai-video(视频创作线)** | 🔄 **2026-07-15 完全重启**(旧"AI 代创作"产物已全删) | 做电影感 AI 短片(mxshell 路线)。**Claude 角色红线见 §8 [2026-07-15] 条**:只做搜资源/教传统影视知识+技术支持,不得从 0 写提示词,libtv 等 agent/MCP 只读为主,规则文档入目录须 owner 确认。工作台=Windows `D:\ai\`(工具/成本/VIP 规避见项目文档,仍有效)。**首个正式项目 = [aitv-hollow-knight](https://github.com/yorhagengyue/aitv-hollow-knight)(空洞骑士,私有 repo,2026-07-15 建)** | → [AI_VIDEO.md](projects/ai-video/AI_VIDEO.md) · 机器档案 [windows/local.md](../machines/windows/local.md) |
 | **Slay the Spire 2 AI** | 半成品 | PPO + 遗传超参数进化，离自主打游戏还有距离 | GitHub/slay_the_spire |
@@ -333,7 +325,7 @@ Obsidian Vault 是**两层**记忆体系的底层——存放重内容。关系�
 | **SBS Transit / Sarius** | 实习项目，2026-07-31 截止，随实习结束归档（2026-08-04） | → vault: SBS Transit - Overview |
 | **IFSG** | 实习项目线，随实习结束归档（2026-08-04）；团队若继续可复活 | 仓库私有 |
 | **Hyperion** | 实习项目线，随实习结束归档（2026-08-04） | repo: yorhagengyue/hyperion-webapp-fixes |
-| **TemplateApp** | **暂时归档**（2026-08-04）：owner 说可能后续继续开发，复活即移回现役。注意：免费 PG ≈2026-08-12 到期删库（要保数据需在到期前处理）；sub-MD 保留原位 | → [TEMPLATEAPP.md](projects/templateapp/TEMPLATEAPP.md) / [HANDOFF.md](projects/templateapp/HANDOFF.md) |
+| **TemplateApp** | **暂时归档**（2026-08-04）：owner 说可能后续继续开发，复活即移回现役。免费 PG 删库与部署问题 owner 2026-08-05 确认无需关注；sub-MD 保留原位 | → [TEMPLATEAPP.md](projects/templateapp/TEMPLATEAPP.md) / [HANDOFF.md](projects/templateapp/HANDOFF.md) |
 
 ## 6. 学习轨迹
 
@@ -414,13 +406,13 @@ Claude 的行为按**模式**切换，避免单一人格覆盖所有场景（之
 
 ## 8. 记忆追加区
 
-> 由 memory skill 自动追加，按时间倒序。最近一次 consolidation：2026-05-25（NAISC pivot 后，~30 条 → ~21 条）。
+> 由 memory skill 自动追加，按时间倒序。最近一次 consolidation：2026-08-05 step 1 去重压缩（只删重复/过期：§5.1 Ripple 行 15.4KB→1KB、07-01/07-02 上架与 v1 loop 历史条压成指针、TemplateApp 三条项目记忆压成指针、§3 模式表去重；未做条目合并）；上一次全量 consolidation：2026-05-25（NAISC pivot 后，~30 条 → ~21 条）。
 
 ### [2026-08-04] status: TP 实习结束 —— 实习线项目全部归档（PPMR / SBS / IFSG / Hyperion / TemplateApp）
-owner 2026-08-04 确认实习已结束，指示实习内容全部归档。§5.0 优先级表移除 PPMR、SBS、TemplateApp 三行；§5.1 全量索引移除 IFSG / SBS / PPMR / TemplateApp 四行，均移入「已归档项目」表。其中 **TemplateApp 是暂时归档**（owner 先说除外、随后指示放回；可能后续继续开发，复活即移回）——免费 PG ≈2026-08-12 到期删库的硬墙仍需留意，sub-MD 保留在 projects/templateapp/ 未动。PPMR 5 份双语全稿留在 vault `02 - Areas/Career/SIP PPMR Reports/`，最终是否提交未确认。§1 学校行同步改为「实习已结束」。
+owner 2026-08-04 确认实习已结束，指示实习内容全部归档。§5.0 优先级表移除 PPMR、SBS、TemplateApp 三行；§5.1 全量索引移除 IFSG / SBS / PPMR / TemplateApp 四行，均移入「已归档项目」表。其中 **TemplateApp 是暂时归档**（owner 先说除外、随后指示放回；可能后续继续开发，复活即移回）——免费 PG 删库/部署 owner 2026-08-05 确认无需关注，sub-MD 保留在 projects/templateapp/ 未动。PPMR 5 份双语全稿留在 vault `02 - Areas/Career/SIP PPMR Reports/`，最终是否提交未确认。§1 学校行同步改为「实习已结束」。
 
 ### [2026-08-04] decision: ripple-site 官方宣传站定案 —— ripple-health-ai.com + ripple-site-puce.vercel.app
-owner 定案：这两个地址就是 Ripple 官方宣传站；~~Cloudflare 侧仍在部署中~~ **2026-08-05 owner 确认部署完成**，本机实证 ripple-health-ai.com 返回 200 已上线（vercel.app 备用地址从中国本机直连多次超时，与 windows/local.md 已知网络问题一致，非部署问题）。此前 §5.0/§5.1 的「是否部署 / 绑域名悬而未决」口径作废，两处表格已同步更新。注意 repo 在 **toffemoon** 账号下（toffemoon/ripple-site），不在 yorhagengyue 名下——按 yorhagengyue/ripple-site 找会 404。另：`yorhagengyue/ripple` 是已退役的旧 web（心涟时代），不是现役三仓之一。
+owner 定案：这两个地址就是 Ripple 官方宣传站；**2026-08-05 部署完成**，本机实证 ripple-health-ai.com 返回 200（vercel.app 备用地址从中国本机直连多次超时，与 windows/local.md 已知网络问题一致，非部署问题）。注意 repo 在 **toffemoon** 账号下（toffemoon/ripple-site），不在 yorhagengyue 名下——按 yorhagengyue/ripple-site 找会 404。另：`yorhagengyue/ripple` 是已退役的旧 web（心涟时代），不是现役三仓之一。
 
 ### [2026-08-04] status: SBS Transit / Sarius 正式过线 —— 731 截止日已过
 owner 2026-07-25 原话「731 后就跟我没关系了」现已生效：不再排期、不再派活、不再当活跃项目引用。§5.0 优先级表已从「⏳ 2026-07-31 截止」改为「✅ 已结束」。
@@ -648,8 +640,7 @@ Ripple E3 轮实测:`claude-sonnet-5 ... auto mode cannot determine the safety o
 3. **libtv 及将来一切 agent/MCP:只能以读为主**,做技术支持而不是替 owner 创作。这是核心原则。
 4. 任何要写进视频相关目录的**规则文档,先经 owner 确认**再落盘;输出一律**简洁大白话**。
 5. 平时常驻姿态 = **阅读 owner 的作品 + 记录 + 思考**,owner 需要时会说。资料/笔记存 Obsidian 对应位置 + yorha-a2 的 assets(与该 repo assets 规则相似)。
-⚠️ **给 Mac 侧 Claude 的核实项**:被删的 canlying/chapter_1_remnant/chapter.md =《走廊的回声》第一章「残影」文本,frontmatter 自称 authoritative=vault(50-Areas 结构,疑似 Mac vault)——Windows 本机全盘已无该小说任何副本,请核实 Mac 上小说仍在;若 Mac 也无,该章文本已随删除丢失(owner 已知情,不着急)。
-**Mac 侧核实结果(2026-07-21)**:Mac vault(`~/Documents/Obsidian Vault/`)按文件名搜"走廊/残影/canlying"**未找到**;且 Mac vault 是 "02 - Areas" PARA 命名,**没有** "50-Areas" 结构——frontmatter 指向的 vault 在 Mac 上不存在。全文 grep 因 iCloud 大目录超时未能完成,不能 100% 排除文内提及,但**该章文件大概率已随删除丢失**。owner 若在意,提供小说可能存放的目录再精确扫一次。
+⚠️ 被删的《走廊的回声》第一章「残影」文本(canlying/chapter_1_remnant/chapter.md):经 Mac 侧核实(07-21)**大概率已随删除丢失**(两台机器均无副本),owner 已知情不着急;若日后在意,提供可能目录再精确扫。
 
 ### [2026-07-09] insight: 健康类 app App Store 首提交四拒因 pattern(Ripple 实测,全部一轮修掉)
 Ripple v1.0 (1) 2026-07-08 被拒,四条拒因对任何 wellness/health app 都是高概率坑,提交前自查:
@@ -680,14 +671,12 @@ Ripple S-loop 实测:repo 在 iCloud 同步的 `~/Desktop` 下,fileprovider 会*
 **根治两件套**:(1) XcodeGen `postBuildScripts` 给每个 target 加 CodeSign 前的 `xattr -cr "$CODESIGNING_FOLDER_PATH" || true`(防源侧 xattr 被 copy 进 bundle);(2) **DerivedData 挪出 iCloud 盘**(`-derivedDataPath ~/Library/Developer/Xcode/DerivedData/<name>`)——test-runner 这类没有 script hook 的 wrapper bundle 只有这招能救。
 **适用**:任何放在 iCloud/Dropbox 同步目录的 Xcode 工程(真机归档同样会踩)。诊断一句话:`xattr -lr <built.app> | grep -c FinderInfo`。
 
-### [2026-07-02] project: Ripple App Store 上架准备 + LLM 切 OpenAI 独家(数据不进中国)
-Ripple v1 完成后进入**上架准备**。本轮做完的:
-- **LLM 换厂**:DeepSeek(中国公司,数据驻留问题)→ 一度 Azure OpenAI(SEA)→ **最终定 OpenAI 官方 `gpt-5.4-mini`**(美国,数据不进中国)。**上线只用 OpenAI 一家**(azure/kimi 全从 registry 删)。踩坑:GPT-5.x 系不认 `max_tokens`、要 `max_completion_tokens`(temperature 0.2 + JSON 模式认)。npm test 145/145 真打 gpt-5.4-mini 全绿、已部署、live 验(provider:"openai" 现生成)。⚠️ **OpenAI key 暴露在聊天,上线前轮换**。
-- **App Store 阻塞项(代码侧全做完 + 验证)**:app 图标(1024 无 alpha,涟漪环+心跳,`docs/brand/ripple-appicon.svg`)+ `PrivacyInfo.xcprivacy` 隐私清单 + 版本统一(1.0.0/1)+ **一次性 AI/健康数据同意弹窗 + 医疗免责**(`AIConsentView`,ExplainSheet 首次前门控)+ `/v1/account/export` 补全(全用户数据,隐藏层不导)+ 法务链接接活。
-- **法务页已托管上线**:`https://ripple-legal.vercel.app`(privacy/terms/support,公开 200,内容含 OpenAI/美国/不进中国),源码 `~/Desktop/ripple-legal/`(未入 git,改完 `vercel deploy --prod` 重发)。in-app `Legal.swift` 已指过去。
-- **App 记录**:名字 "Ripple" 被占,商店名建议 "Ripple Baseline"(设备上仍显示 Ripple);Bundle `com.ripplehealth.ios`,SKU `ripplehealth-ios`。
-**⏸ 只有主理人能做的(全在 `ripple-ios/docs/APP-STORE-SUBMISSION.md`)**:轮换所有暴露凭据、填 ASC 元数据+隐私营养标签(健康/邮箱/用户ID/使用=Linked/App Functionality/不追踪)、Apple 登录端到端真机验、预置 demo 账号、升 Supabase Pro+监控、拍截图、Xcode 归档提交、UI 设计精修(`UI-POLISH-TODO.md`)。App 发布在付费 team `6745G7RTY5` 下(归属主理人已不担心)。
-**终局更新(2026-07-02 晚)**:上面 ⏸ 清单除"真机 Apple 登录 / Supabase Pro+监控 / UI 精修"外**全部完成**——凭据六项全轮换验证(坑:Supabase legacy JWT 键要 `PUT /api-keys/legacy?enabled=false` 单独停用,flag 是 query 参数)、CLI 归档上传一次过(补 `NSHealthUpdateUsageDescription`:带 HealthKit entitlement 必须读+写两条 purpose string 都有,与是否真写无关)、ASC 五页全填(年龄 9+/隐私 5 数据类型/DSA 非交易者/受监管医疗设备=否/取消 Mac+VisionPro 分发)→ **v1.0 (1) 已提交审核,自动发布**。每页实际选项存档在 APP-STORE-SUBMISSION.md "ASC 提交记录"段;被拒应对=SUBMIT-WALKTHROUGH 第 19 条。剩余监控:审核结果 24-48h、旧 publishable 网关缓存过期复查、OpenAI 用量上限(owner)。
+### [2026-07-02] project: Ripple 上架准备 + LLM 切 OpenAI 独家(数据不进中国) —— 已完结，留可复用点
+历史过程(上架清单、ASC 填表、提审记录)全在 `ripple-ios/docs/APP-STORE-SUBMISSION.md`，此处只留仍可复用的事实与坑：
+- **LLM 换厂定案**：DeepSeek(数据驻留问题)→ Azure OpenAI(过渡)→ **OpenAI 官方 `gpt-5.4-mini` 独家**(数据不进中国;azure/kimi 全从 registry 删)。坑：GPT-5.x 系不认 `max_tokens`、要 `max_completion_tokens`(temperature 0.2 + JSON 模式认)。
+- **法务页托管**：`https://ripple-legal.vercel.app`(privacy/terms/support),源码 `~/Desktop/ripple-legal/`(未入 git,改完 `vercel deploy --prod` 重发)。Bundle `com.ripplehealth.ios`,SKU `ripplehealth-ios`,付费 team `6745G7RTY5`。
+- **凭据六项已全轮换**(原暴露于聊天)。坑：Supabase legacy JWT 键要 `PUT /api-keys/legacy?enabled=false` 单独停用,flag 是 query 参数。
+- 归档上传坑：带 HealthKit entitlement 必须读+写两条 purpose string 都有(`NSHealthUpdateUsageDescription`),与是否真写无关。
 
 ### [2026-07-01] feedback: UI 美学微调交人做 —— 我只做功能/接线,不擅自 fine-tune 视觉
 主理人 2026-07-01(Ripple iOS):"大量 UI 需要微调…我不希望你直接改,因为你根本理解不了 UI。你记下来,后续让人去微调。"
@@ -697,18 +686,13 @@ Ripple v1 完成后进入**上架准备**。本轮做完的:
 
 ### [2026-07-01] feedback: 长自驱 loop 里别只往 loop 档写 —— 阶段性把重大项目状态 sediment 回 claude-context
 主理人 2026-07-01 纠正:"你开始忘记记忆了 存好 记得 push"。跑 Ripple v1 前端替换 loop 一整天(R0→R22+),所有进展都进了 `ripple-core/docs/LOOP-PROGRESS.md` + `PLAN-V1-FRONTEND.md`,但**跨机耐久记忆(claude-context §5/§8)一整天没更新** → §5 Ripple 条目严重过时(还写"iOS 旧仪表盘设计待重做",实际早已重做完)。
-**Why**:loop 档是项目内的过程记录、跨机不可见;claude-context 才是我的外脑跨机层。长 loop 时若只写 loop 档,别的机器 / 未来 session 打开 CLAUDE.md 看到的是过时状态。**How to apply**:任何长时自驱 loop,除了每轮写 loop 档外,**遇到重大节点(功能完成 / 方向变 / 里程碑)顺手把一句话状态 sediment 回 claude-context 对应 §5 行 + 必要时 §8**,不要攒到主理人提醒。claude-context 的 `.git` 曾**损坏不可读**(文件可读写、git 命令认不出仓库),整段时间靠主理人手动 push;**2026-07-01 已修**:重新 `gh repo clone` 一份、把 CLAUDE.md 记忆搬过去、删掉坏的旧 checkout、新 clone 扶正为正式 `~/Desktop/claude-context`。现在 git 正常、**我能自己 commit+push**(fetch/push 已验通)。
+**Why**:loop 档是项目内的过程记录、跨机不可见;claude-context 才是我的外脑跨机层。长 loop 时若只写 loop 档,别的机器 / 未来 session 打开 CLAUDE.md 看到的是过时状态。**How to apply**:任何长时自驱 loop,除了每轮写 loop 档外,**遇到重大节点(功能完成 / 方向变 / 里程碑)顺手把一句话状态 sediment 回 claude-context 对应 §5 行 + 必要时 §8**,不要攒到主理人提醒。(claude-context 的 `.git` 曾损坏不可读,2026-07-01 已通过重新 clone 修复,现 git 正常。)
 **关联**:同日 [2026-07-01] loop 时间戳 feedback、§5 Ripple 行本轮已更新。
 **2026-07-02 追加(S-loop 主理人指令"工作期间要积极更新记忆和文档 可以参考历史loop文档")**:升级为**边做边写**,不等"重大节点"——每轮工作中 ① loop 档按 R-loop 成熟格式记(`⏱时间戳+gap检查 / Goal / 方法-DoD / Verification gate 全绿才 claim / 诚实边界 / ⏸follow-up / Plan delta / Next`,样例见 LOOP-PROGRESS.md R21);② 顺手修沿路发现的**文档漂移**(过期注释/stale TODO/合同文档),不留到"以后";③ sediment-worthy 内容当轮写 §8 并 push,不攒批。
 **2026-07-02 二次追加(S3 前主理人指令)**:④ **自我迭代闭环**——每轮收尾必须为下一轮定义「目标 + 可检验的验收标准」写进 loop 档末尾,下一轮开工先读它当真源(目标不是凭感觉挑,是上一轮明确交接的);⑤ 主理人可**预先授权结束 loop**("我现在允许你在适当的时候结束")——授权后由 agent 判断终点:agent 可做的工作全部完成且验证、只剩 owner-only 事项时,做最终 handoff 总结 + 删 cron 结束,不无限空转。
 
 ### [2026-07-01] project: Ripple v1 前端替换 loop 终局态 + 原生 Apple 登录
-**iOS 前端已从旧"仪表盘"彻底重做成愿景的「调查中心 / shows-its-work」**(session-only cron 自驱 loop,R0→R22+,每轮 `date` 戳时间 + G1 编译/G2 DTO 解码真 JSON/G3 打 live 后端/G4 深链截图 四门,验证未过不 claim)。
-**已建成的纯 v1 面**:日历 Home(月历格,取代旧 vitals dashboard)+ 环境式**长按 Explain Sheet**(充能环 + 打字机 verdict,唯一 AI 入口,无 chatbot)+ 调查引擎三态(Live/Question/Resolved,展示工作)+ anomaly 驱动通知箱 + 个人 facts/intake + 设置读写。legacy chatbot/dashboard/metric-detail/订阅/成就全删,app 40 swift 文件纯 v1。
-**联动(主理人核心指令)**:分析一个读数会关联用户其他记录内容 —— events("今天要跑步")+ lifestyle facts("周二跑步"),glance explain + investigation 两条 AI 路径都做了;敏感 facts(病症/用药)有内容门绝不 surface。
-**后端 ripple-core**:结构化 `POST /v1/explain`(答案缓存 explain_cache)+ investigation agent 确定性预取计划进证据 + softAuth 安全默认(修过 P0 匿名暴露)。npm test ~147 全绿、部署 ripple-core.vercel.app。
-**原生 Apple 登录(2026-07-01 接线, ios commit e5f9764)**:SignInWithAppleButton + nonce + `signInWithIdToken`;Supabase apple provider 已启用、原生流程 live 可用。⏸ **待主理人核对**:Supabase Apple provider 的 Authorized Client IDs 要含 Bundle ID `com.ripplehealth.ios`(付费 team `6745G7RTY5`)。真机 Apple ID 授权那步需主理人点。
-**真源**:`ripple-core/docs/LOOP-PROGRESS.md`(逐轮 R0-R22+)+ `PLAN-V1-FRONTEND.md`(动态计划/账本)+ `ripple-core/.cursor/skills/ripple/SKILL.md`。⚠️ 凭据(Supabase/**OpenAI**/PAT)需轮换(暴露在聊天)。【2026-07-02 更新:LLM 已从 DeepSeek 切 OpenAI 独家,见 §8 顶部上架条】
+**iOS 前端从旧"仪表盘"彻底重做成「调查中心 / shows-its-work」**(session-only cron 自驱 loop R0→R22+,四门验证不过不 claim):日历 Home + 环境式**长按 Explain Sheet**(唯一 AI 入口,无 chatbot)+ 调查引擎三态(Live/Question/Resolved)+ anomaly 驱动通知箱 + facts/intake + 设置;legacy chatbot/dashboard/订阅/成就全删。**联动(主理人核心指令)**:分析读数会关联 events + lifestyle facts;敏感 facts(病症/用药)有内容门绝不 surface。原生 Apple 登录已接线 live(SignInWithAppleButton + nonce + `signInWithIdToken`)。后续 D/E/build5 loop 的呈现层重做见 §5.1 Ripple 行与各 insight 条。**真源**:`ripple-core/docs/LOOP-PROGRESS.md` + `PLAN-V1-FRONTEND.md`。
 
 ### [2026-07-01] feedback: 跑任何自驱 loop —— 每轮先取真实时钟时间 + 检查节奏,没查时间不许说"健康"
 主理人指令(2026-07-01)：以后任何 autonomous loop,**每次执行开头必须先 `date` 拿真实 wall-clock 时间**,写进该轮日志(标题带时间戳)。
@@ -825,29 +809,8 @@ Team YoRHa / Ripple 5/22 决赛拿到 **Workato Track 第三名**。比赛结束
 **遗留决策**：Discord listener（Mac Mini PID 48771）是否继续跑积累数据，待用户决定。
 **复盘洞察**：见同一天 insight 条目（市场/包装短板）。具体 Q&A 失分细节用户暂不展开，留给"售卖"专题对话。
 
-### [2026-05-23] 🚨 project: TemplateApp — Agentic AI Pivot（重大方向转向）
-Linda William 邮件（她 5/13-5/27 离岗中）要求把 TemplateApp 从"通用文档生成器产品"重构成 **publishable agentic AI 研究项目**：既要代码也要论文。两个论文 contribution：**Live Data Binding**（数据变 → 文档自动重生成）+ **LLM-as-Judge**（自动质量门，Fail → 反馈给 Writer 改写）。要研究 LLM-as-Judge 评估技术（criteria × technique × performance × time）并编辑她的 paper draft。
-
-**锁定决策（5/23）**：
-- LangGraph 主框架；CrewAI + LangChain 各做 prototype，论文里写**3 框架对比**
-- LLM 矩阵：Frontier (Opus/GPT-4) + Mid (Sonnet/4o) + Small (Haiku/4o-mini) + Local (Llama 3.2 3B / Qwen 2.5 3B / Phi-3-mini)。**论文写 Cost-Performance Analysis** + Pareto 前沿
-- **ONLYOFFICE 整个扔掉**（不在 agentic loop，weight 不值）。Template 改 upload-only docx
-- **Backend hybrid**：Python FastAPI agent service + Node Express gateway
-- 前端 9 屏保留，加 Agent Timeline 视图，drop localStorage 接真 API
-- 数据绑定用 lazy invalidation + manual refresh，event-driven 留 Phase 2
-- Judge 输出 JSON schema (`pass/score/criteria_breakdown/revision_hints`)
-- 长期项目，无 deadline
-
-**W1 文献综述（5-23 已完成）**：8 个 judge 技术 + 1 个 survey 全部拉真 PDF 抓 Table 数字。关键发现：(1) **AlignScore 355M RoBERTa 反超 GPT-4 on QAGS-XSum**（57.2 vs 53.7）——data consistency 维度最强匹配；(2) **G-Eval 有 LLM-self-preference bias**（自己评高分），论文要 disclose；(3) **FactScore 只测 precision 不测 recall**，不解决 Completeness；(4) **没有单一 technique 覆盖全部 5 维**，paper 推荐 combo（AlignScore + G-Eval/Prometheus 2 + deterministic format check）。结果存在 `vault/01 - Projects/TemplateApp/research/group-{a,b}-judge-techniques.md`。
-
-**跨项目可复用洞察**（同 NAISC 5-08 mentor 反馈共振）：**LLM-as-Judge 多 agent 分层**这套 NAISC 也在用——Process → Validate → Communicate，每层 short prompt + low temp。TemplateApp 这次的实证（哪个 technique 准、哪个便宜）可以直接喂给 NAISC 的 deck Q&A 答辩话术，反之 NAISC 的 production 经验也回流到 TemplateApp 选 judge prompt 模板。
-
-**新建文件**：
-- `~/.claude/plans/eager-humming-crown.md` — 新权威 plan（原 `shimmying-dreaming-naur.md` 部分作废）
-- `vault/01 - Projects/TemplateApp/HANDOFF.md` — 新会话接手用，**极度具体**（时间线/决策表/文件地图/启动步骤/Claude 角色/Linda 待答问题）
-- `vault/01 - Projects/TemplateApp/PIVOT-2025-05-23.md` — 本次 pivot 决策记录
-- claude-context 全镜像（PLAN + HANDOFF + PIVOT + 更新 TEMPLATEAPP.md）
-
+### [2026-05-23] project: TemplateApp — Agentic AI Pivot（已归档，详见 sub-MD）
+Linda William 要求把 TemplateApp 从"通用文档生成器产品"pivot 为 **publishable agentic AI 研究项目**（两个论文 contribution：Live Data Binding + LLM-as-Judge；LangGraph 主框架 + CrewAI/LangChain 对比；LLM 矩阵 cost-performance；ONLYOFFICE 扔掉）。全部锁定决策、W1 文献综述（8 judge 技术实测）、plan、HANDOFF 已镜像到 sub-MD 与 vault。**2026-08-04 随实习线暂时归档**（可能复活，见「已归档项目」表）。跨项目产出只有一条：LLM-as-Judge 多 agent 分层与 NAISC 互相印证（已并入 §8 [2026-05-08] mentor 模式条）。
 → sub-MD: [TEMPLATEAPP.md](projects/templateapp/TEMPLATEAPP.md) · [HANDOFF.md](projects/templateapp/HANDOFF.md)
 
 ### [2026-05-23] correction: subagent 默认没 WebSearch/WebFetch 权限
@@ -900,25 +863,10 @@ Workato 表单里的 CodeMirror **不是标准 CM** —— preview 状态下 JS 
 构建 agent / pipeline 产品时，watchdog / 24h 轮询 / 局部 demo **不能等同于"端到端 live pipeline 跑通"**。用户视角的完整路径（trigger → action）必须显式画出来再分步实现，否则会出现"我做了很多东西，但用户视角看不到流程"的情况。**下次构建 agent 产品先画 trigger-to-action 完整路径**。NAISC 案例：watchdog 跑通 ≠ 手表检测→触发→WhatsApp 通知整链路跑通，用户立刻指出 framing 错误。
 
 ### [2026-04-17] spike: TemplateApp ONLYOFFICE CE 限制 spike 验证
-同日下午跑了一个实战 spike 验证 IFSG 团队 4/15 报的 CE plugin 限制。起 `onlyoffice/documentserver:latest` 本地栈 + 自建最小插件 + docxtpl 合成测试，跑完 11 个按钮 + 6 个合成 case。
-
-**H1/H2/H3 全 pass**。关键发现：
-- `PasteText` + `{{tag}}` 在 CE iframe 100% 可用，所有特殊字符字面保真
-- docxtpl 对 run-splitting 极端鲁棒（每字符 per-run 也能 render）
-- **`callCommand` + `Api.*` NOT 被 sandbox 锁**——IFSG 报的 `mFa` 崩溃只在 `executeMethod("AddContentControl", ...)` 的 iframe-direct 路径。通过 `callCommand + Api.CreateBlockLvlSdt` 插 SDT 在 CE 是通的。**不需要 Developer Edition 授权**
-- `GetSelectedText` focus-loss 确认，全面弃用，走 `callCommand + GetRangeBySelect()` 替代
-- CE 默认 `allowPrivateIPAddress: false` 阻塞 docker 网络（私网 IP），部署要 patch `default.json`（不要 `:ro` mount，init chown 会 fail）
-
-Plan M4 从"照搬 IFSG ~1000 行插件"改为"重写 ~150 行 PasteText + {{tag}} 方案"，Phase 2 保留 SDT 升级路径。Sub-MD 和 plan 文件都更新了。Spike 环境已 teardown。
+实战 spike 推翻了 IFSG 团队报的 CE plugin 限制：`PasteText` + `{{tag}}` 在 CE iframe 100% 可用（特殊字符字面保真，docxtpl 对 run-splitting 鲁棒）；**`callCommand` + `Api.*` 未被 sandbox 锁**（含 `Api.CreateBlockLvlSdt` 插 SDT，不需要 Developer Edition）；`GetSelectedText` 弃用改 `callCommand + GetRangeBySelect()`；CE 默认 `allowPrivateIPAddress: false` 阻塞 docker 私网，部署要 patch `default.json`。细节见 sub-MD。
 
 ### [2026-04-17] architecture: TemplateApp Phase 1/2 架构规划完成
-Linda 2026-04-17 非正式 brief：建独立于 IFSG 的通用 template/CSV/RAG 审阅 app。经 8 轮对话 + 代码扫描锁定全部架构决策，Plan agent 输出完整 W1-W12 实施路径，等 2026-04-20 Linda 正式 brief 后开工。
-
-**核心决策**：React + Node/Express/Sequelize/PostgreSQL + docker-compose（非 Nix+Arion）+ 独立 JWT（Identities 表支持多 provider）+ 所有业务表 owner_id（无 sub-firm）+ ONLYOFFICE 完整照搬 IFSG（换 plugin GUID）+ word-addin Phase 2 再做 + CSV 追加式版本化 + RAG v1 只做规则（知识走 skill 预留）+ Review JSON 主 markdown 副（Ollama + 修复重试）。
-
-**代码复用判断**：IFSG 的 `template.controller.js`（900 行 ONLYOFFICE 集成）、`onlyoffice-plugin/` 目录、`auto-complete.controller.js`、`word-text-generation/` 全套是"宝矿"，直接搬；`report-generation/src/lib/table/*`（财报业务）全弃；`sub-firm`/`journal`/`cashflow` 等 IFSG 领域模型全不要。
-
-**完整 plan**：`~/.claude/plans/shimmying-dreaming-naur.md`（包含 M1-M9 里程碑、数据模型、docker-compose 拓扑、风险、必读文件 12 个、验证清单、Linda brief 提问清单 5 条）
+Linda brief：建独立于 IFSG 的通用 template/CSV/RAG 审阅 app。8 轮对话 + 代码扫描锁定全部架构决策（React + Node/Express/Sequelize/PostgreSQL + docker-compose + 独立 JWT + 业务表 owner_id + ONLYOFFICE 照搬 IFSG；IFSG 的 `template.controller.js`/`onlyoffice-plugin/` 等全套可搬，财报业务模型全弃）。完整 plan 与决策表见 sub-MD（05-23 pivot 后部分作废，以 pivot 决策为准）。
 → sub-MD: [TEMPLATEAPP.md](projects/templateapp/TEMPLATEAPP.md)
 
 ### [2026-04-17] preference: Claude 作为架构顾问的协作模式验证
