@@ -305,7 +305,7 @@ Obsidian Vault 是**两层**记忆体系的底层——存放重内容。关系�
 
 | 标记 | 项目 |
 |---|---|
-| 🔴 **紧急** | **Ripple（大项目）** = `ripple-core`（后端）+ `ripple-ios`（App）+ `ripple-site`（官网）**三仓 2026-07-25 合并为一个项目**。待办：Supabase Pro+防火墙+监控〔逾期〕/ OpenAI 用量上限 / SIWA .p8 / A3 后台同步 / UI-POLISH / GTM 侧承诺的 onboarding flow + UX rework；**ripple-site 官方宣传站已定（2026-08-04 owner 定案）：ripple-health-ai.com + ripple-site-puce.vercel.app，Cloudflare 侧仍在部署** |
+| 🔴 **紧急** | **Ripple（大项目）** = `ripple-core`（后端）+ `ripple-ios`（App）+ `ripple-site`（官网）**三仓 2026-07-25 合并为一个项目**。待办：Supabase Pro+防火墙+监控〔逾期〕/ OpenAI 用量上限 / SIWA .p8 / A3 后台同步 / UI-POLISH / GTM 侧承诺的 onboarding flow + UX rework；**ripple-site 官方宣传站已定并上线：ripple-health-ai.com（2026-08-04 owner 定案，2026-08-05 部署完成并实证 200）+ ripple-site-puce.vercel.app** |
 | 🔵 **长期** | **ai-video（视频创作线 / aitv-hollow-knight）**、**ai-interactive-story（引擎）** |
 | ⬜ **未指派** | Inception · conversion-site · short-video · MoyuanIdea（04-03 后零更新，疑似休眠但从未正式宣告） |
 
@@ -420,7 +420,7 @@ Claude 的行为按**模式**切换，避免单一人格覆盖所有场景（之
 owner 2026-08-04 确认实习已结束，指示实习内容全部归档。§5.0 优先级表移除 PPMR、SBS、TemplateApp 三行；§5.1 全量索引移除 IFSG / SBS / PPMR / TemplateApp 四行，均移入「已归档项目」表。其中 **TemplateApp 是暂时归档**（owner 先说除外、随后指示放回；可能后续继续开发，复活即移回）——免费 PG ≈2026-08-12 到期删库的硬墙仍需留意，sub-MD 保留在 projects/templateapp/ 未动。PPMR 5 份双语全稿留在 vault `02 - Areas/Career/SIP PPMR Reports/`，最终是否提交未确认。§1 学校行同步改为「实习已结束」。
 
 ### [2026-08-04] decision: ripple-site 官方宣传站定案 —— ripple-health-ai.com + ripple-site-puce.vercel.app
-owner 定案：这两个地址就是 Ripple 官方宣传站；Cloudflare 侧仍在部署中。此前 §5.0/§5.1 的「是否部署 / 绑域名悬而未决」口径作废，两处表格已同步更新。注意 repo 在 **toffemoon** 账号下（toffemoon/ripple-site），不在 yorhagengyue 名下——按 yorhagengyue/ripple-site 找会 404。另：`yorhagengyue/ripple` 是已退役的旧 web（心涟时代），不是现役三仓之一。
+owner 定案：这两个地址就是 Ripple 官方宣传站；~~Cloudflare 侧仍在部署中~~ **2026-08-05 owner 确认部署完成**，本机实证 ripple-health-ai.com 返回 200 已上线（vercel.app 备用地址从中国本机直连多次超时，与 windows/local.md 已知网络问题一致，非部署问题）。此前 §5.0/§5.1 的「是否部署 / 绑域名悬而未决」口径作废，两处表格已同步更新。注意 repo 在 **toffemoon** 账号下（toffemoon/ripple-site），不在 yorhagengyue 名下——按 yorhagengyue/ripple-site 找会 404。另：`yorhagengyue/ripple` 是已退役的旧 web（心涟时代），不是现役三仓之一。
 
 ### [2026-08-04] status: SBS Transit / Sarius 正式过线 —— 731 截止日已过
 owner 2026-07-25 原话「731 后就跟我没关系了」现已生效：不再排期、不再派活、不再当活跃项目引用。§5.0 优先级表已从「⏳ 2026-07-31 截止」改为「✅ 已结束」。
