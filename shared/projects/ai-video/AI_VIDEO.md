@@ -4,8 +4,8 @@
 > **仓库**：[`yorhagengyue/aitv-hollow-knight`](https://github.com/yorhagengyue/aitv-hollow-knight)（私有，2026-07-15 建）= **第一个正式 aitv 项目（空洞骑士）**，本机 clone `D:\ai\aitv-hollow-knight`。（旧"整合到 ai-video-agent"的设想作废）  
 > **机器**：当前仅 Windows（5080 16GB）— 见 [machines/windows/local.md](../../../machines/windows/local.md)  
 > **本地工作目录**：Windows 上 `D:\ai\`（见该目录 README.md）  
-> **优先级**：🔵 **长期**（owner 2026-07-25 定，见 [CLAUDE.md](../../CLAUDE.md) §5.0）  
-> **最后更新**：2026-07-25
+> **优先级**：🔵 **长期**（owner 2026-07-25 定，见 [CLAUDE.md](../../CLAUDE.md) §5.0；**2026-08-06 owner 补：优先级很低——「可能只是去了解一下东西」，随时可能被剔除，AI 勿主动排期/催断点**）  
+> **最后更新**：2026-08-06
 
 ---
 
