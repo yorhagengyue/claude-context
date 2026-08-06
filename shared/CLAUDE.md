@@ -2,7 +2,7 @@
 
 > **用途**：每次新会话开始时，Claude 自动读取本文件。这是整个 harness 系统的入口。
 > **维护**：§0 和 §1-7 由用户维护，§8 由 memory skill 自动追加。
-> **最后更新**：2026-08-05（§8 consolidation step 1+2：去重 + 同族合并 89→58 条，新建 [projects/ripple/RIPPLE.md](projects/ripple/RIPPLE.md)；TemplateApp PG 死线 owner 确认无需关注；此前 2026-08-04：实习线归档 + ripple-site 定案 + SBS 过线）
+> **最后更新**：2026-08-06（Ripple「零留存是头号问题」framing 作废——推广阶段线下为主、不着急；新项目 obsession 启动，solo，私有 repo yorhagengyue/obsession。此前 2026-08-05：§8 consolidation step 1+2：去重 + 同族合并 89→58 条，新建 [projects/ripple/RIPPLE.md](projects/ripple/RIPPLE.md)；TemplateApp PG 死线 owner 确认无需关注）
 
 ---
 
@@ -309,7 +309,7 @@ Obsidian Vault 是**两层**记忆体系的底层——存放重内容。关系�
 |------|------|--------|------|
 | **MoyuanIdea** | 愿景→架构 | AI-native 文化教育系统，三端，正在做技术架构决策 | → [MOYUAN.md](projects/moyuan/MOYUAN.md) |
 | **Hermes** | 主力 agent 系统 | 替代 YoRHa/Moltbot，集成 Gmail/Calendar/GitHub/Obsidian | → vault: Hermes - Overview |
-| **Ripple (core + iOS + site)**<br>🔴 **紧急**(§5.0) | **一个大项目三仓 2026-07-25 合并，不分开排期** · **✅ 已上架 App Store**（2026-07-14 过审自动发布；商店名 "Ripple Health AI"，免费，iOS 18.0+，Apple ID 6786394791；S21-S23 三轮拒-修全过，拒因 pattern 见 §8 07-09 条） · 后端 live · LLM=OpenAI `gpt-5.4-mini` 独家（数据不进中国） · Supabase Pro 已升（07-28，每日备份实证；PITR 不买） · Vercel 防火墙决定暂不做（hobby 档，cost-guard 应用层限流已够） · 两把 .p8 已通电（07-29，私钥 ~/Documents/RippleKeys/） · post-launch 已交付：A-loop（后台同步+监控+SIWA 撤销）/ B-loop（留存三件套：首日体验+晨间简报+第一方埋点漏斗，首份快照 **连表是最大漏水口**）/ C-loop（基线补强）/ D+E-loop（UI/AI 呈现全面重做，途中修掉 **SSE 从未真正流过**的全 app 最大 bug）/ build5-loop（评审会落地：标签错清账、全 app 左滑返回、四 tab 重构） · gate 文化：iOS 116/116 单测 + 20/20 UITests、core 173/173、逐轮截图实看 · **上架成功但零留存是头号问题**（07-28 生产实查：31 注册含 9 测试号、真人约 15，过去 7 天 0 人登录；瓶颈不在代码，与 §5.0 GTM 侧 onboarding+UX rework 互相印证） · SMTP 用个人 Gmail 发验证码，deliverability 隐患未处理 · 官网 ripple-health-ai.com 已上线（2026-08-05；repo=toffemoon/ripple-site） | → [RIPPLE.md](projects/ripple/RIPPLE.md)（sub-MD：决策历史/文档地图/待办） · 逐轮真源 `ripple-core/docs/LOOP-PROGRESS.md` |
+| **Ripple (core + iOS + site)**<br>🔴 **紧急**(§5.0) | **一个大项目三仓 2026-07-25 合并，不分开排期** · **✅ 已上架 App Store**（2026-07-14 过审自动发布；商店名 "Ripple Health AI"，免费，iOS 18.0+，Apple ID 6786394791；S21-S23 三轮拒-修全过，拒因 pattern 见 §8 07-09 条） · 后端 live · LLM=OpenAI `gpt-5.4-mini` 独家（数据不进中国） · Supabase Pro 已升（07-28，每日备份实证；PITR 不买） · Vercel 防火墙决定暂不做（hobby 档，cost-guard 应用层限流已够） · 两把 .p8 已通电（07-29，私钥 ~/Documents/RippleKeys/） · post-launch 已交付：A-loop（后台同步+监控+SIWA 撤销）/ B-loop（留存三件套：首日体验+晨间简报+第一方埋点漏斗，首份快照 **连表是最大漏水口**）/ C-loop（基线补强）/ D+E-loop（UI/AI 呈现全面重做，途中修掉 **SSE 从未真正流过**的全 app 最大 bug）/ build5-loop（评审会落地：标签错清账、全 app 左滑返回、四 tab 重构） · gate 文化：iOS 116/116 单测 + 20/20 UITests、core 173/173、逐轮截图实看 · 留存数字低但**不是问题（2026-08-06 owner 校准）**：当前处推广阶段，大量推广动作走线下、节奏刻意放慢，不着急——旧「上架成功但零留存是头号问题」framing 作废，见 §8 [2026-08-06] correction（历史数据：07-28 实查 31 注册含 9 测试号、真人约 15） · SMTP 用个人 Gmail 发验证码，deliverability 隐患未处理 · 官网 ripple-health-ai.com 已上线（2026-08-05；repo=toffemoon/ripple-site） | → [RIPPLE.md](projects/ripple/RIPPLE.md)（sub-MD：决策历史/文档地图/待办） · 逐轮真源 `ripple-core/docs/LOOP-PROGRESS.md` |
 | **YoRHa-A2** | 阶段性团队项目 · 进行中;**当前唯一焦点(2026-06-27 战略会「188B Rangoon Rd」)= 找 OC 用户 + 打磨 UX**,量化用 token 三指标(人数/总 token/token每人),成就系统/开发者模式已否/暂缓 | 三线分工:耿越(引擎/后端/战略,引擎核心最终权)+ 雨飞(前端 + 找人)+ Zicheng(短视频);**最终目标 = 咨询网站(conversion-site,仍 concept)**,路上做子项目(ai-interactive-story 引擎[现主线] / 短视频引流);护城河 = 用 AI 机制解释人性。**⚠️ 2026-07-08 引擎线终极目标正式命名 [Inception](projects/yorha-a2/sub-projects/inception/INCEPTION.md) —— 把任何书变可进入 / 多玩家共建 / 可 fork 的活世界(每个 NPC 独立 subagent),当前引擎只是通往它的中间站,底层只 Gengyue 本人做。** 真源 = yorha-a2-team/decisions + 2026-06-27 战略会 note。<br>synced 2026-07-08 | → [YORHA-A2.md](projects/yorha-a2/YORHA-A2.md) hub · [WORKING-MODE.md](projects/yorha-a2/WORKING-MODE.md) 工作模式 |
 | **ai-video(视频创作线)** | 🔄 **2026-07-15 完全重启**(旧"AI 代创作"产物已全删) | 做电影感 AI 短片(mxshell 路线)。**Claude 角色红线见 §8 [2026-07-15] 条**:只做搜资源/教传统影视知识+技术支持,不得从 0 写提示词,libtv 等 agent/MCP 只读为主,规则文档入目录须 owner 确认。工作台=Windows `D:\ai\`(工具/成本/VIP 规避见项目文档,仍有效)。**首个正式项目 = [aitv-hollow-knight](https://github.com/yorhagengyue/aitv-hollow-knight)(空洞骑士,私有 repo,2026-07-15 建)** | → [AI_VIDEO.md](projects/ai-video/AI_VIDEO.md) · 机器档案 [windows/local.md](../machines/windows/local.md) |
 | **Slay the Spire 2 AI** | 半成品 | PPO + 遗传超参数进化，离自主打游戏还有距离 | GitHub/slay_the_spire |
@@ -407,6 +407,13 @@ Claude 的行为按**模式**切换，避免单一人格覆盖所有场景（之
 ## 8. 记忆追加区
 
 > 由 memory skill 自动追加，按时间倒序。最近一次 consolidation：2026-08-05 step 1+2（step 1 删重复/过期；step 2 同族合并：Ripple loop 35 条 insight 并为 7 条家族条目——验证/SwiftUI/数据摄取/呈现/系统设计 + 自驱 loop 纪律，项目状态与决策沉到 [projects/ripple/RIPPLE.md](projects/ripple/RIPPLE.md)，逐轮案例以 `ripple-core/docs/LOOP-PROGRESS.md` 为真源；144KB→103KB、89 条→58 条）；上一次全量 consolidation：2026-05-25（NAISC pivot 后，~30 条 → ~21 条）。
+
+### [2026-08-06] correction: Ripple「零留存是头号问题」framing 作废 —— 推广阶段线下为主、慢慢来、不着急
+owner 校准：此前「上架成功但零留存是头号问题」（§5.1 + RIPPLE.md，源自 2026-07-28 生产实查）的判断**作废**。当前 Ripple 处于**推广阶段**，很多推广动作走**线下**，整体节奏是慢慢来——留存数字低在预期内，**不是问题、不着急**。
+**给后续读到的 AI**：AI 对时间没有概念。读到旧条目里「头号问题」「死循环」这类措辞时，**不要当成当前危机**——不要催 owner、不要据此反推优先级、不要擅自排活。GTM 侧 onboarding + UX rework 仍在待办，但先后与节奏由 owner 定。§5.1 与 RIPPLE.md 已就地改标；LOOP-PROGRESS.md 等历史文档里的旧 framing 不再回改，以本条为准。
+
+### [2026-08-06] project: 新项目 obsession 启动 —— owner 个人健康/工作体验工具，solo，只在 yorha-a2 个人文件夹
+实习线归档（2026-08-04）后 owner 开新项目 **obsession**：旨在帮 owner 健康生活、提升工作体验的工具等（具体形态待 owner 定）。工作模式：**只有 owner 一人干**；一切内容只放私有 repo **`yorhagengyue/obsession`**（本地 `~/Desktop/obsession/`，2026-08-06 建）——**不进 claude-context `shared/projects/`、不进 yorha-a2 团队共享区/状态板、不进 Linear 等项目管理工具**。后续 AI 不要"帮忙"把它登记进任何共享索引，也不要替它立团队流程；本条只是存在性指针，详情以该 repo 为准。
 
 ### [2026-08-04] status: TP 实习结束 —— 实习线项目全部归档（PPMR / SBS / IFSG / Hyperion / TemplateApp）
 owner 2026-08-04 确认实习已结束，指示实习内容全部归档。§5.0 优先级表移除 PPMR、SBS、TemplateApp 三行；§5.1 全量索引移除 IFSG / SBS / PPMR / TemplateApp 四行，均移入「已归档项目」表。其中 **TemplateApp 是暂时归档**（owner 先说除外、随后指示放回；可能后续继续开发，复活即移回）——免费 PG 删库/部署 owner 2026-08-05 确认无需关注，sub-MD 保留在 projects/templateapp/ 未动。PPMR 5 份双语全稿留在 vault `02 - Areas/Career/SIP PPMR Reports/`，最终是否提交未确认。§1 学校行同步改为「实习已结束」。

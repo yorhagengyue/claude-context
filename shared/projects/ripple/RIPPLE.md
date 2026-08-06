@@ -12,7 +12,7 @@
 **阶段**：已上架运营期。**✅ 2026-07-14 过审自动发布**（第三次提交成功；商店名 "Ripple Health AI"，免费，iOS 18.0+，Apple ID 6786394791）。官网 **ripple-health-ai.com 已上线**（2026-08-05 实证 200；备地址 ripple-site-puce.vercel.app）。
 **团队**：owner（Gengyue）+ Claude（2026-08-01 起授权做 ripple-ios 产品/UI 方向决策，见决策历史）。
 
-**头号问题 = 上架成功但零留存**（2026-07-28 生产库实查）：31 注册含 9 测试号、真人约 15（Apple 7 人全登录成功）；**过去 7 天 0 人登录**；07-18 后零新增；有真 Apple Watch 数据的仅 2-3 人。瓶颈不在代码，与 GTM 侧 onboarding + UX rework 是同一个死循环（不开 app→无数据→无 anomaly→无通知→更不开）。
+**留存现状（2026-08-06 owner 校准：不是问题，旧「头号问题」framing 作废）**：2026-07-28 生产库实查 31 注册含 9 测试号、真人约 15（Apple 7 人全登录成功）；过去 7 天 0 人登录；07-18 后零新增；有真 Apple Watch 数据的仅 2-3 人。**这些数字在预期内**——当前处推广阶段，大量推广动作走线下，节奏刻意放慢，不着急。后续 AI 读到旧记录（含 LOOP-PROGRESS.md 同期内容里的「头号问题/死循环」措辞）不要当成当前危机，以本条与 §8 [2026-08-06] correction 为准。
 
 ## 系统定义
 
@@ -56,7 +56,7 @@
 
 ## 当前阻塞点 / 待办
 
-1. **GTM 侧承诺的 onboarding flow + UX rework**（§5.0 待办主线，与零留存同一问题）
+1. **GTM 侧承诺的 onboarding flow + UX rework**（§5.0 待办主线；推广期正常待办、不是救火——留存校准见上方）
 2. OpenAI 用量上限（owner 自有门规，agent 不动）
 3. `ripple-ios/docs/UI-POLISH-TODO.md` 视觉精修（交人）
 4. SMTP 用个人 Gmail（gengyue081）发陌生人验证码，deliverability 隐患未处理

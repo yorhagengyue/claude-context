@@ -33,6 +33,7 @@
 | 本仓库 clone | `C:\Users\gengy\Desktop\claude-context\`（即本文件所在仓库；2026-08-04 更正：旧记录 `D:\repos\claude-context\` 已不存在） |
 | 项目 repos | 各 repo 平铺在 `C:\Users\gengy\Desktop\` 根（claude-context / ripple-core / ripple-ios / yorha-a2-team / aitv-hollow-knight + ripple-site〔在 toffemoon 账号下〕，2026-08-04 补齐） |
 | Agent 入口 | `C:\Users\gengy\Desktop\AGENTS.md` — 指向 `shared/CLAUDE.md` 宪法（Kimi Code CLI 等读 AGENTS.md 的 agent 用，2026-08-04 建） |
+| Obsidian Vault | `C:\Users\gengy\Documents\YoRHa's Brain` — **本机 vault 名不是 "Obsidian Vault"**；详见下方「Obsidian Vault」节（2026-08-05 登记） |
 
 ---
 
@@ -82,3 +83,13 @@ Start-Process -FilePath "D:\tools\miniforge3\Scripts\conda.exe" `
 - Wan 14B Video LoRA 训练（24GB+ 才行，去租 H100）
 - 720p+ 高分辨率视频生成（5080 16GB 临界）
 - 长视频生成 SkyReels V2 14B（要 H100 80GB；1.3B 可在 5080 跑）
+
+---
+
+## Obsidian Vault（2026-08-05 登记）
+
+- **路径**：`C:\Users\gengy\Documents\YoRHa's Brain` —— §0.7 的 `Vault/` 前缀在本机解析到此。433 篇笔记，结构 00-06 + 07-books / 08-客户 / 09-视频
+- Obsidian 1.13.4（`C:\Program Files\Obsidian`），账号 gengyue081@gmail.com 已登录，Sync 核心插件已启用
+- 内容现状：最新文件止于 2026-08-04（当天一次性落盘，推测从 Mac 手动复制）；此后 Mac 侧更新未到过本机
+- **同步未闭合**：vault `.obsidian/` 内无 `sync.json`，无活跃同步证据；注意 Obsidian Sync 只在 app 运行时同步（关着就累积滞后）；本机网络对境外服务间歇不稳（github.com 超时、api.obsidian.md 当前可达）
+- 待 owner 确认：Mac 侧实际同步机制是 Obsidian Sync 还是 rsync（macbook/local.md「Obsidian Vault 同步」节记的是 rsync，与本机 vault 开着的 Sync 插件不一致）
