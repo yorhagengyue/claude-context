@@ -93,3 +93,18 @@ Start-Process -FilePath "D:\tools\miniforge3\Scripts\conda.exe" `
 - 内容现状：最新文件止于 2026-08-04（当天一次性落盘，推测从 Mac 手动复制）；此后 Mac 侧更新未到过本机
 - **同步未闭合**：vault `.obsidian/` 内无 `sync.json`，无活跃同步证据；注意 Obsidian Sync 只在 app 运行时同步（关着就累积滞后）；本机网络对境外服务间歇不稳（github.com 超时、api.obsidian.md 当前可达）
 - 待 owner 确认：Mac 侧实际同步机制是 Obsidian Sync 还是 rsync（macbook/local.md「Obsidian Vault 同步」节记的是 rsync，与本机 vault 开着的 Sync 插件不一致）
+
+---
+
+## 本地视频转录 pipeline（2026-08-07 实测跑通）
+
+**组合**：ffmpeg 抽 16k 单声道 wav → faster-whisper large-v3（GPU fp16）转录 → CAMPPlus 声纹嵌入（funasr，ModelScope 下载国内快）+ sklearn Agglomerative 聚类分人。工作脚本在 `obsession/tmp/meeting-20260806/`（transcribe_chunk.py / merge_and_diarize.py），模型 `fw-large-v3/`（3GB）已落盘可复用。
+
+实测坑（都是真踩过的）：
+
+- **faster-whisper 模型下载**：HF 直连不行，`hf-mirror.com` + `curl -C -` 断点续传可用（3GB model.bin 约 20 分钟）。
+- **必须 `condition_on_previous_text=False`**：否则背景音乐/视频声触发幻觉后会级联污染后续真实语音（实测一段「明镜栏目」幻觉盖掉 6 分钟真会议内容）；再配关键词过滤器（明镜/订阅打赏/Amara/字幕志愿者/优优独播）兜底。
+- **并发上限 = 2 个 fp16 large-v3 worker**（16GB 显存）：4 并发会无报错静默崩（原生层 OOM，log 全空）；int8_float16 在 Blackwell 上报 CUBLAS_STATUS_NOT_SUPPORTED。Git Bash 里 `(cmd &)` 后台进程会随 shell 退出被杀，得用任务系统后台跑。
+- **funasr 的 sond 说话人分离 pipeline 在 Python 3.13 上 import 链断裂不可用**；但 CAMPPlus 嵌入模型（`iic/speech_campplus_sv_zh-cn_16k-common`）正常 → 用「whisper 段即语音段 + 嵌入 + 聚类」替代，省掉独立 VAD。聚类阈值 0.8（cosine, average linkage）实测 4 人会议分出 4 类、质心 sim 0.08-0.3；阈值 0.5 会碎成 70+ 类。
+- **torchaudio 必须跟 torch 同版本**（2.8.0 配 2.8.0），高了直接 WinError 127。
+- 验证辅助：silencedetect 找有声区 + ffmpeg 截屏看画面（会议是否真的还在开），比猜音频内容快。
