@@ -9,7 +9,7 @@
 
 ## 当前状态
 
-**阶段**：已上架运营期。**✅ 2026-07-14 过审自动发布**（第三次提交成功；商店名 "Ripple Health AI"，免费，iOS 18.0+，Apple ID 6786394791）。官网 **ripple-health-ai.com 已上线**（2026-08-05 实证 200；备地址 ripple-site-puce.vercel.app）。
+**阶段**：已上架运营期。**✅ v1.1.0 (7) 2026-08-04 过审发布**（0730 评审会 P0-P5 全量；08-02 深夜提交，一拒零复发；iTunes Lookup 实证 currentVersionReleaseDate 2026-08-04T05:55:41Z）；v1.0 (4) 2026-07-14 首发（商店名 "Ripple Health AI"，免费，iOS 18.0+，Apple ID 6786394791）。**zh build 1.1.0 (8) 已建成全绿、未提审**——随五分熟版本下次提审（ASC zh 元数据未做）。官网 **ripple-health-ai.com 已上线**（2026-08-05 实证 200；备地址 ripple-site-puce.vercel.app）。
 **团队**：owner（Gengyue）+ Claude（2026-08-01 起授权做 ripple-ios 产品/UI 方向决策，见决策历史）。
 
 **留存现状（2026-08-06 owner 校准：不是问题，旧「头号问题」framing 作废）**：2026-07-28 生产库实查 31 注册含 9 测试号、真人约 15（Apple 7 人全登录成功）；过去 7 天 0 人登录；07-18 后零新增；有真 Apple Watch 数据的仅 2-3 人。**这些数字在预期内**——当前处推广阶段，大量推广动作走线下，节奏刻意放慢，不着急。后续 AI 读到旧记录（含 LOOP-PROGRESS.md 同期内容里的「头号问题/死循环」措辞）不要当成当前危机，以本条与 §8 [2026-08-06] correction 为准。
