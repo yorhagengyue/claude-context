@@ -408,6 +408,11 @@ Claude 的行为按**模式**切换，避免单一人格覆盖所有场景（之
 
 > 由 memory skill 自动追加，按时间倒序。最近一次 consolidation：2026-08-05 step 1+2（step 1 删重复/过期；step 2 同族合并：Ripple loop 35 条 insight 并为 7 条家族条目——验证/SwiftUI/数据摄取/呈现/系统设计 + 自驱 loop 纪律，项目状态与决策沉到 [projects/ripple/RIPPLE.md](projects/ripple/RIPPLE.md)，逐轮案例以 `ripple-core/docs/LOOP-PROGRESS.md` 为真源；144KB→103KB、89 条→58 条）；上一次全量 consolidation：2026-05-25（NAISC pivot 后，~30 条 → ~21 条）。
 
+### [2026-08-07] project+insight: dad 助手换到 deepseek-v4-flash-0731（4sapi.org）—— 换端点时要审计**所有**写死模型名的地方
+Hermes dad profile 从 `claude-sonnet-4-6` @ `4sapi.com/v1` 换成 **`deepseek-v4-flash-0731` @ `https://4sapi.org/v1`**（新 key `sk-5q40…`）。改的三处：`profiles/dad/config.yaml` 的 `model.{default,base_url,api_key}`、**`compression.summary_model`**、以及 `profiles/dad/.env` 的 `CUSTOM_API_KEY`。备份 `config.yaml.bak.20260807` / `.env.bak.20260807`，`launchctl kickstart -k gui/501/ai.hermes.gateway-dad` 重启后端到端验过（真实一次 `-z` 对话 + tool_calls 探针 + weixin 仍 connected）。
+**真正值得记的一条**：新 key 的 `/v1/models` **只返回 1 个模型**。而 `compression.summary_model` 还写着 `claude-sonnet-4-6` 且 `summary_provider: main` —— 只改 `model.default` 的话，日常对话正常，**只有上下文压缩触发的那一刻才 404**，而那是长会话里最不容易察觉的地方（dad 是长期健康追踪，压缩必然触发）。**How to apply**：换 LLM 端点/密钥后，先 `curl /v1/models` 看这把 key 到底供几个模型，再 `grep` 配置里所有出现旧模型名的键（compression / delegation / auxiliary.* / smart_model_routing.cheap_model / fallback_model），逐个对账 —— **"主模型能跑" 不构成 "全部路径能跑"**。
+**Hermes 具体知识（下次别再翻源码）**：bare `provider: custom` + 显式 `base_url` 时，运行时 api_key **只认 config.yaml 的 `model.api_key`**（`runtime_provider.py` 的 direct-alias 分支），`.env` 的 `CUSTOM_API_KEY` **只喂 CLI `/model` 列表拉取**那条路 —— 两处不一致时不会报错，只会让模型列表拉空。所以两处都要改。dad 的 `auth.json` 里 `active_provider: openai-codex` 是**死值**，config.yaml 的 provider 优先，别被它误导。
+
 ### [2026-08-06] correction: Ripple「零留存是头号问题」framing 作废 —— 推广阶段线下为主、慢慢来、不着急
 owner 校准：此前「上架成功但零留存是头号问题」（§5.1 + RIPPLE.md，源自 2026-07-28 生产实查）的判断**作废**。当前 Ripple 处于**推广阶段**，很多推广动作走**线下**，整体节奏是慢慢来——留存数字低在预期内，**不是问题、不着急**。
 **给后续读到的 AI**：AI 对时间没有概念。读到旧条目里「头号问题」「死循环」这类措辞时，**不要当成当前危机**——不要催 owner、不要据此反推优先级、不要擅自排活。GTM 侧 onboarding + UX rework 仍在待办，但先后与节奏由 owner 定。§5.1 与 RIPPLE.md 已就地改标；LOOP-PROGRESS.md 等历史文档里的旧 framing 不再回改，以本条为准。
