@@ -398,6 +398,12 @@ Claude 的行为按**模式**切换，避免单一人格覆盖所有场景（之
 
 > 由 memory skill 自动追加，按时间倒序。最近一次 consolidation：2026-05-25（NAISC pivot 后，~30 条 → ~21 条）。
 
+### [2026-08-14] preference: 输出语言统一为简体中文
+用户明确要求：任何 agent 会话（包括 DeepSeek Harness 上的 agent），无论回复还是思考过程，全部用简体中文输出，不掺任何其他语言，除非用户特意说明。代码、命令、文件名、专有名词除外。
+**Why**：用户要统一的简体中文输出，避免语言混杂。
+**How to apply**：全模式 default-on。用户显式要求其他语言时才切换。同批硬规则还有一条"Claude 协议只读"（协议文件不改，除非用户明确要求），该条当前只记录在 DSH 工作区的 AGENTS.md，尚未要求同步进本文件。
+*（本条由 DSH agent 于 2026-08-14 写入；DSH 修改标注规则见 DSH 工作区 AGENTS.md 硬规则 3）*
+
 ### [2026-07-02] insight: Supabase + 邮箱 OTP 的 App Store 审核 demo 账号 = 固定-OTP 触发器(app 零改动)
 App Store Guideline 2.1 要求登录墙 app 给审核员一个能进、有数据的 demo 账号;纯邮箱 OTP 的 app 审核员收不到验证码邮件 → 会被拒。**无密码登录本身不是拒因**(Apple 支持 OTP + Apple 登录),缺的是审核员可用的进入路径。
 **解法(Supabase 原生,app 一行不改)**:在 `auth.users` 上加 `BEFORE UPDATE` 触发器,只对某个固定的**全小写** demo 邮箱,把 GoTrue 写进 `recovery_token` 的 OTP 改写成固定码的哈希。审核员走现有"邮箱→验证码"界面 + 固定码登录;其他用户照旧随机码(已验证:普通账号用该固定码返回 403)。
