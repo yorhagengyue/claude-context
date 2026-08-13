@@ -121,12 +121,13 @@ Claude 在会话开始时自动读取 `shared/CLAUDE.md`（通过 Desktop symlin
 
 （暂无）
 
-### Step 5.5: 加载 Hermes Agent 上下文
+### ~~Step 5.5: 加载 Hermes Agent 上下文~~ ⛔ 已废除（2026-07-25）
 
-读取 `shared/HERMES.md`，获取 Hermes Agent 的记忆导出。注意：
-- Hermes 和 Claude 是**两套独立的记忆系统**
-- HERMES.md 是 Hermes 侧的快照，供用户审阅和 Claude 参考
-- Claude 不直接管理 Hermes memory（Hermes 通过自己的 config.yaml 注入）
+**本步骤不再执行。** owner 定「Hermes 的记忆文件不需要了，让他去用 Claude 的记忆」：
+- `shared/HERMES.md` 已归档到 `archive/hermes-memory-export-retired-20260725.md`，**不要读它**（内容大面积过期）。
+- **Hermes 不再有独立记忆层**，它跟 Claude 共用 `shared/CLAUDE.md`；仍在活的 Hermes 事实（dad/xirui profile、两个 paused cron）见 CLAUDE.md §8 [2026-07-25] 条。
+- ⏸ **仅在 Mac 上**还需 owner 改 `~/.hermes/config.yaml`，把 user profile 注入源指向 clone 的 `claude-context/shared/CLAUDE.md`。
+- ⚠️ Claude Code 的 per-machine auto-memory（`~/.claude/projects/<slug>/memory/`）是**本机私有、不跨机、不进 git**，Hermes 读不到——跨工具共享只能走本仓。
 
 ### Step 5.6: 加载 Obsidian Vault 上下文
 
@@ -136,7 +137,7 @@ Claude 在会话开始时自动读取 `shared/CLAUDE.md`（通过 Desktop symlin
 2. 如果存在，Vault 可作为详细笔记源使用
 3. 如果不存在，提示用户安装 Obsidian 并同步 Vault
 
-Vault 是三层记忆体系的底层（见 CLAUDE.md §0.7），当需要详细内容时读取。
+Vault 是**两层**记忆体系的底层（见 CLAUDE.md §0.7；2026-07-25 起原 Hermes 层已撤），当需要详细内容时读取。
 
 ### Step 5.7: 配置 Cowork 设置
 
@@ -174,7 +175,7 @@ ln -sf <REPO_DIR>/shared/CLAUDE.md ~/Projects/<project>/CLAUDE.md
 Claude Harness 初始化完成：
 - 机器：<name>
 - CLAUDE.md: ✓ (§8 共 N 条记忆，最新: [日期] [tag])
-- HERMES.md: ✓/✗
+- （HERMES.md 检查项已于 2026-07-25 移除 —— Hermes 无独立记忆层）
 - 项目：<列出所有项目及状态>
 - Skills: <已安装/未安装>
 - MCP: <已连接/未连接>
@@ -411,7 +412,7 @@ rmdir shared/projects/<name>
 |------|------|--------|----------|
 | `SETUP.md` | 操作手册（新增/初始化步骤） | 用户 + Claude（需确认） | 新增资源、规则变更时 |
 | `shared/CLAUDE.md` | 用户 profile + 记忆 + harness 规则 | Claude（auto-memory default-on） | sediment-worthy 内容、规则变更时 |
-| `shared/HERMES.md` | Hermes Agent 系统状态 + 关键变更 | Claude + 用户 | Hermes 子系统变更时 |
+| ~~`shared/HERMES.md`~~ | **2026-07-25 退役** → `archive/hermes-memory-export-retired-20260725.md`；Hermes 子系统变更改写 `shared/CLAUDE.md` §8 | — | — |
 | `shared/credentials.md` | 账号密码 | 用户 | 新增/变更凭据时 |
 | `shared/cowork/settings.json` | 全局设置（plugins, thinking） | 用户 | 插件/设置变更时 |
 | `shared/cowork/settings.local.json` | 项目级权限 | 用户 | 权限变更时 |

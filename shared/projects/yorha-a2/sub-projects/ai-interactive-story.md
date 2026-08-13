@@ -6,7 +6,7 @@ owner: 内容/前端 = Yufei (雨飞) · 引擎核心 = Gengyue (架构最终权
 repo: https://github.com/toffemoon/ai-interactive-story (独立 repo · 卫星模式挂进 yorha-a2-team)
 local: ~/Desktop/ai-interactive-story
 status: 前后端共存 · 前端已 cutover 到 frontend-next · YoRHa-A2 当前主线
-last-updated: 2026-07-08
+last-updated: 2026-07-11
 upstream: ../YORHA-A2.md
 working-mode: ../WORKING-MODE.md
 ---
@@ -18,6 +18,13 @@ working-mode: ../WORKING-MODE.md
 > **owner**：内容 / 故事 / 前端 / 素材 / 部署 = 雨飞；**引擎核心逻辑（记忆 / 状态机 / 召回 / abstention / story 引擎）= Gengyue**，设计 + 合 main 都归他（2026-06-04 拍板，见 repo `decisions/2026-06-04-architecture-ownership.md`）。主理人判断雨飞架构判断力不足时，Claude 在该 repo 当技术架构负责人、从 0 思考（见 shared/CLAUDE.md §8 [2026-05-31]）。
 >
 > **repo 是独立的**：用"卫星模式"挂进团队，不并进 claude-context。
+
+## 现状（2026-07-11 增补）
+
+- **07-10 受控 Codex 本机模式上线**（PR #150–#157）：默认仍 Render 后端 DeepSeek；获授权账户可用本机 Codex（Windows 一键桥接 + ChatGPT OAuth，凭证不进 app/Render），主故事真实 SSE；唯一超管 `SUPERADMIN_EMAIL=gengyue081@gmail.com`。同日 YOR-209/210 首页 + 探索页 UI/性能（主 JS 568→394 kB）。见 repo `docs/LOCAL-CODEX-PROXY.md`、`decisions/2026-07-10-browser-local-codex-proxy.md`。
+- **07-11 一批（PR #158，`Fixes YOR-211`）**：①**DB 连接池防僵死硬化**（现场曾 10/10 连接 idle in transaction 僵死整站 → session 级超时 + 池参数 env 化 + 借出探活 + TCP keepalive；DB 异常统一 503；`/api/health` 1s 快速 ping + 池指标；`tests/test_db_health.py`，25 passed）；②**导航 rail 化**（桌面 icon rail + 悬停展开 StaggeredMenu，手机 PillNav）；③探索页 ShowcaseGrid 货架；④创作页 react-bits 触点。文档 `docs/2026-07-11-db-pool-hardening.md` + `docs/2026-07-11-nav-rail-and-showcase-pass.md`。
+- **创作页「卡即界面」整页重做进行中**：计划已批（repo `docs/2026-07-11-create-card-canvas-plan.md`，仿 template「文档即界面」交互骨架），在分支 `gengyue/create-canvas-rework` 上跑切片 loop。
+- ⚠️ **部署盲区（repo 文档未写）**：Render 该服务 **Auto-Deploy 已关**，merge 后须手动 / API 触发（service `srv-d8fq43p9rddc73ap5gh0`）。
 
 ## 现状（2026-07-08）
 

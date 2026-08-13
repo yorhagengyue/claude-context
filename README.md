@@ -20,10 +20,14 @@ chmod +x machines/<machine-name>/setup.sh
 
 可用机器名：`mac-mini` (主力), `macbook`
 
-## 三层记忆体系
+## 两层记忆体系
+
+> 2026-07-25 起由三层降为两层：owner 定「Hermes 的记忆文件不需要了，让他去用 Claude 的记忆」，
+> 原 `shared/HERMES.md` 已归档到 `archive/hermes-memory-export-retired-20260725.md`，
+> **Hermes 改读本仓 `shared/CLAUDE.md`**。详见 CLAUDE.md §0.7 + §8 [2026-07-25]。
 
 ```
-CLAUDE.md / Hermes memory     ← 轻量指针、偏好、决策摘要
+CLAUDE.md（本仓 shared/）      ← 轻量指针、偏好、决策摘要
          ↓ 指向
 Obsidian Vault (Vault/)       ← 重内容（项目笔记、framework 详细库、
                                  时间线、知识沉淀）
@@ -34,9 +38,8 @@ Obsidian Vault (Vault/)       ← 重内容（项目笔记、framework 详细库
 
 | 层 | 存储 | 管理者 |
 |----|------|--------|
-| CLAUDE.md §8 + sub-MD | 本仓库 shared/ | Claude Code |
-| Hermes memory | `~/.hermes/`（含 `$OBSIDIAN_VAULT_PATH`） | Hermes Agent |
-| Obsidian Vault | `Vault/`（默认 `~/Documents/Obsidian Vault/`） | 用户 + Hermes (自动写入) |
+| CLAUDE.md §8 + sub-MD | 本仓库 shared/ | Claude Code（Hermes 亦读此层） |
+| Obsidian Vault | `Vault/`（默认 `~/Documents/Obsidian Vault/`） | 用户 + Hermes (自动写入 `06 - Auto/`) |
 
 ## 新机器需要配置的完整清单
 
@@ -65,17 +68,17 @@ Obsidian Vault (Vault/)       ← 重内容（项目笔记、framework 详细库
 claude-context/
 ├── shared/
 │   ├── CLAUDE.md          ← 宪法 + 用户上下文 + 记忆 §8
-│   ├── HERMES.md          ← Hermes Agent 记忆导出
+│   │                        (HERMES.md 已于 2026-07-25 退役 → archive/)
 │   ├── credentials.md     ← 凭据
 │   ├── cowork/            ← Claude Code 设置
 │   ├── skills/            ← 自建 skills (memory, douyin-transcribe)
 │   ├── mcp/               ← MCP 配置（暂无）
 │   ├── assets/            ← 跨项目复用资产（wellness-rule-library 等 4 个）
-│   └── projects/          ← 项目速报（moyuan / templateapp / xinlian / yorha-a2）
+│   └── projects/          ← 项目速报（moyuan / templateapp / xinlian / yorha-a2 / ai-video）
 ├── machines/
 │   ├── mac-mini/          ← 主力 (setup.sh + local.md 完整)
 │   ├── macbook/           ← setup.sh + local.md
-│   └── windows/           ← 不使用
+│   └── windows/           ← AI 视频本地工作站（2026-05-18 起，见 windows/local.md）
 └── archive/               ← 记忆归档
 ```
 
@@ -96,7 +99,7 @@ cd ~/Desktop/claude-context && git pull
 | 文件 | 给谁看 | 说明 |
 |------|--------|------|
 | shared/CLAUDE.md | Claude | 宪法 §0 + 用户 profile §1-7 + 记忆 §8 |
-| shared/HERMES.md | 用户/Claude | Hermes 记忆快照，和 CLAUDE.md 是两套体系 |
+| ~~shared/HERMES.md~~ | — | **2026-07-25 退役** → `archive/hermes-memory-export-retired-20260725.md`；Hermes 改读 shared/CLAUDE.md |
 | machines/*/local.md | Claude | 机器特有配置 (含 Google/Hermes/Obsidian 路径) |
 | machines/*/setup.sh | 用户 | 新机器初始化脚本 (8步检查) |
 | SETUP.md | Claude | 操作手册 (新增项目/skill/机器的步骤) |

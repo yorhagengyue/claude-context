@@ -126,6 +126,13 @@ Cron Jobs 是 Hermes 实例级别的，不跨机器同步。新机器需要时�
 - ~/.ssh/config: KeepAlive, ControlMaster 多路复用, 压缩
 - 无本地密钥文件 (使用 GitHub PAT / OAuth)
 
+## 显示器
+
+- **机型**：Mac mini M4 (Mac16,10)，16 GB，10 核 GPU。**无内置屏**，显示器走 **HDMI**（Thunderbolt 口全空）
+- **显示器真实规格**：**2560×1440 @ 144Hz**（依据：`~/Library/Preferences/ByHost/com.apple.windowserver.displays.*.plist` 里存有 2560x1440@144 / 2560x1440@60 Scale2 / 1920x1080@60 等历史配置）
+- **已知故障模式（2026-07-28 遇到）**：EDID 没被读到 → macOS 只认出一组 CEA 电视模式（720x480/720x576/1280x720/1920x1080，仅 50/60Hz），并把自己当成 "12 inch external screen"、`ProductID=0 / ManufacturerID=00-00-00`，默认落到 **1280×720@50**。**不是软件设置问题，是 HDMI 链路没握手**：拔插 HDMI 两端（显示器保持开机）→ 直连不过切换器/扩展坞 → 换 Ultra High Speed 线 → 显示器 OSD 里把该 HDMI 口设成 2.0/Enhanced。
+- **诊断命令**：`displayplacer list`（brew 已装）看当前可用模式；`system_profiler SPDisplaysDataType` 看 EDID 是否为空。正常时应能看到 2560x1440 144Hz。
+
 ## 备注
 
 - Clash Verge 代理工具在使用

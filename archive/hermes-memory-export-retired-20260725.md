@@ -1,4 +1,16 @@
-# HERMES.md — Hermes Agent 记忆导出
+# HERMES.md — Hermes Agent 记忆导出（**已退役 · 历史存档**）
+
+> # ⛔ 已退役（2026-07-25）
+>
+> owner 决定：**撤掉独立的 Hermes 记忆层，Hermes 改读 `claude-context`（本仓 `shared/CLAUDE.md`）**。
+> 本文件自 `shared/HERMES.md` 移入 `archive/`，**只作历史存档，不再维护、不要据此操作**。
+>
+> - **仍在活的事实已抢救到** `shared/CLAUDE.md` §8 的 `[2026-07-25]` 条（dad/xirui profile、两个 paused cron、dad 子系统 2026-05-25 升级要点）。
+> - **本文件内容大面积过期**：§1.5「活跃项目」把 IFSG / SBS Transit / MoyuanIdea 列为活跃（SBS 已定 2026-07-31 截止、MoyuanIdea 04-03 后零更新）；§1.4 的 Codex 主力工具口径亦已被 §8 [2026-05-25] 纠正；§9 心涟 peer console 随心涟退役作古。
+> - **§4「编辑 §1 要同步回 `~/.hermes/config.yaml`」的约定一并作废。**
+> - ⏸ owner 需在 **Mac** 侧改 `~/.hermes/config.yaml`，把 user profile 注入源指向 clone 的 `claude-context/shared/CLAUDE.md`。
+
+---
 
 > **用途**：Hermes（非 Claude Code）的记忆系统快照，供用户审阅和编辑。
 > **来源**：Hermes user profile + memory store
@@ -42,7 +54,7 @@
 - **IFSG**：企业财务报表生成器，Angular+Nix+PostgreSQL，4人团队（TP Researcher 工作内容）
 - **SBS Transit**：多仓库项目，Phase2+Webapp+WhisperAPI+GenAI（TP Researcher 工作内容，当前最活跃）
 - **MoyuanIdea**：AI 文化教育系统，V2 愿景→架构阶段
-- **Ripple**（NAISC 续作）：NAISC Workato 已结束（2026-05-22 决赛 · second runner-up · 已归档）。续作 Ripple：后端 `ripple-core`（ripple-core.vercel.app · **LLM=OpenAI `gpt-5.4-mini` 独家**，2026-07-02 从 DeepSeek 切走）+ 原生 iOS `ripple-ios` v1 已重做完成（SwiftUI），**v1.0 (1) 已于 2026-07-02 提交 App Store 审核**（自动发布，等 24-48h；唯一未真机验证 = Sign in with Apple。详见 claude-context §8 / `ripple-ios/docs/APP-STORE-SUBMISSION.md`）
+- **Ripple**（NAISC 续作）：NAISC Workato 已结束（2026-05-22 决赛 · second runner-up · 已归档）。续作 Ripple：后端 `ripple-core`（ripple-core.vercel.app · **LLM=OpenAI `gpt-5.4-mini` 独家**）+ 原生 iOS `ripple-ios`（SwiftUI）——**"Ripple Health AI" v1.0 已于 2026-07-14 上架 App Store**（三提两拒后过审，Apple ID 6786394791；详见 `ripple-ios/docs/APP-STORE-SUBMISSION.md`）+ **官网 `toffemoon/ripple-site` = active web**（营销站，App Store 下载 CTA；旧 web 与 B1 功能型 SPA 均已弃，2026-07-21 定案）
 
 ### 1.6 当前身份
 - **TP Researcher**（不是 A*STAR 实习），工作内容是 IFSG 和 SBS Transit
