@@ -98,7 +98,9 @@ Start-Process -FilePath "D:\tools\miniforge3\Scripts\conda.exe" `
 
 ## 本地视频转录 pipeline（2026-08-07 实测跑通）
 
-**组合**：ffmpeg 抽 16k 单声道 wav → faster-whisper large-v3（GPU fp16）转录 → CAMPPlus 声纹嵌入（funasr，ModelScope 下载国内快）+ sklearn Agglomerative 聚类分人。工作脚本在 `obsession/tmp/meeting-20260806/`（transcribe_chunk.py / merge_and_diarize.py），模型 `fw-large-v3/`（3GB）已落盘可复用。
+**组合**：ffmpeg 抽 16k 单声道 wav → faster-whisper large-v3（GPU fp16）转录 → CAMPPlus 声纹嵌入（funasr，ModelScope 下载国内快）+ sklearn Agglomerative 聚类分人。
+
+**⚠️ 2026-08-13 更正落点**：当时那两个工作脚本在 `obsession/tmp/meeting-20260806/`，**已随 tmp/ 清掉，本机不复存在**；本机也没有 torch/funasr/sklearn，ModelScope 缓存不存在（声纹那一半要重装环境+重下模型）。**仍在的**：faster-whisper large-v3 权重 2.88GB，在 HF 缓存 `D:\ai\hf-cache\hub\models--Systran--faster-whisper-large-v3`（`HF_HUB_CACHE` 已指向那里，`WhisperModel("large-v3")` 直接命中）。现在这条能力的真源 = 本机 skill **`local-transcribe`**（`~/.claude/skills/local-transcribe/`，含转录/分人脚本与实测参数沉淀），转录侧 2026-08-13 冒烟验证过。
 
 实测坑（都是真踩过的）：
 
