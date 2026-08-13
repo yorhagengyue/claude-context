@@ -408,6 +408,12 @@ Claude 的行为按**模式**切换，避免单一人格覆盖所有场景（之
 
 > 由 memory skill 自动追加，按时间倒序。最近一次 consolidation：2026-08-05 step 1+2（step 1 删重复/过期；step 2 同族合并：Ripple loop 35 条 insight 并为 7 条家族条目——验证/SwiftUI/数据摄取/呈现/系统设计 + 自驱 loop 纪律，项目状态与决策沉到 [projects/ripple/RIPPLE.md](projects/ripple/RIPPLE.md)，逐轮案例以 `ripple-core/docs/LOOP-PROGRESS.md` 为真源；144KB→103KB、89 条→58 条）；上一次全量 consolidation：2026-05-25（NAISC pivot 后，~30 条 → ~21 条）。
 
+### [2026-08-14] preference: 输出语言统一为简体中文
+用户明确要求：任何 agent 会话（包括 DeepSeek Harness 上的 agent），无论回复还是思考过程，全部用简体中文输出，不掺任何其他语言，除非用户特意说明。代码、命令、文件名、专有名词除外。
+**Why**：用户要统一的简体中文输出，避免语言混杂。
+**How to apply**：全模式 default-on。用户显式要求其他语言时才切换。同批硬规则还有一条"Claude 协议只读"（协议文件不改，除非用户明确要求），该条当前只记录在 DSH 工作区的 AGENTS.md，尚未要求同步进本文件。
+*（本条由 DSH agent 于 2026-08-14 写入；DSH 修改标注规则见 DSH 工作区 AGENTS.md 硬规则 3）*
+
 ### [2026-08-07] project+insight: dad + 主 profile 都换到 deepseek-v4-flash-0731（4sapi.org）—— 换端点时要审计**所有**写死模型名的地方
 Hermes **dad profile 与主 profile（owner 自己微信上的那个）** 都从 `claude-sonnet-4-6` @ `4sapi.com/v1` 换成 **`deepseek-v4-flash-0731` @ `https://4sapi.org/v1`**（新 key `sk-5q40…`）。每个 profile 各改三处：`config.yaml` 的 `model.{default,base_url,api_key}`、**`compression.summary_model`**、以及 `.env` 的 `CUSTOM_API_KEY`。备份 `*.bak.20260807`，`launchctl kickstart -k gui/501/ai.hermes.gateway{,-dad}` 重启后各自端到端验过（真实一次 `-z` 对话 + tool_calls 探针 + weixin 仍 connected）。
 **三个微信 bot 是各自独立的**：主 profile（`~/.hermes/`，owner 自己）/ `profiles/dad` / `profiles/xirui`，各有自己的 `HERMES_HOME` 与 launchd label，**profile 目录里没有 `config.yaml` 就走内置默认值、不继承主 profile**（xirui 正是这种：`status` 显示 model "not set"），所以本次改动**没有碰到 xirui**。另：主 profile 的 whatsapp 自 2026-07-28 起就 `failed to connect`（10 次后 paused），与本次无关。
@@ -527,12 +533,6 @@ Ripple v1.0 (1) 2026-07-08 被拒,四条拒因对任何 wellness/health app 都�
 8. **同意门要按"数据流"而不是"UI 入口"排查**:Ripple 的自由文本 intake(About you)把健康文字直发 OpenAI 却没过同意门——因为它不长得像 AI 功能。方法 = 从后端列出**所有调 LLM 的 endpoint**,反查每个的客户端入口是否有 consent;**服务端主动发起的 AI**(cron/watchdog/nudge)也要按用户同意状态过滤(客户端 @AppStorage 标志要镜像到服务端才能过滤)。
 9. **给 LLM 的工具注册表 = 隐私申报的一部分**:agent 有 get_location 工具,时间线就会显示 "Checked location"——哪怕 app 从不传位置,与隐私标签"不收集位置"并排就是自相矛盾。工具列表要和 App Privacy 声明对账。
 10. **测试里凡是"某天有无数据"的断言必须用相对日期**:demo 是滚动窗口 seed,写死的"未来空日"会长出数据、还会被 persona 的未来计划占上;硬编码日期三处全在两周内腐化。
-
-### [2026-08-14] preference: 输出语言统一为简体中文
-用户明确要求：任何 agent 会话（包括 DeepSeek Harness 上的 agent），无论回复还是思考过程，全部用简体中文输出，不掺任何其他语言，除非用户特意说明。代码、命令、文件名、专有名词除外。
-**Why**：用户要统一的简体中文输出，避免语言混杂。
-**How to apply**：全模式 default-on。用户显式要求其他语言时才切换。同批硬规则还有一条"Claude 协议只读"（协议文件不改，除非用户明确要求），该条当前只记录在 DSH 工作区的 AGENTS.md，尚未要求同步进本文件。
-*（本条由 DSH agent 于 2026-08-14 写入；DSH 修改标注规则见 DSH 工作区 AGENTS.md 硬规则 3）*
 
 ### [2026-07-02] insight: Supabase + 邮箱 OTP 的 App Store 审核 demo 账号 = 固定-OTP 触发器(app 零改动)
 App Store Guideline 2.1 要求登录墙 app 给审核员一个能进、有数据的 demo 账号;纯邮箱 OTP 的 app 审核员收不到验证码邮件 → 会被拒。**无密码登录本身不是拒因**(Apple 支持 OTP + Apple 登录),缺的是审核员可用的进入路径。
