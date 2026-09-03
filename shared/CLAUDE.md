@@ -318,7 +318,7 @@ Obsidian Vault 是**两层**记忆体系的底层——存放重内容。关系�
 
 | 项目 | 终局 | 归档位置 |
 |------|------|----------|
-| **Ripple (NAISC Workato)** | 2026-05-22 决赛 · **Workato Track 第三名** · pivot 后拆出可复用资产 | → [archive/naisc-workato/](../../archive/naisc-workato/) · 资产 → [shared/assets/](../assets/) |
+| **Ripple (NAISC Workato)** | 2026-05-22 决赛 · **Workato Track 第三名** · pivot 后拆出可复用资产 | → [archive/naisc-workato/](../archive/naisc-workato/) · 资产 → [shared/assets/](assets/) |
 | **心涟 (Peer)** | **已退役(2026-07)**:随旧 web `ripple` 退役,console 数据导出到 `~/ripple-peer-archive/`,主理人指示不再维护 | → [projects/xinlian/HANDOFF.md](projects/xinlian/HANDOFF.md)(历史 handoff) |
 | **YoRHa** | 已被 Hermes 替代 | 本地 ~/Desktop/YoRHa |
 | **TP 实习 PPMR 月报** | 实习结束（2026-08-04 owner 确认）；5 份双语全稿在 vault，是否提交未确认 | → vault `02 - Areas/Career/SIP PPMR Reports/` |
@@ -375,7 +375,7 @@ Claude 的行为按**模式**切换，避免单一人格覆盖所有场景（之
 | `content` | 社交媒体写作、选题、平台调性（v0 占位，待专题对话填充） | 显式声明 或 "写一条/发/标题/脚本/选题" |
 | `memory` | 整理记忆、consolidate、写 review log、维护 sub-MD、归档 | 显式声明 或 **bulk** 操作（"整理记忆/归档/consolidate"），≥3 条 entry 才进 |
 
-**歧义触发词必须问**（"实现"无文件 / "复盘"无 scope / "记一下"无内容 / "写一个 X" 不知技术还是文案）→ 详见 [Obsidian Areas/Claude Harness/INDEX.md](~/Documents/Obsidian%20Vault/02%20-%20Areas/Claude%20Harness/INDEX.md) 的"歧义触发词"段。
+**歧义触发词必须问**（"实现"无文件 / "复盘"无 scope / "记一下"无内容 / "写一个 X" 不知技术还是文案）→ 详见 `Obsidian Areas/Claude Harness/INDEX.md` 的"歧义触发词"段。
 
 ### 9.2 切换语法
 
@@ -429,12 +429,6 @@ owner 校准：此前「上架成功但零留存是头号问题」（§5.1 + RIP
 ### [2026-08-06] project: 新项目 obsession 启动 —— owner 个人健康/工作体验工具，solo，只在 yorha-a2 个人文件夹
 实习线归档（2026-08-04）后 owner 开新项目 **obsession**：旨在帮 owner 健康生活、提升工作体验的工具等（具体形态待 owner 定）。工作模式：**只有 owner 一人干**；一切内容只放私有 repo **`yorhagengyue/obsession`**（本地 `~/Desktop/obsession/`，2026-08-06 建）——**不进 claude-context `shared/projects/`、不进 yorha-a2 团队共享区/状态板、不进 Linear 等项目管理工具**。后续 AI 不要"帮忙"把它登记进任何共享索引，也不要替它立团队流程；本条只是存在性指针，详情以该 repo 为准。
 
-### [2026-08-04] status: TP 实习结束 —— 实习线项目全部归档（PPMR / SBS / IFSG / Hyperion / TemplateApp）
-owner 2026-08-04 确认实习已结束，指示实习内容全部归档。§5.0 优先级表移除 PPMR、SBS、TemplateApp 三行；§5.1 全量索引移除 IFSG / SBS / PPMR / TemplateApp 四行，均移入「已归档项目」表。其中 **TemplateApp 是暂时归档**（owner 先说除外、随后指示放回；可能后续继续开发，复活即移回）——免费 PG 删库/部署 owner 2026-08-05 确认无需关注，sub-MD 保留在 projects/templateapp/ 未动。PPMR 5 份双语全稿留在 vault `02 - Areas/Career/SIP PPMR Reports/`，最终是否提交未确认。§1 学校行同步改为「实习已结束」。
-
-### [2026-08-04] status: SBS Transit / Sarius 正式过线 —— 731 截止日已过
-owner 2026-07-25 原话「731 后就跟我没关系了」现已生效：不再排期、不再派活、不再当活跃项目引用。§5.0 优先级表已从「⏳ 2026-07-31 截止」改为「✅ 已结束」。
-
 ### [2026-08-04] insight: 验证家族 —— 绿灯的失效模式与对策（11 条合并，案例全录见 `ripple-core/docs/LOOP-PROGRESS.md`）
 Ripple D/E/build5/K/Z loop 里一夜一夜踩出来的验证认识论。**总纲：不只看 green，要看图**——每轮至少一次截图实看/真机/打线上接口读 JSON/查后端表，并在日志写下看到了什么；失败时先看用户看到的那一屏，再查后端表。
 1. **绿的四种失真**：①绿了但做错了（测试通过、行为错）；②绿了但根本没测（`if x.exists {断言}` 条件不成立整段跳过照样绿——必须改成跳过在日志 print 出声）；③红了但不是你的错（429 限流/JWT 过期/环境拒绝，请求到不了模型同样无痕）；④绿了、真跑了、但功能被自己的降级 catch 静默关掉（delta 字段查询 400 被吞、端点 200、测试全绿）。②③④跑测试发现不了，只能靠看真东西。
@@ -483,12 +477,10 @@ Ripple D/E/build5/K/Z loop 里一夜一夜踩出来的验证认识论。**总纲
 另:`devicectl list devices` 的 Identifier(UUID 形式)与 `xcodebuild -showdestinations` 的 id(硬件 UDID)**是两个不同的值** —— 装用前者、构建用后者,弄混会报 "Unable to find a device matching the provided destination specifier"。
 **How to apply**:任何 "把 app 装到我另一台手机上" 的请求,按 pair → build(两个 provisioning flag)→ `devicectl device install app` 三步走。Debug 真机构建**七天过期**,要提前说。
 
-
 ### [2026-07-30] insight: 自驱 loop 纪律（3 条合并：真实时钟 / sediment / 验证基础设施挂掉）
 1. **每轮开头先取真实时钟**（`date` 写进该轮日志标题），跟上一轮时间戳比：**gap > 2× 预期间隔就明说 loop 曾 stall + 为什么**，不要瞒。"cron 还在/repo 干净" ≠ "loop 在推进"（session-only cron 在机器休眠期间不触发也不补跑，曾空转约 8 小时）；任何"loop 健康吗"先查真实时间和实际 commit 时间戳再答；要真正无人值守过夜用 cloud schedule，不是 session-only cron。
 2. **边做边写，不攒批**：loop 档按 R-loop 格式记（⏱时间戳+gap检查 / Goal / 方法-DoD / Verification gate 全绿才 claim / 诚实边界 / ⏸follow-up / Plan delta / Next）；顺手修沿路发现的文档漂移（过期注释/stale TODO/合同文档）；sediment-worthy 内容当轮写 §8 并 push；**每轮收尾为下一轮定义「目标 + 可检验的验收标准」写进 loop 档末尾，下一轮开工先读它当真源**；owner 可预授权结束 loop——agent 可做的工作全部完成且验证、只剩 owner-only 事项时，做最终 handoff 总结 + 删 cron，不无限空转。
 3. **验证基础设施挂掉时**（权限分类器服务不可用：需新分类的变更型调用一律被拒，只读 Bash 与 Edit/Write 照常、本 session 已分类过的相同命令还能过——现象是"有的命令能跑有的不能"，别误判成命令有问题）：判定方法 = 换一个从没跑过的变更型命令探一下，同样报不可用就是服务侧问题，**不要改命令去绕**（新写法照样生成新的待分类字符串被拒）。**绝不把"没验证"说成"做完了"**——该轮不 claim，日志明写"代码已落盘、验证门被工具链阻断、本轮不 claim，下轮第一件事 = 补跑验证门"；这段时间只推进零风险工作（设计文档/计划细化/代码自审读），不把未验证的改动继续往上叠。
-
 
 ### [2026-07-28] insight: macOS 上 Claude 清磁盘的两个硬限制(废纸篓 TCC + iCloud 桌面)
 本机清理时实测,以后任何"清空间"任务先按这两条设预期,别把"我删了 X G"当成"释放了 X G":
@@ -657,15 +649,6 @@ NAISC 决赛 4 评委中只有 Workato 那位（AI 出身）听懂作品；另 3
 **形式**：不一定个人完成，可能跟组员分工。多平台社交媒体是第一条尝试路径（5/25 立项见 §5），但只是路径之一不是终点。
 **对 Claude 的影响**：`content` 模式定位调整——不是"为营销服务"，是"为某个具体的交付结果服务"。后续专题对话会进一步细化"哪些结果类型 × 哪些路径"。
 
-### [2026-05-25] project: NAISC 2026 Workato Track 终局 — 第三名 + pivot
-Team YoRHa / Ripple 5/22 决赛拿到 **Workato Track 第三名**。比赛结束，pivot 决定：Ripple 本体收尾归档；**rule library (53 rules) / Discord listener / MCP 4-tool 架构 / Whisper 幻觉清洗脚本** 作为可复用资产拆出（落点待定）。claude-context 的 `shared/projects/naisc-workato/` 和 Obsidian Vault 的 `01 - Projects/Workato NAISC/` 都即将归档到各自的 `04 - Archive/`。
-**遗留决策**：Discord listener（Mac Mini PID 48771）是否继续跑积累数据，待用户决定。
-**复盘洞察**：见同一天 insight 条目（市场/包装短板）。具体 Q&A 失分细节用户暂不展开，留给"售卖"专题对话。
-
-### [2026-05-23] project: TemplateApp — Agentic AI Pivot（已归档，详见 sub-MD）
-Linda William 要求把 TemplateApp 从"通用文档生成器产品"pivot 为 **publishable agentic AI 研究项目**（两个论文 contribution：Live Data Binding + LLM-as-Judge；LangGraph 主框架 + CrewAI/LangChain 对比；LLM 矩阵 cost-performance；ONLYOFFICE 扔掉）。全部锁定决策、W1 文献综述（8 judge 技术实测）、plan、HANDOFF 已镜像到 sub-MD 与 vault。**2026-08-04 随实习线暂时归档**（可能复活，见「已归档项目」表）。跨项目产出只有一条：LLM-as-Judge 多 agent 分层与 NAISC 互相印证（已并入 §8 [2026-05-08] mentor 模式条）。
-→ sub-MD: [TEMPLATEAPP.md](projects/templateapp/TEMPLATEAPP.md) · [HANDOFF.md](projects/templateapp/HANDOFF.md)
-
 ### [2026-05-23] correction: subagent 默认没 WebSearch/WebFetch 权限
 跑 W1 文献综述时启了 2 个 general-purpose subagent 做并行研究，但 subagent 默认拒 WebSearch + WebFetch。用户开了 bypass 后重启 subagent 才正常。下次给 subagent 派"研究"任务时记得：(1) 父 session 的 WebSearch 工具不会自动继承给 subagent；(2) 要么提前确认 bypass，要么父 session 直接做研究不 delegate。
 
@@ -698,9 +681,6 @@ Discord 服务端不存 presence 历史。给 user_id 只返回"此刻在干嘛"
 
 ### [2026-05-04] preference: 用户对 spike 的态度
 用户明确反对 "spike 一下试试" 类的小规模代码探索。理由：能直接问的就直接问（mentor / 文档 / Claude 直接判断）。spike 浪费时间且常常验证不到关键问题。这条对未来任何架构讨论适用 —— **当我想说"我们 spike 一下" 之前，先问"这个未知能不能直接问出来"**。
-
-### [2026-05-04] historical: Discord listener 已停（2026-05-25）
-NAISC Ripple 期间在 Mac Mini 后台运行（PID 48771，2026-05-03 nohup detached → killed 2026-05-25 pivot）。Lanyard WebSocket → Node listener → Supabase (3 表 + 1 view) → Vercel API endpoint 全链路曾跑通，捕获真实 Discord presence 数据。**源代码 + Supabase schema + 复用指引 + 重启说明**都在 `shared/assets/discord-presence-listener/README.md`。Supabase 数据 + schema 保留不动；重启 listener 直接对接现有表即可。
 
 ### [2026-04-20] correction: "每 5 min auto sync" 不等于 iOS 真的每 5 min 跑
 用户之前笃信 HAE 设置 "每分钟/每 5 分钟" 就会定时推。真相：HealthyApps 官方文档明确 iOS 锁屏禁访 HealthKit + 后台调度 iOS 决定而非 app 配置决定。UI 让你设是让你表达期望，实际跑多少取决于 iOS 心情。实测 Recipe 1 最近 30 天只有 24 job（~0.8/day），4/18 后零触发。凡是涉及 "iOS app 自动推" 的诉求，要先承认"延迟几分钟 + 手机解锁 + 充电中"这三个前置，不是真实时。

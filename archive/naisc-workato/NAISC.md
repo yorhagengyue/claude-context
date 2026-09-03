@@ -6,7 +6,7 @@ last-updated: 2026-05-08
 
 # Ripple — NAISC 2026 Workato Track
 
-> **Upstream**: [CLAUDE.md](../../CLAUDE.md) §5 project index
+> **Upstream**: [CLAUDE.md](../../shared/CLAUDE.md) §5 project index
 > **Heavy notes / timeline / transcripts**: Obsidian Vault `01 - Projects/Workato NAISC/`
 > **Pre-finals state** (4/19-4/24, demo recording + submission): see `archive/NAISC_pre-finals.md` + `archive/morning_handoff_2026-04-20/`
 

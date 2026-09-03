@@ -186,7 +186,7 @@ NAISC 期间在 Mac Mini 后台跑（PID 48771，nohup detached），killed 2026
 
 ## 9. 心涟 (Peer) Operator Console（2026-05-25 发现 + 升级）
 
-Hermes 多 profile 系统**不只是 backend + WeChat gateway**，还有一个 web 端 operator console 让用户实时查看 / 干预跟 dad / xirui 的微信对话。**这个 console 在 [Toffeemoon Design System](~/Desktop/Toffeemoon%20Design%20System/) 仓库的 `peer/` 子产品**，2026-05-25 之前 claude-context 完全没记录这层关系，调研 + UI 升级后才连上。
+Hermes 多 profile 系统**不只是 backend + WeChat gateway**，还有一个 web 端 operator console 让用户实时查看 / 干预跟 dad / xirui 的微信对话。**这个 console 在 `~/Desktop/Toffeemoon Design System/`（Toffeemoon Design System） 仓库的 `peer/` 子产品**，2026-05-25 之前 claude-context 完全没记录这层关系，调研 + UI 升级后才连上。
 
 ### 架构
 
