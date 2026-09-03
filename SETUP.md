@@ -43,10 +43,8 @@ claude-context/
 ├── .gitignore
 ├── shared/                ← 所有机器共用
 │   ├── CLAUDE.md          ← 主上下文 hub（宪法 §0 在这里）
-│   ├── credentials.md     ← 凭据
 │   ├── cowork/            ← Claude Code / Cowork 设置
 │   ├── skills/            ← 自建 skills
-│   ├── mcp/               ← MCP 配置
 │   └── projects/          ← 项目速报（每个项目一个子目录）
 │       ├── TEMPLATE.md    ← 新项目模板
 │       └── <name>/        ← 各项目
@@ -87,7 +85,6 @@ Claude 在会话开始时自动读取 `shared/CLAUDE.md`（通过 Desktop symlin
 
 1. `shared/CLAUDE.md` — 用户 profile（§1-7）+ 记忆追加区（§8）
 2. `shared/projects/` — 列出所有项目目录，读取每个项目的主文件
-3. `shared/credentials.md` — 可用凭据
 
 ### Step 3: 加载机器上下文
 
@@ -111,15 +108,7 @@ Claude 在会话开始时自动读取 `shared/CLAUDE.md`（通过 Desktop symlin
 
 ### Step 5: 加载 MCP 配置
 
-扫描 `shared/mcp/` 目录：
-
-1. 列出所有配置文件
-2. 对每个 MCP，检查当前机器是否已连接
-3. 未连接的，提示用户配置
-
-**当前已注册的 MCP：**
-
-（暂无）
+MCP 配置**不进本仓**——各机器在客户端本地配置（Claude Code `claude mcp` / 桌面端连接器）。原 `shared/mcp/` 空目录与 CLAUDE.md §0.6 已于 2026-09-03 移除。
 
 ### ~~Step 5.5: 加载 Hermes Agent 上下文~~ ⛔ 已废除（2026-07-25）
 
@@ -204,9 +193,7 @@ Claude Harness 初始化完成：
 |------|------|
 | 用户提到某个项目 | `shared/projects/<name>/` 下的所有 md |
 | 用户提到机器特有的事 | `machines/<name>/local.md` |
-| 需要账号密码 | `shared/credentials.md` |
 | 需要安装/调试 skill | `shared/skills/<name>/SKILL.md` |
-| 需要 MCP 信息 | `shared/mcp/` 下的配置文件 |
 
 ### 3.3 读取顺序
 
@@ -224,7 +211,6 @@ Claude Harness 初始化完成：
 | 项目特有的架构决策、状态变更 | `shared/projects/<name>/` 下的 sub-MD | "MoyuanIdea 选了 Next.js" |
 | 机器特有的配置、路径 | `machines/<name>/local.md` | "Mac Mini 的项目目录在 ~/Projects" |
 | 新 skill | `shared/skills/` | 新的 .skill 文件或 SKILL.md |
-| 新 MCP 配置 | `shared/mcp/` | 新的配置文件 |
 | **跨项目可复用资产**（2026-05-25 新增） | `shared/assets/<asset-name>/` | rule library / listener snapshot / 架构模式 |
 | **会话产生的 sediment**（重大决策 / 复盘 / 情绪节点） | Obsidian Vault `05 - Journal/YYYY/MM/YYYY-MM-DD-slug.md` | 见 Vault 内 `05 - Journal/README.md` |
 | **模式定义**（Claude harness 5 模式） | Obsidian Vault `02 - Areas/Claude Harness/` | chat / code / architecture-review / content / memory |
@@ -285,7 +271,6 @@ Claude Harness 初始化完成：
 |----------|----------|
 | 新项目 | CLAUDE.md §5 项目索引表 + `shared/projects/<name>/` |
 | 新 Skill | 本文件 Step 4 的 Skills 注册表 + CLAUDE.md §0.5 |
-| 新 MCP | 本文件 Step 5 的 MCP 注册表 + CLAUDE.md §0.6 |
 | 新机器 | 本文件 Step 1 的机器识别表 + `machines/<name>/` |
 | 新跨项目资产 | `shared/assets/<name>/` + 顶层 `shared/assets/README.md` + CLAUDE.md §0.6.1 |
 | 新模式（Claude harness） | Obsidian `02 - Areas/Claude Harness/<mode>.md` + 同目录 `INDEX.md` 表 + CLAUDE.md §9 速查表 |
@@ -358,11 +343,7 @@ mkdir -p machines/<machine-name>/
 
 ### 6.4 新增 MCP
 
-```bash
-# 1. 将配置文件放入 shared/mcp/
-# 2. 在本文件 Step 5 的 MCP 注册表中添加一行
-# 3. 同步
-```
+已废止（2026-09-03）：MCP 配置不进仓，见 Step 5。
 
 ### 6.5 新增跨项目资产（2026-05-25 新增）
 
@@ -413,11 +394,9 @@ rmdir shared/projects/<name>
 | `SETUP.md` | 操作手册（新增/初始化步骤） | 用户 + Claude（需确认） | 新增资源、规则变更时 |
 | `shared/CLAUDE.md` | 用户 profile + 记忆 + harness 规则 | Claude（auto-memory default-on） | sediment-worthy 内容、规则变更时 |
 | ~~`shared/HERMES.md`~~ | **2026-07-25 退役** → `archive/hermes-memory-export-retired-20260725.md`；Hermes 子系统变更改写 `shared/CLAUDE.md` §8 | — | — |
-| `shared/credentials.md` | 账号密码 | 用户 | 新增/变更凭据时 |
 | `shared/cowork/settings.json` | 全局设置（plugins, thinking） | 用户 | 插件/设置变更时 |
 | `shared/cowork/settings.local.json` | 项目级权限 | 用户 | 权限变更时 |
 | `shared/skills/*/SKILL.md` | Skill 源码 | 用户 + Claude | Skill 逻辑变更时 |
-| `shared/mcp/*` | MCP 配置 | 用户 + Claude | MCP 新增/变更时 |
 | `shared/projects/*/` | 项目速报（active） | Claude | 项目状态变更时 |
 | `shared/projects/TEMPLATE.md` | 新项目模板 | 用户 | 模板需要更新时 |
 | **`shared/assets/*/`** | 跨项目可复用资产 | Claude | 项目归档 / 提取复用模块时 |

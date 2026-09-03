@@ -21,34 +21,36 @@ claude-context/
 ├── .gitignore
 │
 ├── shared/                            ← 所有机器共用
-│   ├── CLAUDE.md                      ← 本文件（宪法 + 用户上下文 + 记忆）
-│   ├── credentials.md                 ← 可公开存储的凭据
-│   ├── cowork/                        ← Claude Code / Cowork 设置（跨机器同步）
-│   │   ├── settings.json              ← 全局设置（plugins, thinking mode）
-│   │   └── settings.local.json        ← 项目级权限（Desktop workspace）
-│   ├── skills/                        ← 自建 Skills
-│   │   ├── memory.skill               ← 打包版（双击安装）
-│   │   └── memory/
-│   │       └── SKILL.md               ← 源码版（可读可调试）
-│   ├── mcp/                           ← MCP 配置（当前为空）
-│   │   └── .gitkeep
-│   └── projects/                      ← 项目速报（每个项目一个子目录）
-│       ├── TEMPLATE.md                ← 新项目模板
-│       └── moyuan/
-│           └── MOYUAN.md              ← MoyuanIdea 速报
+│   ├── CLAUDE.md                      ← 本文件（宪法 + 用户上下文 + 记忆 §8）
+│   ├── cowork/                        ← Claude Code 设置（Mac 的 setup.sh 会 symlink；Windows 未接）
+│   │   ├── settings.json
+│   │   └── settings.local.json
+│   ├── skills/                        ← 自建 Skills（§0.5）
+│   │   ├── memory.skill / memory/SKILL.md
+│   │   └── douyin-transcribe/
+│   ├── assets/                        ← 跨项目复用资产（§0.6.1；均来自已归档的 NAISC Ripple）
+│   │   ├── wellness-rule-library/
+│   │   ├── discord-presence-listener/
+│   │   ├── mcp-architecture-patterns/
+│   │   └── whisper-hallucination-cleanup/
+│   └── projects/                      ← 项目速报（每个项目一个子目录，索引见 §5）
+│       ├── TEMPLATE.md
+│       ├── ripple/RIPPLE.md           ← 🔴 现役
+│       ├── yorha-a2/                  ← YORHA-A2.md + WORKING-MODE.md + sub-projects/（含 inception/）
+│       ├── ai-video/AI_VIDEO.md
+│       ├── moyuan/MOYUAN.md           ← 休眠
+│       ├── templateapp/               ← 暂时归档，sub-MD 保留原位
+│       └── xinlian/HANDOFF.md         ← 已退役
 │
 ├── machines/                          ← 机器特有
-│   ├── mac-mini/
-│   │   ├── setup.sh                   ← Mac Mini 初始化脚本
-│   │   └── local.md                   ← Mac Mini 特有上下文
-│   ├── macbook/
-│   │   ├── setup.sh                   ← MacBook 初始化脚本
-│   │   └── local.md                   ← MacBook 特有上下文
-│   └── windows/
-│       └── local.md                   ← Windows（AI 视频工作站）特有上下文
+│   ├── mac-mini/  (setup.sh + local.md)
+│   ├── macbook/   (setup.sh + local.md)
+│   └── windows/   (local.md，写的是 owner 的 gengy 机)
 │
-└── archive/                           ← 记忆归档（consolidation 产物）
-    └── .gitkeep
+└── archive/                           ← 归档
+    ├── naisc-workato/                 ← NAISC 2026 Workato 全套（资产本体在 shared/assets/）
+    ├── hermes-memory-export-retired-20260725.md
+    └── windows-todo-retired-20260804.md
 ```
 
 ### 0.2 读取规则
@@ -58,7 +60,7 @@ claude-context/
 1. 读取本文件（`shared/CLAUDE.md`）— 你正在做这一步
 2. 如果用户提到某个项目 → 读取 `shared/projects/<name>/` 下的文件
 3. 如果涉及机器特有配置 → 读取 `machines/<name>/local.md`
-4. 如果需要凭据 → 读取 `shared/credentials.md`
+4. 凭据一律在各项目根目录的 `.env`（gitignore），本仓不存任何凭据
 5. 如果需要新增机器/项目/skill 的操作步骤 → 读取 `SETUP.md`
 6. 如果需要详细笔记、时间线、项目记录、知识沉淀 → 读取 Obsidian Vault（路径见 §0.7）
 
@@ -77,7 +79,6 @@ claude-context/
 | 项目特有的架构决策、状态 | `shared/projects/<name>/` 下的 sub-MD |
 | 机器特有的配置 | `machines/<name>/local.md` |
 | 新 Skill | `shared/skills/` + 更新 SETUP.md 注册表 |
-| 新 MCP | `shared/mcp/` + 更新 SETUP.md 注册表 |
 | 重内容（详细笔记、完整记录、知识沉淀） | Obsidian Vault（见 §0.7） |
 
 **写入后的强制动作：**
@@ -138,10 +139,6 @@ cd ~/Desktop/claude-context && git pull && git add -A && git commit -m "<type>: 
 |-------|------|------|
 | memory | `shared/skills/memory.skill` | 会话结束时自动持久化记忆到 §8 |
 | douyin-transcribe | `shared/skills/douyin-transcribe/` | 抖音链接或本地音视频转录（mlx-whisper Apple Silicon GPU 加速；`--clean` 可折叠 Whisper 幻觉循环） |
-
-### 0.6 已注册的 MCP
-
-（暂无）
 
 ### 0.6.1 已注册的模式 / 资产 / 协作 repo
 
@@ -226,12 +223,13 @@ Obsidian Vault 是**两层**记忆体系的底层——存放重内容。关系�
 - **身份校准 (2026-05-28)**：之前 §1 错写"英文名 Tommy Chen / 邮箱 tommychen030607@gmail.com" —— Tommy Chen / tommychen030607 是 **Yufei (Chen Yuqin) 的英文名 + 邮箱**，不是我的。详见 §8 [2026-05-28] correction
 - **GitHub**：https://github.com/yorhagengyue
 - **所在地**：新加坡
-- **学校**：Temasek Polytechnic（淡马锡理工），IT 专业，Y2 → Y3，TP Researcher 实习已结束（2026-08-04）
+- **学校**：Temasek Polytechnic（淡马锡理工）IT 专业；TP Researcher 实习已结束（2026-08-04）；**2026-08-17 起在 SMU SCIS 上课**（IS210 BPM + IS115 Python，至 2026-12-04；课程工作区 = 私有 repo `yorhagengyue/SMU-AP`）。（2026-09-03 更新）
 - **主力开发工具**：
-  - OpenAI Codex CLI（model: `gpt-5.3-codex`，配 migration notice 指向 `gpt-5.4` 但未实际切换）— **中间状态**：某些项目还用、某些不用了；NAISC 后冷却 5+ 周（详见 §3 + §0.6.2）
-  - Hermes Agent（主力 agent 系统，替代 YoRHa/Moltbot；多 profile：主用户 + dad + xirui）—— **2026-07-25 起不再有独立记忆层**，改读本文件；历史快照见 [archive/hermes-memory-export-retired-20260725.md](../archive/hermes-memory-export-retired-20260725.md)，仍在活的事实见 §8 [2026-07-25] 条
-  - Claude Code CLI（5 模式系统 chat/code/architecture-review/content/memory，见 §9；自动记忆 default-on 见 §0.3.1）
-- **系统**：macOS，主力浏览器 OpenAI Atlas（Chrome 内核）
+  - **Claude Code CLI**（日常主力；Windows 工作站 + Mac 都在用；自动记忆 default-on 见 §0.3.1，5 模式见 §9）
+  - **DeepSeek Harness（DSH）**（2026-08 起本机 agent runtime，Claude Code / Codex 走委派；obsession / 9S 线跑在其上；它自己的精简上下文 = Windows 桌面 `AGENTS.md`，以本文件为真源）
+  - **Hermes Agent**（跑在 Mac，微信 bot 线 dad / xirui；2026-07-25 起无独立记忆层、改读本文件，历史快照见 [archive/hermes-memory-export-retired-20260725.md](../archive/hermes-memory-export-retired-20260725.md)）
+  - OpenAI Codex CLI（委派用，不再是主力；2026-05-25 调研快照见 §0.6.2）
+- **系统**：macOS（Mac 机）+ Windows 11（本机 Administrator，RTX 5080，2026-05-18 起的 AI 工作站）；浏览器 Chrome / Atlas
 
 ## 2. 跟我对话的方式
 

@@ -4,7 +4,7 @@ type: 团队工作模式手册（从属 ../../CLAUDE.md 个人主宪法）
 last-updated: 2026-06-02
 read-order: 1 (YORHA-A2.md hub) → 2 (本文件 工作模式) → 3 (sub-projects/* 各子项目状态板) → 4 (Vault/01 - Projects/YoRHa-A2/short-video/framework/*)
 goal: conversion-site (咨询网站)
-sub-projects: sub-projects/{conversion-site,short-video,ai-interactive-story}.md
+sub-projects: sub-projects/{conversion-site,short-video,ai-interactive-story}.md + sub-projects/inception/{INCEPTION,DESIGN-v1}.md
 ---
 
 # YoRHa-A2 · 团队工作模式（阶段性项目 · 从属个人主宪法）

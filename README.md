@@ -69,17 +69,15 @@ claude-context/
 ├── shared/
 │   ├── CLAUDE.md          ← 宪法 + 用户上下文 + 记忆 §8
 │   │                        (HERMES.md 已于 2026-07-25 退役 → archive/)
-│   ├── credentials.md     ← 凭据
-│   ├── cowork/            ← Claude Code 设置
+│   ├── cowork/            ← Claude Code 设置（Mac setup.sh symlink）
 │   ├── skills/            ← 自建 skills (memory, douyin-transcribe)
-│   ├── mcp/               ← MCP 配置（暂无）
 │   ├── assets/            ← 跨项目复用资产（wellness-rule-library 等 4 个）
-│   └── projects/          ← 项目速报（moyuan / templateapp / xinlian / yorha-a2 / ai-video）
+│   └── projects/          ← 项目速报（ripple / yorha-a2 / ai-video / moyuan / templateapp / xinlian）
 ├── machines/
-│   ├── mac-mini/          ← 主力 (setup.sh + local.md 完整)
+│   ├── mac-mini/          ← setup.sh + local.md
 │   ├── macbook/           ← setup.sh + local.md
 │   └── windows/           ← AI 视频本地工作站（2026-05-18 起，见 windows/local.md）
-└── archive/               ← 记忆归档
+└── archive/               ← 归档（naisc-workato / hermes 快照 / windows-todo）
 ```
 
 ## Sync
