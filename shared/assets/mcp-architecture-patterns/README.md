@@ -42,7 +42,7 @@ For data-scarce early-stage products: don't train models, expose retrieval + str
 
 The strongest pitch line — **"We don't train models today. Every recipe is structured data capture by design. The MCP surface is the distribution layer for whatever models we train later. The first 10,000 users we sign up is the model."** — generalizes to any agent product that's MVP-stage but needs a story for "where's the AI moat".
 
-→ Detail: [`../../archive/naisc-workato/ml-strategy-v1.md`](../../archive/naisc-workato/ml-strategy-v1.md)
+→ Detail: [`../../../archive/naisc-workato/ml-strategy-v1.md`](../../../archive/naisc-workato/ml-strategy-v1.md)
 
 ### 4. Output-schema discipline for ML / statistical tools exposed to LLMs
 
@@ -62,7 +62,7 @@ Cursor existed before GPT-4 was good at code; when GPT-4 landed, Cursor became t
 
 Reuse whenever a product is data-pipeline-strong but model-weak (the most common shape for non-FAANG AI products).
 
-→ Detail: [`../../archive/naisc-workato/mentor-takeaways-tp7-tp8.md`](../../archive/naisc-workato/mentor-takeaways-tp7-tp8.md)
+→ Detail: [`../../../archive/naisc-workato/mentor-takeaways-tp7-tp8.md`](../../../archive/naisc-workato/mentor-takeaways-tp7-tp8.md)
 
 ### 6. Data flywheel as moat ("first 10,000 users is the model")
 
@@ -76,7 +76,7 @@ This pairs naturally with pattern 3 (Pattern D — no model today).
 
 Reuse for any Q&A defense around AI hallucination / safety / liability — pairs well with an RLHF / human-feedback flywheel as the secondary answer.
 
-→ Detail: [`../../archive/naisc-workato/mentor-takeaways-tp7-tp8.md`](../../archive/naisc-workato/mentor-takeaways-tp7-tp8.md)
+→ Detail: [`../../../archive/naisc-workato/mentor-takeaways-tp7-tp8.md`](../../../archive/naisc-workato/mentor-takeaways-tp7-tp8.md)
 
 ### 8. "Pre-processed data pipeline" framing (instead of "AI agent")
 
@@ -93,7 +93,7 @@ This was Ripple's late-stage repositioning per mentor feedback. Useful when the 
 
 ## Cross-references
 
-- `archive/naisc-workato/architecture-diagram.html` (same file as here, kept in archive too for context)
+- `archive/naisc-workato/architecture-diagram.html` — 2026-09-03 去重后已移除(与本目录这份逐字节相同),以本目录为准
 - `archive/naisc-workato/ml-strategy-v1.md` — full Pattern A/B/C/D decision write-up
 - `archive/naisc-workato/mentor-takeaways-tp7-tp8.md` — TP7 (Colin) + TP8 mentor distilled takeaways
 - CLAUDE.md §8 entries dated 2026-05-04 and 2026-05-08

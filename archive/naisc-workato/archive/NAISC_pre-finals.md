@@ -1,8 +1,8 @@
 # NAISC.md — Ripple / Workato NAISC 2026 项目速报
 
-> **上位文件**：[CLAUDE.md](../../CLAUDE.md) §5 项目索引
+> **上位文件**：[CLAUDE.md](../../../shared/CLAUDE.md) §5 项目索引
 > **详细文档**：Obsidian Vault `01 - Projects/Workato NAISC/`（Design.md / Implementation Log.md / DEMO_SCRIPT.md / MORNING_REPORT_20260419.md / Submission Email.md）
-> **morning_handoff/**：[Plan B 粘贴手册 / DEMO V2 / Submission email / Kimi prompt](./morning_handoff/)
+> **morning_handoff/**：[Plan B 粘贴手册 / DEMO V2 / Submission email / Kimi prompt](./morning_handoff_2026-04-20/)
 > **比赛截止**：2026-04-23 发 NAISC submission email
 > **Demo 录制**：2026-04-20
 > **决赛**：2026-05-22

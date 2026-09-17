@@ -10,6 +10,7 @@ sub-projects:
   - sub-projects/conversion-site.md (= 最终目标)
   - sub-projects/short-video.md (引流)
   - sub-projects/ai-interactive-story.md (owner: Yufei)
+  - sub-projects/inception/INCEPTION.md (引擎线北极星, 2026-07-08)
 ---
 
 # YoRHa-A2 — 阶段性团队项目 hub

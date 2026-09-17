@@ -261,7 +261,7 @@ peer/chat.html + peer/shared.js
 ## 上下文 reference
 
 - [`shared/CLAUDE.md`](../../CLAUDE.md) §0.3.1 auto-memory · §9 模式系统 · §8 [2026-05-25] peer insight 条目
-- [`shared/HERMES.md`](../../HERMES.md) §5 profile 清单 · §6 Dad 升级 · §9 心涟 console
+- [`shared/HERMES.md`](../../../archive/hermes-memory-export-retired-20260725.md) §5 profile 清单 · §6 Dad 升级 · §9 心涟 console
 - D1 subagent 完整报告 见本会话上下文（user 未要求归档，如需要可在 Obsidian Vault `01 - Projects/xinlian/` 新建笔记）
 - Vercel 部署历史 https://vercel.com/gengyue081-8277s-projects/ripple-wellness
 - GitHub https://github.com/yorhagengyue/ripple

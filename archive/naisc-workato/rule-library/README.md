@@ -10,6 +10,8 @@ Evidence-based detection rules powering Ripple's anomaly + nudge logic. **Strate
 
 ## Files
 
+> **2026-09-03 去重**:下表三个文件的本体已从 archive 移除——它们与 `shared/assets/wellness-rule-library/` 里的三份逐字节相同,以那边为准(git 历史仍可取回)。
+
 | File | What it is |
 |---|---|
 | `ripple_core_rule_library_v2.xlsx` | **Current canonical** — 53 rules across 11 categories, each with confidence + source URLs. Use this. |
