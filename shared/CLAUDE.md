@@ -2,7 +2,7 @@
 
 > **用途**：每次新会话开始时，Claude 自动读取本文件。这是整个 harness 系统的入口。
 > **维护**：§0 和 §1-7 由用户维护，§8 由 memory skill 自动追加。
-> **最后更新**：2026-08-06（Ripple「零留存是头号问题」framing 作废——推广阶段线下为主、不着急；新项目 obsession 启动，solo，私有 repo yorhagengyue/obsession。此前 2026-08-05：§8 consolidation step 1+2：去重 + 同族合并 89→58 条，新建 [projects/ripple/RIPPLE.md](projects/ripple/RIPPLE.md)；TemplateApp PG 死线 owner 确认无需关注）
+> **最后更新**：2026-09-18（StudyOS 登记进 §5 并新建 [projects/study-os/STUDY-OS.md](projects/study-os/STUDY-OS.md)；Ripple Canvas（iOS 推送线）正式被 StudyOS 取代、移入已归档表，见 §8 [2026-09-18] correction。此前 2026-08-06：Ripple「零留存是头号问题」framing 作废——推广阶段线下为主、不着急；新项目 obsession 启动，solo，私有 repo yorhagengyue/obsession。此前 2026-08-05：§8 consolidation step 1+2：去重 + 同族合并 89→58 条，新建 [projects/ripple/RIPPLE.md](projects/ripple/RIPPLE.md)；TemplateApp PG 死线 owner 确认无需关注）
 
 ---
 
@@ -325,6 +325,7 @@ Obsidian Vault 是**两层**记忆体系的底层——存放重内容。关系�
 | **IFSG** | 实习项目线，随实习结束归档（2026-08-04）；团队若继续可复活 | 仓库私有 |
 | **Hyperion** | 实习项目线，随实习结束归档（2026-08-04） | repo: yorhagengyue/hyperion-webapp-fixes |
 | **TemplateApp** | **暂时归档**（2026-08-04）：owner 说可能后续继续开发，复活即移回现役。免费 PG 删库与部署问题 owner 2026-08-05 确认无需关注；sub-MD 保留原位 | → [TEMPLATEAPP.md](projects/templateapp/TEMPLATEAPP.md) / [HANDOFF.md](projects/templateapp/HANDOFF.md) |
+| **Ripple Canvas**（USYD Canvas→iOS 推送） | **2026-09-18 被 StudyOS 取代**：同一学习者（时浩然）、同一个 canvas.sydney.edu.au、同一批四门课，形态从「iOS 原生 + APNs 推送」换成「本机网页端 + 仓库内 Agent」。本地 `ripple-canvas-core` / `ripple-canvas-ios` **从未 git init**、2026-09-01 后未动，GitHub 上无这两个仓（2026-09-18 实查） | → [STUDY-OS.md](projects/study-os/STUDY-OS.md) · 技术摸底与合规红线仍有效，见 §8 [2026-08-24] |
 
 ## 6. 学习轨迹
 
@@ -407,6 +408,12 @@ Claude 的行为按**模式**切换，避免单一人格覆盖所有场景（之
 
 > 由 memory skill 自动追加，按时间倒序。最近一次 consolidation：2026-08-05 step 1+2（step 1 删重复/过期；step 2 同族合并：Ripple loop 35 条 insight 并为 7 条家族条目——验证/SwiftUI/数据摄取/呈现/系统设计 + 自驱 loop 纪律，项目状态与决策沉到 [projects/ripple/RIPPLE.md](projects/ripple/RIPPLE.md)，逐轮案例以 `ripple-core/docs/LOOP-PROGRESS.md` 为真源；144KB→103KB、89 条→58 条）；上一次全量 consolidation：2026-05-25（NAISC pivot 后，~30 条 → ~21 条）。
 
+### [2026-09-18] correction: Ripple Canvas（iOS 推送线）已被 StudyOS 取代 —— 同一学习者，换了形态
+owner 2026-09-18 拍板：§8 [2026-08-24] 那条「USYD Canvas→iOS 推送项目」（定名 **Ripple Canvas**）**正式作废，由 [StudyOS](projects/study-os/STUDY-OS.md) 取代**。两者是同一个学习者（时浩然）、同一个 canvas.sydney.edu.au、同一批四门课（ACCT2011/2019 + IBUS2020/2105），只是形态从「iOS 原生 app + APNs 推送」换成「本机网页端 + 仓库内 Agent」。
+**证据（2026-09-18 实查）**：`~/Desktop/ripple-canvas-core` 和 `~/Desktop/ripple-canvas-ios` **连 `git init` 都没做过**，最后修改停在 2026-09-01，GitHub 上也没有这两个仓；而 StudyOS 自 2026-09-09 建仓起接手，两台机器真机跑通（246–247 文件 / 142 页面 / 338MB）。
+**仍然有效、别跟着一起丢掉的**：[2026-08-24] 条里的 Canvas API 摸底（`activity_stream` 与 `planner/items` 两条现成聚合流、成绩读不到、per-course 接口未必全开、**单页硬上限 50 条必须跟 `Link: rel="next"` 翻页**）、**合规红线**（手工 token 只合规于单用户/演示；多用户上线必须 OAuth，而 developer key 只有校方 admin 能签发）、竞品格局、以及那几条 iOS/施工教训——都是技术事实，不随项目形态作废。StudyOS 的 `docs/CANVAS-API.md` 与之互相印证（页面列表 404 / 文件列表 403 不等于没资料、`syllabus_body` 全空、0 分不等于可选、权重看 `assignment_groups`）。
+**对后续 AI 的指示**：看到 [2026-08-24] 条不要再据此排期 iOS 推送线。当前唯一活的入口是 [STUDY-OS.md](projects/study-os/STUDY-OS.md)；该项目对 owner 只有一件待办——审 [PR #2](https://github.com/yorhagengyue/study-os/pull/2)。
+
 ### [2026-08-28] project+insight: slay_the_spire 重启 —— 历史"AI 打牌"其实 LLM 从未参与（0/2655）+ 本机 iCloud 抽空灾情
 「启动 slaythespire ai」时发现两层问题：
 **1. iCloud 灾情（机器级，影响整个 ~/Desktop）**：`~/Desktop/slay_the_spire` 40,976 个文件里 36,840 个被 evict 成 dataless，且云端记录坏死——`brctl download` 报 Code=4「文件不存在」、同步引擎 pending 卡 130+ 小时、重启 bird 无效。**本机已无法取回这些文件**（PPO 训练线全部源码 / config / README / requirements 均在其中）；Mac Mini 或 iCloud 网页端可能还有原件，待 owner 抢救。⚠️ 原目录里的 dataless 占位文件**绝不能 rm**——若同步恢复，删除会传播到云端和其它机器。
@@ -420,6 +427,8 @@ SUSS GIF 现场前给 owner 的 Apple Watch 写 look-in 接收端 demo，第一�
 **How to apply**：任何要在真设备上演示的东西（展台循环、可穿戴、投屏 app），动手前先问一句「演示者能不能让它停在任意一帧」，答不上来就是设计错了。边界：**演示视频可以自动播**（观众不互动），**设备上的交互 demo 不行**。应急止损也记一笔——这类循环只在 app 前台跑，退出 app + 关掉「抬腕返回上次 app」即可临时压住，不必重装。
 
 ### [2026-08-24] project: USYD Canvas→iOS 推送项目启动 —— 别人的项目，owner 负责技术
+> ⚠️ **2026-09-18 owner 定：本条所述的 Ripple Canvas（iOS 推送线）已被 [StudyOS](projects/study-os/STUDY-OS.md) 取代，不再排期、不要再找 `ripple-canvas-*` 仓**；见 §8 [2026-09-18] correction。下文原文保留不改——其中的 Canvas API 摸底、合规红线与施工教训是技术事实，不随项目形态作废。
+
 悉尼大学方向来的项目：把 USYD Canvas 的公告 / modules / 课程更新推送到手机 app。性质 = **别人的项目、owner 负责技术**（Canvas 学生账号属 Haoran Shi，USYD 商科 S2 2026；项目名 / deadline / 人手待补）。当日锁定：**iOS 原生 SwiftUI**（复用 Ripple 全套经验）+ 自建小后端轮询 Canvas REST API + diff 出新内容后 APNs 真·系统推送（准实时分钟级；Live Events 要校方 Canvas 管理员，学生项目拿不到）。**读取侧 API 当日实测全通**（canvas.sydney.edu.au + personal access token，purpose "test"、2026-11-20 过期）：users/self、courses（15 门 active 含 4 门真课 ACCT2011/2019 + IBUS2020/2105）、modules（含 per-student state：started/completed）、announcements（7 月以来 15 条、最新 08-23）——学生 token 路线成立。待定：推送范围优先级（公告最易最值；modules diff 稍重；assignment due 提醒加分）、Apple Developer 账号用谁的（真推送 entitlement 免费团队签不了；用 Ripple 账号 = 挂 owner 名下走 TestFlight 分发）、项目记忆落点（立 sub-MD 还是按 obsession 模式独立管，owner 定）。E2E 测推送用 canvas.instructure.com Free-for-Teacher 沙箱自建课发公告（学生账号只能读，造不出"新公告"事件）。⚠️ token 是活凭据：只进后端 env/Keychain，不进 git、不进 credentials.md。
 **API 全量摸底结论（2026-08-24 实测，学生 token）——推送源已定**：不用自己逐课 diff，Canvas 有两个现成聚合流：(1) **`/api/v1/users/self/activity_stream`**（+ `/summary` 给未读计数，实测 88 条未读公告）= 全课程公告/讨论/提交聚合流，含 `type:Message notification_category:Due Date` 的 **Canvas 自生成通知**（"Assignment Created""Due Date Changed" 等，直接就是推送文案）；(2) **`/api/v1/planner/items?start_date=&end_date=`** = 公告+日历事件+作业 due 三合一的**带日期统一流**（最适合"待办/提醒"类推送）。后端只需存 activity_stream 的最大 id/时间戳做游标，比 diff 简单。可读：modules（Page/File/Assignment/Quiz 全树 + per-student state）、assignments（+submission workflow_state：graded/unsubmitted/submitted，可做"没交作业"提醒）、announcements、roster（同学+老师名可枚举）。**不可读/受限**：成绩（current_score/computed_current_score 全 None——未 release 或被隐藏，别指望做成绩推送）、部分课 `/files` 403、`/quizzes` 404（按课禁用，app 要容错每课接口未必全开）。**隐私面（owner 须知）**：profile 暴露真实姓名 + 学校邮箱 hsh...@uni.sydney.edu.au + login unique_id；`/users/self/logins` 可读登录名。**scope 边界确认安全**：`/accounts`=空列表、`/accounts/self/users`=403，学生 token 越不到 admin。rate limit 充裕（X-Rate-Limit-Remaining 稳定 700）。
 **⚠️ 合规红线（2026-08-24 查 Instructure 官方文档原文核实，决定项目终局形态）**：Canvas OAuth 文档明写「asking any other user to manually generate a token and enter it into your application is a **violation of Canvas' API Policy**. Applications in use by multiple users **MUST use OAuth** to obtain tokens」，手工 token 仅允许「for testing your application before you've implemented OAuth」。⇒ **当前 Haoran 手发 token 的做法只在单用户开发/原型阶段合法；任何"发给同学用"的多用户版本必须走 OAuth2**，而 OAuth 需要 **developer key，Canvas Cloud 上只有校方 admin 能签发**（学生拿不到）。这把项目劈成两条路：(A) 单用户/演示版——现方案直接可用，交付物是能跑能演示的原型；(B) 真上线给同学用——必须先说服 USYD IT 签 developer key，否则不合规。**这一点必须在项目早期跟需求方说清楚，别做完才发现分发不了**。API 政策另有「Don't impersonate / Don't surprise Users / 用户数据视为私密」三原则。

@@ -3,7 +3,7 @@
 > **上位文件**：[CLAUDE.md](../../CLAUDE.md) §5 项目索引
 > **仓库**：[yorhagengyue/study-os](https://github.com/yorhagengyue/study-os)（私有）
 > **本地路径**：**本机未 clone**（2026-09-18 核实；Windows 那台在 `Desktop\canvas\study-os`，见 record 仓 DRAWER `c-9f1e3002`）
-> **最后更新**：2026-09-18（首次登记。内容基于 main `a07b74f` + PR #2 分支的通读）
+> **最后更新**：2026-09-18（首次登记，内容基于 main `a07b74f` + PR #2 分支的通读；同日 owner 拍板 Ripple Canvas 被本项目取代）
 
 ---
 
@@ -83,7 +83,7 @@ StudyOS 是耿越给时浩然做的**个人学习系统**，只服务一个人�
 
 ## 与 Ripple Canvas 的关系
 
-§8 [2026-08-24] 那条「USYD Canvas→iOS 推送项目」（定名 Ripple Canvas）跟本项目**是同一个学习者、同一个 Canvas、同一批四门课**。但 `~/Desktop/ripple-canvas-core` 和 `ripple-canvas-ios` **连 `git init` 都没做过**，最后修改是 2026-09-01，GitHub 上也没有这两个仓（2026-09-18 核实）。StudyOS（2026-09-09 起）实际上接替了那条线，形态从 iOS 推送换成本机网页 + Agent。**是否正式把 Ripple Canvas 标成被取代，owner 未拍板**。
+§8 [2026-08-24] 那条「USYD Canvas→iOS 推送项目」（定名 Ripple Canvas）跟本项目**是同一个学习者、同一个 Canvas、同一批四门课**。但 `~/Desktop/ripple-canvas-core` 和 `ripple-canvas-ios` **连 `git init` 都没做过**，最后修改是 2026-09-01，GitHub 上也没有这两个仓（2026-09-18 核实）。StudyOS（2026-09-09 起）实际上接替了那条线，形态从 iOS 推送换成本机网页 + Agent。**2026-09-18 owner 拍板：Ripple Canvas 正式被 StudyOS 取代**，已移入 CLAUDE.md §5「已归档项目」表，§8 [2026-08-24] 原条加了作废标注，新增 §8 [2026-09-18] correction 说明边界。⚠️ 那条里的 Canvas API 摸底与**合规红线**（手工 token 只合规于单用户/演示；多用户必须 OAuth，而 developer key 只有校方 admin 能签发）**仍然有效**——StudyOS 走的正是单用户路线，所以这条红线对它不构成阻碍，但一旦想给第二个人用就立刻生效。
 
 ## 已知的 Canvas 坑（`docs/CANVAS-API.md`，跨项目可复用）
 
