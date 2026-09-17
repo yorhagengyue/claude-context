@@ -174,6 +174,7 @@
 
 ## 关键参考
 
+- **提示词资料库**（2026-08-18 搜集，模板 + 成功案例合集）：`Vault/09 - 视频/提示词资料库/`（从 00-导读 起步；约 90 条完整长提示词案例 + 40+ 模板/框架；重点入口 = Mx-Shell 材料整理仓 [jnMetaCode/ai-shortfilm-prompts](https://github.com/jnMetaCode/ai-shortfilm-prompts) + [songguoxs/awesome-video-prompts](https://github.com/songguoxs/awesome-video-prompts)）
 - mxshell 出圈报道：https://m.aitntnews.com/newDetail.html?newId=25149
 - mxshell《丧尸清道夫》B 站：https://www.bilibili.com/video/BV1FFRQB2Eqw/
 - mxshell《明·东海灾异志》B 站：https://www.bilibili.com/video/BV1ksQPBVEXw/
